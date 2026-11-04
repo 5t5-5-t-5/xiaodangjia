@@ -482,6 +482,10 @@ async function initStore(){
    每台设备粘贴一次钥匙。每次改动先记在本机的待同步列表里，同步时取下最新的 Gist、
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
+/* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
+const BUILD="5d1dd0ae8c";
+if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
+  chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
 const lsSet=(k,v)=>{try{v==null?localStorage.removeItem("xdj:"+k):localStorage.setItem("xdj:"+k,JSON.stringify(v))}catch(e){}};
 const setSync=t=>{const el=$("#status");if(el)el.textContent=t};

@@ -486,7 +486,7 @@ function renderPts(){
   $("#tiles").innerHTML=HABITS.map((h,i)=>{
     const sec=i===0?`<div class="tgrp">📚 学习</div>`:h.grp!=="study"&&HABITS[i-1].grp==="study"?`<div class="tgrp">🌞 生活</div>`:"";
     const d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
-    return sec+`<button class="tile ${h.grp?"":"life"} ${h.hot?"hot":""} ${mine?"done":d?"off":""}" data-h="${h.id}" aria-label="${h.name}"><span class="e">${ico(h.id,h.icon)}</span><span class="n">${h.name}</span><span class="p ${d?"ok":""}">${mine?"做到啦":d?"已记":"+"+h.pts+" ★"}</span></button>`;
+    return sec+`<button class="tile ${h.grp?"":"life"} ${h.hot?"hot":""} ${mine?"done":d?"off":""}" data-h="${h.id}" aria-label="${h.name}"><span class="e">${ico(h.id,h.icon)}</span><span class="n">${h.name}</span><span class="p ${d?"ok":""}">${mine?"做到啦":d?"已记":"+"+h.pts+"分"}</span></button>`;
   }).join("");
   const byDay={};for(const d of p.docs)(byDay[d.date]=byDay[d.date]||[]).push(d);
   let rows=[];
@@ -530,10 +530,10 @@ function fly(r,text,kind){
 async function tapHabit(h,btn){
   const date=recDate(),id=date+"_"+slotOf(h),d=state.points[id],r=btn.getBoundingClientRect();
   if(d&&d.habit!==h.id&&(d.habit||h.slot)){say(shortName(d)+"，已经记过啦");return}
-  if(d){await del("points",id);fly(r,"−"+(d.pts||h.pts)+" ★","neg");bump("ptsCard");say(h.name+"，取消啦");return}
+  if(d){await del("points",id);fly(r,"−"+(d.pts||h.pts)+"分","neg");bump("ptsCard");say(h.name+"，取消啦");return}
   await put("points",id,{date,habit:h.id,name:h.name,icon:h.icon,pts:h.pts,ts:Date.now()});
-  fly(r,"+"+h.pts+" ★");bump("ptsCard");
-  say(`${h.hot?"哇，自己主动的！":""}${isPast()?dayWord(recDate())+"的":""}${h.name}，加${h.pts}颗星！`);
+  fly(r,"+"+h.pts+"分");bump("ptsCard");
+  say(`${h.hot?"哇，自己主动的！":""}${isPast()?dayWord(recDate())+"的":""}${h.name}，加${h.pts}分！`);
 }
 /* 和积分卡同一条规则：每样活每天一次，再点一次就取消 */
 const jobId=(date,j)=>date+"_job_"+j.id;
@@ -622,7 +622,7 @@ document.addEventListener("click",e=>{
   const jb=e.target.closest("[data-j]");if(jb){tapJob(JOBS.find(x=>x.id===jb.dataset.j),jb);return}
   const dy=e.target.closest("[data-day]");if(dy){setDay(addDays(today(),+dy.dataset.day));return}
   const vs=e.target.closest("[data-vs]");if(vs){vPref.style=vs.dataset.vs;saveVPref();voiceUI();say("你好呀，我是小当家！");return}
-  if(e.target.closest("#voiceTry")){say("口语星球，加2颗星！");return}
+  if(e.target.closest("#voiceTry")){say("口语星球，加2分！");return}
   if(e.target.closest("[data-more]")){histLimit+=PAGE==="pts"?14:20;render();return}
   if(e.target.closest(".mini"))return;
   const row=e.target.closest(".row");

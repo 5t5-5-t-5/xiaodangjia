@@ -247,10 +247,6 @@ details.parent summary::-webkit-details-marker{display:none}
 .tray{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;gap:10px;height:66px;border-radius:40px;background:rgba(255,255,255,.18);border:3px dashed rgba(255,246,224,.6);color:#FFF6E0;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden}
 .tray .it{width:56px;height:56px;animation:float 2s ease-in-out infinite}.tray .it svg{width:100%;height:100%}
 .tray .tn{display:none;font-size:18px}
-.tbox{position:relative;flex:none;border:0;background:none;padding:0;width:56px;height:56px;touch-action:manipulation}
-.tbox svg{width:100%;height:100%}
-.tbox .cnt[hidden]{display:none}.tbox .cnt{position:absolute;top:-4px;right:-4px;min-width:26px;height:26px;border-radius:999px;background:#fff;color:#FF6B5E;font-weight:900;font-size:15px;display:grid;place-items:center;padding:0 6px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
-.tbox.bump2{animation:pop .5s}
 .tacts{width:100%;display:flex;gap:10px}
 .tacts button{border:0;border-radius:999px;font-size:18px;font-weight:700;padding:14px 18px}
 .tacts .back2{background:#FFF6E0;color:var(--ink);box-shadow:0 4px 0 #7A4A24}
@@ -260,13 +256,6 @@ details.parent summary::-webkit-details-marker{display:none}
 .reg.on i{width:100%;transition:width 1.3s linear}
 .flying{position:fixed;z-index:30;pointer-events:none}.flying svg{width:100%;height:100%}
 .flying.coin{border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#FFC83D 55%,#F0A100);color:#fff;font-weight:900;display:grid;place-items:center}
-.sbuy{position:fixed;inset:0;z-index:25;display:grid;place-items:center;padding:24px;background:rgba(31,43,87,.5)}
-.sbuy[hidden]{display:none}
-.sbuy .box{width:min(420px,calc(100vw - 48px));max-height:80vh;overflow:auto;background:#FFF6E8;border-radius:36px;padding:24px 20px 20px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
-.sbuy h3{margin:0;font-family:"ZCOOL KuaiLe",var(--fun);font-weight:400;font-size:26px}
-.gotgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
-.gotgrid div{background:#fff;border-radius:18px;padding:8px 4px;font-size:13px;font-weight:700}.gotgrid svg{width:52px;height:52px;display:block;margin:0 auto 4px}
-.sbuy .ok2{border:0;border-radius:999px;background:var(--ink);color:#fff;font-size:18px;font-weight:700;padding:12px 30px}
 .confetti{position:fixed;top:-20px;z-index:31;width:12px;height:16px;border-radius:3px;pointer-events:none;animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
 .shopedit{border-top:2px dashed #E2B07E;padding-top:12px}
@@ -289,7 +278,7 @@ details.parent summary::-webkit-details-marker{display:none}
   .jar{width:84px;height:116px}
   .purse{padding:8px 14px;gap:8px}.purse .cn{width:38px;height:38px}.purse .pv{font-size:30px}
   .tray{height:80px;font-size:16px}.tray .it{width:70px;height:70px}.tray .tn{display:inline}
-  .tbox{width:72px;height:72px}
+
   .tacts{width:auto;flex:none}
   .counter{flex-wrap:nowrap}
 }
@@ -673,7 +662,7 @@ $("#pop").addEventListener("click",e=>{if(e.target.id==="pop")closePop()});
 const SHOP_ICONS=["r_toy","r_tv","r_story","r_game","r_icecream","r_park","r_pizza","r_dinner","r_gift"];
 /* 示例商品：家长第一次修改时才真正写进记录本，之后以记录本为准 */
 const SHOP_DEFAULT=[
-  {id:"s_toy",name:"我最爱的角色玩具",icon:"r_toy",pts:300,wish:true,order:0},
+  {id:"s_toy",name:"超级赛亚人",icon:"r_toy",pts:300,wish:true,order:0},
   {id:"s_tv",name:"多看一集动画",icon:"r_tv",pts:20,order:1},
   {id:"s_story",name:"多讲一个故事",icon:"r_story",pts:20,order:2},
   {id:"s_game",name:"和妈妈玩游戏",icon:"r_game",pts:30,order:3},
@@ -709,7 +698,6 @@ function renderShop(){
   const total=ptsCalc().total,items=shopItems(),wish=items.find(d=>d.wish),rest=items.filter(d=>!d.wish);
   const gi=$("#shopGoIcon");if(!gi.innerHTML)gi.innerHTML=gico("r_store");
   $("#shopDot").hidden=!items.some(d=>total>=d.pts);
-  if(!$("#tboxIcon").innerHTML)$("#tboxIcon").innerHTML=gico("r_box");
   $("#shopPts").textContent=total;
   $("#wishSlot").innerHTML=wish?(()=>{const pc=Math.min(100,Math.round(total/wish.pts*100)),ok=total>=wish.pts,away=picked===wish.id;
     return`<button class="case ${ok?"can":""}" data-buy="${wish.id}" type="button" aria-label="大愿望 ${esc(wish.name)} ${wish.pts}分"><span class="ped"><span class="it" style="${away?"visibility:hidden":""}">${gico(wish.icon)}</span></span><span class="wt"><span class="rib">⭐ 我的大愿望</span><div class="nm">${esc(wish.name)}</div><div class="left">${ok?"🎉 星星够啦，可以拿下来！":"还要攒 "+(wish.pts-total)+" 分"}</div></span><span class="jar"><i style="height:${pc}%"></i><span>${wish.pts}</span></span></button>`})():"";
@@ -717,8 +705,6 @@ function renderShop(){
   $("#shelves").innerHTML=rows.map(r=>`<div class="shelf" style="--n:${n}">${r.map(d=>{const ok=total>=d.pts;
     return`<button class="slot ${ok?"can":""} ${picked===d.id?"away":""}" data-buy="${d.id}" type="button" aria-label="${esc(d.name)} ${d.pts}分"><span class="it">${gico(d.icon)}</span><span class="pl"></span><span class="tag"><b>${d.pts}分</b><small>${esc(d.name)}</small>${ok?"":`<em>还差${d.pts-total}</em>`}</span></button>`}).join("")}${"<span class=\"slot\" style=\"pointer-events:none\"><span class=\"it\"></span><span class=\"pl\"></span></span>".repeat(n-r.length)}</div>`).join("")
     ||`<div style="text-align:center;color:var(--soft)">货架还空着，家长在下面摆上东西吧</div>`;
-  const got=Object.values(state.points).filter(d=>d.pts<0);
-  $("#tboxCnt").textContent=got.length;$("#tboxCnt").hidden=!got.length;
   const p=picked&&items.find(d=>d.id===picked);
   $("#tray").innerHTML=p?`<span class="it" id="trayIt">${gico(p.icon)}</span><span class="tn">${esc(p.name)}</span>`:"👆 拿到柜台上";
   $("#tacts").hidden=!p;
@@ -752,15 +738,9 @@ async function checkout(){
   for(let i=0;i<Math.min(6,Math.ceil(d.pts/10));i++)setTimeout(()=>flyNode("★",purse,reg,{size:34,dur:500,cls:"coin"}),i*90);
   await put("points",rid(),{date:today(),name:"换 "+d.name,shop:d.id,icon:d.icon,pts:-d.pts,ts:Date.now()});
   const it=$("#trayIt");
-  if(it){const from=it.getBoundingClientRect();it.style.visibility="hidden";await flyNode(gico(d.icon),from,$("#tbox").getBoundingClientRect(),{size:from.width,dur:700})}
+  if(it){const from=it.getBoundingClientRect();it.style.visibility="hidden";const sz=Math.min(200,innerWidth*.4);await flyNode(gico(d.icon),from,{left:innerWidth/2-sz/2,top:innerHeight/2-sz/2,width:sz,height:sz},{size:sz,dur:700})}
   picked=null;busyShop=false;renderShop();
-  const tb=$("#tbox");tb.classList.remove("bump2");void tb.offsetWidth;tb.classList.add("bump2");
-  confetti();say(`换到啦！${d.name}！放进宝贝箱啦！`);
-}
-function showBox(){
-  const got=Object.values(state.points).filter(d=>d.pts<0).sort((a,b)=>b.ts-a.ts);
-  $("#sbuyBox").innerHTML=`<h3>🧸 我的宝贝箱</h3>`+(got.length?`<div class="gotgrid">${got.map(d=>`<div>${gico(d.icon||"r_gift")}${esc(String(d.name).replace(/^换 /,""))}<br><span style="color:var(--soft);font-weight:400">${dayLabel(d.date)}</span></div>`).join("")}</div>`:`<div>还是空的，去货架上挑一样吧！</div>`)+`<button class="ok2" type="button">好的</button>`;
-  $("#sbuy").hidden=false;say(got.length?`宝贝箱里有${got.length}样东西`:"宝贝箱还是空的");
+  confetti();say(`换到啦！${d.name}！`);
 }
 function confetti(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
   const cs=["#FF8A3D","#FF5FA2","#9B6BFF","#FFC83D","#1DB37A","#4A90E2"];
@@ -770,17 +750,16 @@ function confetti(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)re
 if(PAGE==="pts"){
   $("#shopGo").addEventListener("click",openShop);
   $("#shopBack").addEventListener("click",closeShop);
-  addEventListener("keydown",e=>{if(e.key==="Escape"){if(!$("#sbuy").hidden)$("#sbuy").hidden=true;else if(shopOpen)closeShop()}});
+  addEventListener("keydown",e=>{if(e.key==="Escape"){if(shopOpen)closeShop()}});
   let lastN=perRow();addEventListener("resize",()=>{if(perRow()!==lastN){lastN=perRow();renderShop()}});
   $("#shop").addEventListener("click",e=>{const b=e.target.closest("[data-buy]");if(!b)return;const d=shopItems().find(x=>x.id===b.dataset.buy);if(d)pickItem(d,b)});
-  $("#counter").addEventListener("click",e=>{if(e.target.closest("#putBack"))putBack();else if(e.target.closest("#tbox"))showBox();else if(e.target.closest("#regBtn"))say("要爸爸妈妈按住不放哦")});
+  $("#counter").addEventListener("click",e=>{if(e.target.closest("#putBack"))putBack();else if(e.target.closest("#regBtn"))say("要爸爸妈妈按住不放哦")});
   let holdT=null;
   $("#counter").addEventListener("pointerdown",e=>{const r=e.target.closest("#regBtn");if(!r)return;e.preventDefault();r.classList.add("on");holdT=setTimeout(()=>{r.classList.remove("on");checkout()},1300)});
   const stopHold=()=>{clearTimeout(holdT);const r=$("#regBtn");if(r)r.classList.remove("on")};
   ["pointerup","pointercancel"].forEach(ev=>$("#counter").addEventListener(ev,stopHold));
   $("#counter").addEventListener("pointerout",e=>{if(e.target.closest("#regBtn")&&!e.target.closest("#regBtn").contains(e.relatedTarget))stopHold()});
   $("#counter").addEventListener("contextmenu",e=>{if(e.target.closest("#regBtn"))e.preventDefault()});
-  $("#sbuy").addEventListener("click",e=>{if(e.target.id==="sbuy"||e.target.closest(".ok2"))$("#sbuy").hidden=true});
   const ed=$("#erows");
   ed.addEventListener("click",async e=>{const row=e.target.closest(".erow");if(!row)return;const id=row.dataset.id,d=shopItems().find(x=>x.id===id);if(!d)return;
     if(e.target.closest(".eic")){const i=SHOP_ICONS.indexOf(d.icon);await shopSave(id,{icon:SHOP_ICONS[(i+1)%SHOP_ICONS.length]})}

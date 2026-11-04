@@ -1,0 +1,656 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="apple-touch-icon" href="icon-bank.png"><link rel="icon" href="icon-bank.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="小当家存折"></head><body><title>小当家存折</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@500;700;900&display=swap">
+<style>
+/* 刻意只用一套明亮的童趣配色（不跟随深色模式）。
+   数字和字母一律用 Andika（为学认字设计的字体，数字是规整的书写体），中文标题才用 ZCOOL KuaiLe。
+   布局：手机单列；iPad（≥760px）左边固定卡片，右边点格子。 */
+:root{
+  color-scheme:light;
+  --sky:#E6F2FF; --ink:#1F2B57; --soft:#7A86A8; --white:#FFFFFF; --line:#D5E3F5;
+  --sun:#FFC83D; --sun-deep:#FF9F1C; --sun-pale:#FFF4D2;
+  --mint:#1DB37A; --mint-pale:#DDF7EB;
+  --coral:#FF5F57; --coral-pale:#FFE3E1;
+  --navy:#123E73;
+  --fun:"Andika","ZCOOL KuaiLe","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --body:"Andika","Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+[hidden]{display:none!important}
+html,body{background:var(--sky);color:var(--ink)}
+body{font-family:var(--body);font-weight:500;font-size:17px;line-height:1.4;
+  background-image:radial-gradient(circle at 12% 8%,#fff 0 60px,transparent 61px),radial-gradient(circle at 90% 3%,#fff 0 40px,transparent 41px);background-repeat:no-repeat}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:4px solid var(--sun-deep);outline-offset:3px}
+
+/* 布局：手机上 .side/.main 拆开按 order 排；iPad 上两栏 */
+.wrap{max-width:560px;margin:0 auto;padding-block:16px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
+.side,.main{display:contents}
+.o-card{order:1}.o-info{order:2}.o-tiles{order:3}.o-hist{order:4}.o-parent{order:6}.o-status{order:7}
+
+/* ---------- 卡片通用 ---------- */
+.kcard{position:relative;overflow:hidden;border-radius:22px;aspect-ratio:1.586;container-type:inline-size;padding:5.5cqw 6.5cqw;display:flex;flex-direction:column;justify-content:space-between}
+.kcard>*{position:relative;z-index:1}
+.kcard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.brand{display:flex;align-items:center;gap:8px}
+.brand .logo{width:11cqw;height:11cqw;border-radius:50%;display:grid;place-items:center;font-size:6.5cqw;flex:none}
+.brand b{display:block;font-family:"ZCOOL KuaiLe",var(--fun);font-weight:400;font-size:6cqw;line-height:1.1}
+.brand small{display:block;font-size:2.8cqw;letter-spacing:.18em;opacity:.8}
+.kind{text-align:right;font-family:"ZCOOL KuaiLe",var(--fun);font-size:5cqw;line-height:1.1}
+.kind small{display:block;font-family:"Andika",sans-serif;font-size:2.6cqw;letter-spacing:.2em;opacity:.8}
+.cno{font-family:"Andika",monospace;font-weight:700;font-size:5.6cqw;letter-spacing:.16em;font-variant-numeric:tabular-nums}
+.cap{font-size:3.6cqw;opacity:.85}
+.shine::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;z-index:2;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);animation:shine 5s ease-in-out infinite}
+@keyframes shine{0%,62%{left:-60%}100%{left:130%}}
+.bump{animation:bump .6s ease-out}
+@keyframes bump{30%{transform:scale(1.03)}100%{transform:none}}
+
+/* ---------- 积分卡：金色会员卡 ---------- */
+.pcard{color:#4A2600;
+  background:
+    repeating-linear-gradient(115deg,rgba(255,255,255,.10) 0 2px,transparent 2px 9px),
+    radial-gradient(120% 90% at 100% 0%,#FFF1A8 0%,transparent 45%),
+    linear-gradient(135deg,#FFD95A 0%,#F7B52C 50%,#E8851A 100%);
+  box-shadow:0 14px 30px rgba(232,133,26,.35),inset 0 0 0 2px rgba(255,255,255,.35)}
+.pcard::before{content:"★";position:absolute;right:-6cqw;bottom:-22cqw;font-size:70cqw;line-height:1;color:#fff;opacity:.16;transform:rotate(14deg)}
+.pcard .logo{background:#4A2600;color:#FFD54A}
+.pcard .kind{background:#4A2600;color:#FFD95A;border-radius:10px;padding:1.4cqw 3cqw}
+.pcard .kind small{color:#FFE9A8}
+.pcard .total{font-family:"Andika",sans-serif;font-weight:700;font-size:72px;font-size:21cqw;line-height:.95;color:#fff;text-shadow:0 .7cqw 0 #C9670C;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:2cqw}
+.pcard .total i{font-style:normal;font-size:10cqw;color:#FFF6D0;text-shadow:none}
+.pcard .bot{display:flex;justify-content:space-between;align-items:flex-end}
+.pcard .cno{color:#FFF8E1;text-shadow:0 1px 0 rgba(74,38,0,.55),0 -1px 0 rgba(255,255,255,.45)}
+.holo{width:14cqw;height:9cqw;border-radius:2cqw;background:conic-gradient(from 30deg,#ff9a9e,#fad0c4,#a1c4fd,#c2e9fb,#d4fc79,#96e6a1,#ff9a9e);opacity:.85;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+
+/* ---------- 存折：银行卡 ---------- */
+.bcard{color:#fff;
+  background:
+    radial-gradient(circle at 110% -10%,rgba(255,255,255,.16) 0 32%,transparent 32.5%),
+    radial-gradient(circle at 115% 0%,rgba(255,255,255,.08) 0 48%,transparent 48.5%),
+    linear-gradient(135deg,#0F3B72 0%,#16658F 55%,#14A08A 100%);
+  box-shadow:0 14px 30px rgba(18,62,115,.35)}
+.bcard .logo{background:#fff}
+.bcard .kind{border:1.5px solid rgba(255,255,255,.7);border-radius:10px;padding:1.2cqw 3cqw}
+.bcard .mid{display:flex;justify-content:space-between;align-items:center}
+.chipbox{display:flex;align-items:center;gap:3cqw}
+.chip{width:14cqw;height:10.5cqw;border-radius:2cqw;
+  background:linear-gradient(90deg,transparent 31%,rgba(90,60,0,.35) 31.5% 33%,transparent 33.5% 66%,rgba(90,60,0,.35) 66.5% 68%,transparent 68.5%),
+    linear-gradient(0deg,transparent 47%,rgba(90,60,0,.35) 47.5% 52%,transparent 52.5%),
+    linear-gradient(135deg,#F8E08E,#D4A73A 60%,#F3D27A);box-shadow:inset 0 0 0 1px rgba(90,60,0,.25)}
+.nfc{width:7cqw;height:7cqw;opacity:.85}
+.bcard .balbox{text-align:right}
+.bcard .bal{font-family:"Andika",sans-serif;font-weight:700;font-size:60px;font-size:17cqw;line-height:1;font-variant-numeric:tabular-nums}
+.bcard .bal small{font-size:9cqw;margin-right:1cqw;opacity:.9}
+.bcard .cno{color:#EAF4FF;text-shadow:0 1px 0 rgba(0,0,0,.45),0 -1px 0 rgba(255,255,255,.25)}
+.bcard .bot{display:flex;justify-content:space-between;align-items:center;font-size:3.2cqw;letter-spacing:.12em;opacity:.95}
+.owe{letter-spacing:0;background:var(--coral);border-radius:999px;padding:.6cqw 3cqw;font-size:4.4cqw;font-weight:700}
+
+/* 卡片下面的小信息 */
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chipx{background:var(--white);border-radius:999px;padding:6px 16px;font-family:var(--fun);font-size:19px;box-shadow:0 3px 0 var(--line)}
+.wish{background:var(--white);border-radius:24px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 0 var(--line)}
+.wish .wi{font-size:40px}
+.wish .wt{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.wish .wl{font-family:var(--fun);font-size:21px}
+.wish .wl b{color:var(--coral)}
+.bar{height:16px;border-radius:999px;background:var(--mint-pale);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:999px;background:var(--mint);transition:width .6s}
+
+/* ---------- 点一点的格子 ---------- */
+.list{display:flex;flex-direction:column;gap:10px}
+.list h2{font-family:"ZCOOL KuaiLe",var(--fun);font-weight:400;font-size:23px;margin:4px 0 0}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.days{display:flex;background:var(--white);border-radius:999px;padding:4px;box-shadow:0 3px 0 var(--line);flex:none}
+.days button{border:0;background:none;border-radius:999px;padding:7px 14px;font-family:"ZCOOL KuaiLe",var(--fun);font-size:18px;color:var(--soft)}
+.days button[aria-pressed="true"]{background:var(--sun);color:var(--ink)}
+.days button[data-day="-1"][aria-pressed="true"],.days .pick.on{background:#5B5BD6;color:#fff}
+.days .pick{position:relative;border-radius:999px;padding:7px 12px;font-family:"ZCOOL KuaiLe",var(--fun);font-size:18px;color:var(--soft);white-space:nowrap;cursor:pointer}
+.dpick{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
+.hrow{flex-wrap:wrap}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tiles.past{background:#E7E6FF;border-radius:26px;padding:10px;margin:0 -10px}
+.tgrp{grid-column:1/-1;font-family:"ZCOOL KuaiLe",var(--fun);font-size:19px;color:var(--soft);margin:4px 2px -2px}
+.tile{position:relative;border:0;background:var(--white);border-radius:22px;padding:14px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 5px 0 var(--line);touch-action:manipulation}
+.tile .e{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:38px;line-height:1;background:var(--mint-pale);margin-bottom:2px}
+.tile .e svg{width:72%;height:72%;display:block}
+.row .w svg{width:26px;height:26px;vertical-align:middle;margin-right:2px}.bubble svg{width:30px;height:30px}
+.tile.done .e,.tile.hot .e{background:rgba(255,255,255,.75)}
+.tile .n{font-size:17px;font-weight:700;color:var(--ink);text-align:center;line-height:1.2;white-space:nowrap}
+.tile .p{font-family:"Andika",sans-serif;font-weight:700;font-size:21px;color:var(--mint)}
+.tile .p.ok{font-family:"ZCOOL KuaiLe",var(--fun);font-weight:400;color:var(--mint)}
+.tile:active{transform:translateY(4px);box-shadow:none}
+.tile.done::after{content:"✓";position:absolute;right:8px;top:8px;width:26px;height:26px;border-radius:50%;background:var(--mint);color:#fff;font-size:16px;font-weight:900;display:grid;place-items:center}
+.tile.hot{background:linear-gradient(160deg,#FFF6D6,#FFE7A3);box-shadow:0 5px 0 var(--sun-deep)}
+.tile.done{background:var(--mint-pale);box-shadow:0 5px 0 var(--mint)}
+.tile.hot .p{font-size:25px}
+.tile.off{opacity:.4}
+/* 积分卡页：格子跟橙色积分卡一个色系 */
+.page-pts .tile{box-shadow:0 5px 0 #F6DFB4}
+.page-pts .tile .e{background:#FFF0D4}
+.page-pts .tile .p,.page-pts .tile .p.ok{color:#E8890C}
+.page-pts .tile.hot{background:var(--white);box-shadow:0 5px 0 #F6DFB4}
+.page-pts .tile.hot .p:not(.ok){background:var(--sun-deep);color:#fff;border-radius:999px;padding:1px 12px}
+.page-pts .tile.done{background:var(--sun-pale);box-shadow:0 5px 0 var(--sun)}
+.page-pts .tile.done::after{background:var(--sun-deep)}
+.page-pts .tile.done .e{background:rgba(255,255,255,.8)}
+.page-pts .tile:active{box-shadow:none}
+.fly{position:fixed;z-index:30;pointer-events:none;font-family:"Andika",sans-serif;font-weight:700;font-size:36px;color:var(--sun-deep);text-shadow:0 2px 0 #fff;animation:fly 1s ease-out forwards}
+.fly.money{color:var(--mint)} .fly.neg{color:var(--coral)}
+@keyframes fly{from{transform:translate(-50%,0) scale(.8);opacity:1}to{transform:translate(-50%,-90px) scale(1.3);opacity:0}}
+
+/* ---------- 记录 ---------- */
+.row{background:var(--white);border-radius:20px;padding:12px 16px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;cursor:pointer}
+.row .d{font-family:"ZCOOL KuaiLe",var(--fun);font-size:17px;color:var(--soft);min-width:44px}
+.row .w{min-width:0;font-size:24px;letter-spacing:2px;overflow-wrap:anywhere}
+.row .w.txt{font-size:17px;letter-spacing:0}
+.row .v{font-family:"Andika",sans-serif;font-weight:700;font-size:28px;text-align:right;font-variant-numeric:tabular-nums}
+.row .v small{display:block;font-weight:400;font-size:13px;color:var(--soft)}
+.plus{color:var(--sun-deep)} .page-bank .plus{color:var(--mint)} .minus{color:var(--coral)} .adv{color:#2477E8}
+.bubble{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:var(--mint-pale)}
+.bubble.out{background:var(--coral-pale)} .bubble.adv{background:#E1ECFC}
+.ops{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end}
+.mini{border:2px solid var(--line);background:var(--white);border-radius:14px;padding:6px 14px;font-size:15px}
+.mini.danger{border-color:var(--coral);color:var(--coral)}
+.mini[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.empty{text-align:center;color:var(--soft);font-family:"ZCOOL KuaiLe",var(--fun);font-size:20px;padding:20px 0}
+.empty span{display:block;font-size:52px}
+.more{align-self:center;border:0;background:none;color:var(--soft);font-size:15px;padding:6px}
+
+/* ---------- 结果弹窗 ---------- */
+.pop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:24px max(24px,env(safe-area-inset-right,0px)) 24px max(24px,env(safe-area-inset-left,0px));background:rgba(31,43,87,.45)}
+.pop .box{width:min(380px,calc(100vw - 48px));background:var(--white);border-radius:36px;padding:28px 22px 22px;text-align:center;display:flex;flex-direction:column;gap:12px;animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.pop .em{font-size:64px;line-height:1}
+.pop .gain{font-family:"Andika",sans-serif;font-weight:700;font-size:84px;line-height:1}
+.pop .gain.pts{color:var(--sun-deep)} .pop .gain.money{color:var(--mint)} .pop .gain.neg{color:var(--coral)}
+.pop .eq{font-family:"Andika",sans-serif;font-weight:700;font-size:30px;background:var(--sky);border-radius:18px;padding:8px 12px;font-variant-numeric:tabular-nums}
+.pop .its{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.pop .it{background:var(--sun-pale);border-radius:999px;padding:4px 12px;font-size:17px}
+.pop .it.off{opacity:.5;text-decoration:line-through}
+.pop .msg{font-size:18px;color:var(--ink)}
+.pop .acts{display:flex;gap:10px;justify-content:center}
+.pop .acts button{border:0;border-radius:999px;padding:12px 22px;font-family:"ZCOOL KuaiLe",var(--fun);font-size:22px}
+.pop .again{background:var(--sky)} .pop .ok{background:var(--ink);color:#fff}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+
+/* ---------- 家长区 ---------- */
+details.parent{border-top:2px dashed var(--line);padding-top:12px}
+details.parent summary{list-style:none;text-align:center;color:var(--soft);font-size:15px;cursor:pointer}
+details.parent summary::-webkit-details-marker{display:none}
+.pbox{margin-top:12px;background:var(--white);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--soft)}
+.pbox b{color:var(--ink)}
+.pbox form,.pbox .line{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pbox input,.pbox select{font:inherit;flex:1 1 140px;min-width:0;padding:9px 12px;border-radius:12px;border:2px solid var(--line);color:var(--ink);background:#fff}
+.status{text-align:center;font-size:13px;color:var(--soft)}
+
+@media (prefers-reduced-motion:reduce){.shine::after,.fly{animation:none}.pop .box,.bump{animation:none}.bar i{transition:none}}
+
+/* ---------- iPad：左边卡片固定，右边格子 ---------- */
+@media (min-width:760px){
+  .wrap{max-width:1180px;display:grid;grid-template-columns:minmax(300px,36%) 1fr;gap:28px;align-items:start;padding-top:24px}
+  .side,.main{display:flex;flex-direction:column;gap:18px}
+  .side{position:sticky;top:20px}
+  .tiles{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px}
+  .tile{padding:18px 8px 12px;border-radius:26px}
+  .tile .e{width:84px;height:84px;font-size:50px}
+  .tile .n{font-size:19px}
+  .tile .p{font-size:24px}
+}
+</style>
+
+<div class="wrap page-bank">
+  <div class="side">
+    <div class="kcard bcard shine o-card" id="bankCard">
+      <div class="top">
+        <div class="brand"><span class="logo">🐷</span><div><b>小当家银行</b><small>龙华支行 · LONGHUA BRANCH</small></div></div>
+        <div class="kind">储蓄卡<small>DEBIT CARD</small></div>
+      </div>
+      <div class="mid">
+        <div class="chipbox"><span class="chip"></span><svg class="nfc" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M8 7.5a6 6 0 0 1 0 9"/><path d="M12 5a9.5 9.5 0 0 1 0 14"/><path d="M16 2.5a13 13 0 0 1 0 19"/></svg></div>
+        <div class="balbox"><div class="cap">余额</div><div class="bal"><small>¥</small><span id="bankCash">0</span></div></div>
+      </div>
+      <div class="cno">6217 •••• •••• 0611</div>
+      <div class="bot"><span>持卡人 ZHONG WENZHI</span><span class="owe" id="bankDebt" hidden></span></div>
+    </div>
+    <div class="wish o-info" id="wishBox" hidden><div class="wi">🎯</div><div class="wt"><div class="wl" id="wishText"></div><div class="bar"><i id="wishBar"></i></div></div></div>
+  </div>
+  <div class="main">
+    <div class="list o-tiles"><div class="hrow"><h2>💪 干活赚钱</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true">☀️ 今天</button><button data-day="-1" aria-pressed="false">🌙 昨天</button><label class="pick"><span id="pickLbl">📅 更早</span><input type="date" class="dpick" aria-label="选更早的一天"></label></div></div><div class="tiles" id="tiles"></div></div>
+    <div class="list o-hist"><h2>🧾 账单</h2><div class="list" id="hist"></div></div>
+    <details class="parent o-parent"><summary>👩 家长看这里</summary><div class="pbox">
+      <div><b>能挣钱的：</b>本分之外、帮全家做的额外家务，每样每天 1 块。点错了再点一下格子就取消。收拾自己的东西、学习、刷牙不挣钱。</div>
+      <div><b>花钱：</b></div>
+      <form id="spendForm"><input id="spName" placeholder="买了什么"><input id="spAmt" type="number" min="1" inputmode="numeric" placeholder="多少钱"><button class="mini">花掉</button></form>
+      <div><b>预支：</b>最多欠 10 块，之后挣的钱先还预支。</div>
+      <form id="advForm"><input id="adAmt" type="number" min="1" inputmode="numeric" placeholder="预支多少钱"><button class="mini">预支</button></form>
+      <div><b>设置心愿：</b></div>
+      <form id="wishForm"><input id="wishName" placeholder="心愿，比如 乐高小车"><input id="wishPrice" type="number" min="1" inputmode="numeric" placeholder="多少钱"><button class="mini">保存</button></form>
+      <div><b>同步钥匙：</b>电脑和 iPad 上各粘贴一次，两边的记录就会自动同步。</div><div class="line"><input id="syncKey" type="password" autocomplete="off" placeholder="粘贴钥匙 github_pat_…" aria-label="同步钥匙"><button class="mini" id="syncSave" type="button">保存</button></div>
+      <div><b>补记前几天：</b>点格子上方的“🌙 昨天”，或者“📅 更早”选日子（比如上周六），再点格子补上；点错了再点一下就取消。补完点“☀️ 今天”回来。</div>
+      <div><b>朗读的声音：</b></div>
+      <div id="voiceInfo"></div>
+      <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button></div>
+      <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
+      <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
+    </div></details>
+    <div class="status o-status" id="status"></div>
+  </div>
+</div>
+
+<div class="pop" id="pop" hidden><div class="box" id="popBox"></div></div>
+
+<script>
+const PAGE="bank"; /* pts = 积分卡页，bank = 存折页 */
+const IC={"oral": "<g transform=\"rotate(-20 24 24)\"><ellipse cx=\"24\" cy=\"24\" rx=\"21\" ry=\"6\" fill=\"none\" stroke=\"#FFC83D\" stroke-width=\"3\"/><circle cx=\"24\" cy=\"24\" r=\"12\" fill=\"#8C7CF0\"/><circle cx=\"20\" cy=\"20\" r=\"3\" fill=\"#A89CF5\"/><circle cx=\"28\" cy=\"28\" r=\"2\" fill=\"#A89CF5\"/><path d=\"M3 24a21 6 0 0 0 42 0\" fill=\"none\" stroke=\"#FFC83D\" stroke-width=\"3\"/></g>", "enbook": "<path d=\"M4 11h15a5 5 0 0 1 5 5v25a4 4 0 0 0-4-4H4z\" fill=\"#BFE3FF\"/><path d=\"M44 11H29a5 5 0 0 0-5 5v25a4 4 0 0 1 4-4h16z\" fill=\"#4A90E2\"/><path d=\"M9 28l3.5-10 3.5 10M10.3 24.5h4.4\" fill=\"none\" stroke=\"#2F6FC0\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M30 19h9M30 24h9M30 29h6\" stroke=\"#FFFFFF\" stroke-width=\"2.4\" stroke-linecap=\"round\"/>", "math_pre": "<rect x=\"7\" y=\"7\" width=\"34\" height=\"34\" rx=\"4\" fill=\"#B97A4A\"/><rect x=\"11\" y=\"11\" width=\"26\" height=\"26\" fill=\"#FFF1DC\"/><path d=\"M11 17h26\" stroke=\"#9AA8C0\" stroke-width=\"1.5\"/><path d=\"M11 24h26\" stroke=\"#9AA8C0\" stroke-width=\"1.5\"/><path d=\"M11 31h26\" stroke=\"#9AA8C0\" stroke-width=\"1.5\"/><circle cx=\"15\" cy=\"17\" r=\"3\" fill=\"#FF6B5E\"/><circle cx=\"20\" cy=\"17\" r=\"3\" fill=\"#FF6B5E\"/><circle cx=\"31\" cy=\"17\" r=\"3\" fill=\"#4A90E2\"/><circle cx=\"15\" cy=\"24\" r=\"3\" fill=\"#FFC83D\"/><circle cx=\"26\" cy=\"24\" r=\"3\" fill=\"#FFC83D\"/><circle cx=\"31\" cy=\"24\" r=\"3\" fill=\"#FFC83D\"/><circle cx=\"20\" cy=\"31\" r=\"3\" fill=\"#1DB37A\"/><circle cx=\"26\" cy=\"31\" r=\"3\" fill=\"#1DB37A\"/><circle cx=\"31\" cy=\"31\" r=\"3\" fill=\"#1DB37A\"/>", "cn_pre": "<rect x=\"11\" y=\"6\" width=\"26\" height=\"36\" rx=\"3\" fill=\"#FF6B5E\"/><rect x=\"11\" y=\"6\" width=\"6\" height=\"36\" rx=\"2\" fill=\"#D9483F\"/><rect x=\"21\" y=\"13\" width=\"11\" height=\"7\" rx=\"1.5\" fill=\"#FFFFFF\"/><path d=\"M23 15.5h7\" stroke=\"#FF6B5E\" stroke-width=\"2\" stroke-linecap=\"round\"/>", "cn_read": "<rect x=\"17\" y=\"5\" width=\"14\" height=\"23\" rx=\"7\" fill=\"#4A90E2\"/><path d=\"M17 13h5M17 18h5\" stroke=\"#FFFFFF\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M11 21a13 13 0 0 0 26 0\" fill=\"none\" stroke=\"#1F2B57\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M24 34v7M17 42h14\" stroke=\"#1F2B57\" stroke-width=\"3\" stroke-linecap=\"round\"/>", "math_hw": "<rect x=\"7\" y=\"7\" width=\"26\" height=\"34\" rx=\"3\" fill=\"#FFFFFF\"/><rect x=\"7\" y=\"7\" width=\"26\" height=\"6\" rx=\"3\" fill=\"#4A90E2\"/><path d=\"M12 20h16\" stroke=\"#BFE3FF\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M12 26h16\" stroke=\"#BFE3FF\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M12 32h16\" stroke=\"#BFE3FF\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><g transform=\"rotate(30 36 26)\"><rect x=\"32\" y=\"12\" width=\"8\" height=\"22\" fill=\"#FFC83D\"/><rect x=\"32\" y=\"9\" width=\"8\" height=\"4\" rx=\"1\" fill=\"#FF8FA3\"/><path d=\"M32 34h8l-4 7z\" fill=\"#E2B07E\"/><path d=\"M34.5 38.5h3l-1.5 2.5z\" fill=\"#1F2B57\"/></g>", "cn_fix": "<rect x=\"7\" y=\"7\" width=\"26\" height=\"34\" rx=\"3\" fill=\"#FFFFFF\"/><path d=\"M12 24l5 5 10-11\" fill=\"none\" stroke=\"#FF6B5E\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><g transform=\"rotate(30 36 26)\"><rect x=\"32\" y=\"12\" width=\"8\" height=\"22\" fill=\"#FF6B5E\"/><rect x=\"32\" y=\"9\" width=\"8\" height=\"4\" rx=\"1\" fill=\"#FF8FA3\"/><path d=\"M32 34h8l-4 7z\" fill=\"#E2B07E\"/><path d=\"M34.5 38.5h3l-1.5 2.5z\" fill=\"#1F2B57\"/></g>", "writing": "<rect x=\"6\" y=\"8\" width=\"30\" height=\"30\" rx=\"2\" fill=\"#FFFFFF\" stroke=\"#FF6B5E\" stroke-width=\"2.5\"/><path d=\"M21 8v30M6 23h30\" stroke=\"#FF6B5E\" stroke-width=\"1.5\" stroke-dasharray=\"3 3\"/><path d=\"M13 17h16M21 13v19M14 29l7-6 7 6\" fill=\"none\" stroke=\"#1F2B57\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><g transform=\"rotate(35 37 28)\"><rect x=\"33\" y=\"14\" width=\"8\" height=\"22\" fill=\"#FFC83D\"/><rect x=\"33\" y=\"11\" width=\"8\" height=\"4\" rx=\"1\" fill=\"#FF8FA3\"/><path d=\"M33 36h8l-4 7z\" fill=\"#E2B07E\"/><path d=\"M35.5 40.5h3l-1.5 2.5z\" fill=\"#1F2B57\"/></g>", "en_class": "<rect x=\"11\" y=\"6\" width=\"26\" height=\"36\" rx=\"3\" fill=\"#4A90E2\"/><rect x=\"11\" y=\"6\" width=\"6\" height=\"36\" rx=\"2\" fill=\"#2F6FC0\"/><rect x=\"21\" y=\"13\" width=\"11\" height=\"7\" rx=\"1.5\" fill=\"#FFFFFF\"/><path d=\"M23.5 19l3-6 3 6M24.5 17h4\" fill=\"none\" stroke=\"#4A90E2\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "en_daily": "<path d=\"M9 29v-5a15 15 0 0 1 30 0v5\" fill=\"none\" stroke=\"#1F2B57\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"6\" y=\"25\" width=\"10\" height=\"16\" rx=\"4\" fill=\"#4A90E2\"/><rect x=\"32\" y=\"25\" width=\"10\" height=\"16\" rx=\"4\" fill=\"#4A90E2\"/><path d=\"M21 31v-4l6 2-6 2z\" fill=\"#FFC83D\"/>", "teeth": "<g transform=\"rotate(18 30 20)\"><rect x=\"27\" y=\"6\" width=\"6\" height=\"26\" rx=\"3\" fill=\"#FFC83D\"/><rect x=\"25\" y=\"2\" width=\"10\" height=\"9\" rx=\"2\" fill=\"#FFFFFF\"/><path d=\"M28 2v9M32 2v9\" stroke=\"#BFE3FF\" stroke-width=\"1.4\"/></g><path d=\"M10 20h24l-3 23H13z\" fill=\"#4A90E2\"/><path d=\"M10 20h24\" stroke=\"#2F6FC0\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"11\" cy=\"11\" r=\"4\" fill=\"#FFFFFF\"/><circle cx=\"17\" cy=\"6\" r=\"2.5\" fill=\"#FFFFFF\"/>", "teeth_self": "<path d=\"M15 9c-5 0-8 4-7 10 1 5 3 7 3 13 0 5 2 9 5 9 2 0 3-4 4-8 1-4 2-5 4-5s3 1 4 5c1 4 2 8 4 8 3 0 5-4 5-9 0-6 2-8 3-13 1-6-2-10-7-10-3 0-5 2-9 2s-6-2-9-2z\" fill=\"#FFFFFF\" stroke=\"#4A90E2\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M39 3l1.7999999999999998 4.199999999999999 4.199999999999999 1.7999999999999998 -4.199999999999999 1.7999999999999998 -1.7999999999999998 4.199999999999999 -1.7999999999999998 -4.199999999999999 -4.199999999999999 -1.7999999999999998 4.199999999999999 -1.7999999999999998z\" fill=\"#FFC83D\"/>", "nose": "<rect x=\"13\" y=\"17\" width=\"20\" height=\"25\" rx=\"7\" fill=\"#4A90E2\"/><rect x=\"18\" y=\"11\" width=\"10\" height=\"7\" rx=\"2\" fill=\"#BFE3FF\"/><path d=\"M21 11l2-6 2 6z\" fill=\"#FFFFFF\"/><path transform=\"translate(23 32) scale(0.7)\" d=\"M0 -9c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z\" fill=\"#FFFFFF\"/><path d=\"M42 8a7 7 0 1 0 2 11 6 6 0 0 1-2-11z\" fill=\"#FFC83D\"/>", "nose_self": "<rect x=\"13\" y=\"17\" width=\"20\" height=\"25\" rx=\"7\" fill=\"#4A90E2\"/><rect x=\"18\" y=\"11\" width=\"10\" height=\"7\" rx=\"2\" fill=\"#BFE3FF\"/><path d=\"M21 11l2-6 2 6z\" fill=\"#FFFFFF\"/><path transform=\"translate(23 32) scale(0.7)\" d=\"M0 -9c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z\" fill=\"#FFFFFF\"/><path d=\"M40 4l1.7999999999999998 4.199999999999999 4.199999999999999 1.7999999999999998 -4.199999999999999 1.7999999999999998 -1.7999999999999998 4.199999999999999 -1.7999999999999998 -4.199999999999999 -4.199999999999999 -1.7999999999999998 4.199999999999999 -1.7999999999999998z\" fill=\"#FFC83D\"/>", "sleep_self": "<path d=\"M27 8a16 16 0 1 0 13 24A13 13 0 0 1 27 8z\" fill=\"#FFC83D\"/><path d=\"M31 9h7l-7 8h7\" fill=\"none\" stroke=\"#8C7CF0\" stroke-width=\"2.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M40 22l1.2 2.8 2.8 1.2 -2.8 1.2 -1.2 2.8 -1.2 -2.8 -2.8 -1.2 2.8 -1.2z\" fill=\"#8C7CF0\"/>", "handwash": "<rect x=\"7\" y=\"25\" width=\"30\" height=\"15\" rx=\"7\" fill=\"#FF8FA3\"/><rect x=\"11\" y=\"28\" width=\"12\" height=\"3\" rx=\"1.5\" fill=\"#FFFFFF\" opacity=\".7\"/><circle cx=\"31\" cy=\"14\" r=\"7\" fill=\"#BFE3FF\"/><circle cx=\"19\" cy=\"15\" r=\"5\" fill=\"#BFE3FF\"/><circle cx=\"40\" cy=\"22\" r=\"4\" fill=\"#BFE3FF\"/><circle cx=\"29\" cy=\"12\" r=\"2\" fill=\"#FFFFFF\"/>", "handwash_l": "<circle cx=\"38\" cy=\"10\" r=\"5\" fill=\"#FFC83D\"/><rect x=\"5\" y=\"14\" width=\"24\" height=\"7\" rx=\"3\" fill=\"#9AA8C0\"/><rect x=\"22\" y=\"14\" width=\"8\" height=\"13\" rx=\"2\" fill=\"#9AA8C0\"/><rect x=\"12\" y=\"8\" width=\"9\" height=\"6\" rx=\"2\" fill=\"#FF6B5E\"/><path transform=\"translate(26 34) scale(0.7)\" d=\"M0 -9c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z\" fill=\"#4A90E2\"/><path transform=\"translate(26 44) scale(0.55)\" d=\"M0 -9c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z\" fill=\"#4A90E2\"/>", "serve": "<path d=\"M7 26a12 7 0 0 1 34 0z\" fill=\"#FFFFFF\"/><path d=\"M5 26h38a19 17 0 0 1-38 0z\" fill=\"#4A90E2\"/><g transform=\"rotate(30 30 14)\"><rect x=\"27\" y=\"2\" width=\"6\" height=\"16\" rx=\"3\" fill=\"#B97A4A\"/><ellipse cx=\"30\" cy=\"21\" rx=\"6\" ry=\"7\" fill=\"#E2B07E\"/></g>", "meal_b": "<path d=\"M6 36c0-12 8-21 18-22 10 1 18 10 18 22z\" fill=\"#FFE2B8\"/><path d=\"M6 36h36\" stroke=\"#D9A86A\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M24 16l-5 13M24 16l0 14M24 16l5 13\" stroke=\"#D9A86A\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M17 10c-2-2 2-4 0-6M31 10c-2-2 2-4 0-6\" fill=\"none\" stroke=\"#9AA8C0\" stroke-width=\"2\" stroke-linecap=\"round\"/>", "meal_l": "<path d=\"M7 26a12 7 0 0 1 34 0z\" fill=\"#FFFFFF\"/><path d=\"M5 26h38a19 17 0 0 1-38 0z\" fill=\"#4A90E2\"/><path d=\"M10 24h28\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><path d=\"M28 4l12 16M34 3l9 15\" stroke=\"#B97A4A\" stroke-width=\"2.6\" stroke-linecap=\"round\"/>", "meal_d": "<path d=\"M7 26a12 7 0 0 1 34 0z\" fill=\"#FFF3D6\"/><path d=\"M5 26h38a19 17 0 0 1-38 0z\" fill=\"#FF9F1C\"/><ellipse cx=\"24\" cy=\"26\" rx=\"17\" ry=\"4\" fill=\"#FFF3D6\"/><path d=\"M18 17c-2-3 2-5 0-8M25 17c-2-3 2-5 0-8M32 17c-2-3 2-5 0-8\" fill=\"none\" stroke=\"#9AA8C0\" stroke-width=\"2\" stroke-linecap=\"round\"/>", "door": "<rect x=\"11\" y=\"5\" width=\"26\" height=\"37\" rx=\"2\" fill=\"#B97A4A\"/><rect x=\"15\" y=\"9\" width=\"18\" height=\"12\" rx=\"1.5\" fill=\"#E2B07E\"/><rect x=\"15\" y=\"25\" width=\"18\" height=\"13\" rx=\"1.5\" fill=\"#E2B07E\"/><circle cx=\"31\" cy=\"24\" r=\"2.5\" fill=\"#FFC83D\"/><path d=\"M6 43h36\" stroke=\"#9AA8C0\" stroke-width=\"3\" stroke-linecap=\"round\"/>", "chair": "<rect x=\"12\" y=\"5\" width=\"7\" height=\"22\" rx=\"2\" fill=\"#FF9F1C\"/><rect x=\"12\" y=\"23\" width=\"26\" height=\"6\" rx=\"2\" fill=\"#FF9F1C\"/><path d=\"M15 29v14M35 29v14\" stroke=\"#B97A4A\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"14\" y=\"8\" width=\"3\" height=\"14\" rx=\"1.5\" fill=\"#FFC83D\"/>", "quilt": "<rect x=\"6\" y=\"30\" width=\"36\" height=\"10\" rx=\"4\" fill=\"#4A90E2\"/><rect x=\"8\" y=\"20\" width=\"32\" height=\"10\" rx=\"4\" fill=\"#FFC83D\"/><rect x=\"10\" y=\"10\" width=\"28\" height=\"10\" rx=\"4\" fill=\"#FF6B5E\"/><path d=\"M14 15h20M12 25h24M10 35h28\" stroke=\"#FFFFFF\" stroke-width=\"1.6\" stroke-dasharray=\"3 3\" opacity=\".8\"/>", "books": "<rect x=\"6\" y=\"12\" width=\"8\" height=\"30\" rx=\"1.5\" fill=\"#FF6B5E\"/><rect x=\"15\" y=\"8\" width=\"8\" height=\"34\" rx=\"1.5\" fill=\"#4A90E2\"/><rect x=\"24\" y=\"14\" width=\"7\" height=\"28\" rx=\"1.5\" fill=\"#1DB37A\"/><rect x=\"31\" y=\"9\" width=\"8\" height=\"34\" rx=\"1.5\" fill=\"#FFC83D\" transform=\"rotate(14 35 42)\"/><path d=\"M8 18h4M17 14h4M26 20h3\" stroke=\"#FFFFFF\" stroke-width=\"2\"/><path d=\"M4 43h40\" stroke=\"#B97A4A\" stroke-width=\"3\" stroke-linecap=\"round\"/>", "ac_self": "<rect x=\"4\" y=\"9\" width=\"40\" height=\"17\" rx=\"4\" fill=\"#FFFFFF\"/><rect x=\"8\" y=\"20\" width=\"32\" height=\"3\" rx=\"1.5\" fill=\"#D5DEEB\"/><circle cx=\"38\" cy=\"14\" r=\"1.8\" fill=\"#1DB37A\"/><path d=\"M14 31v10M24 31v12M34 31v10\" stroke=\"#4A90E2\" stroke-width=\"2.8\" stroke-linecap=\"round\"/><path d=\"M11 36l3 3 3-3M21 38l3 3 3-3M31 36l3 3 3-3\" fill=\"none\" stroke=\"#4A90E2\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>", "mop": "<path d=\"M8 22h22l-3 20H11z\" fill=\"#4A90E2\"/><path d=\"M8 22a11 8 0 0 1 22 0\" fill=\"none\" stroke=\"#1F2B57\" stroke-width=\"2.5\"/><path d=\"M10 27h18\" stroke=\"#BFE3FF\" stroke-width=\"3\"/><path d=\"M40 4L30 38\" stroke=\"#B97A4A\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M24 36h14l1 6H23z\" fill=\"#D5DEEB\"/>", "sweep": "<path d=\"M34 4L22 26\" stroke=\"#B97A4A\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><path d=\"M17 24l12 6-6 13-14-7z\" fill=\"#FFC83D\"/><path d=\"M12 39l4-7M16 41l4-7M20 43l4-7\" stroke=\"#FF9F1C\" stroke-width=\"2\" stroke-linecap=\"round\"/><rect x=\"18\" y=\"23\" width=\"13\" height=\"5\" rx=\"2\" transform=\"rotate(27 24 25)\" fill=\"#FF6B5E\"/>", "hang": "<path d=\"M2 8h44\" stroke=\"#9AA8C0\" stroke-width=\"2\"/><path d=\"M16 12l-9 6 4 7 4-2v19h18V23l4 2 4-7-9-6c-1 3-4 5-8 5s-7-2-8-5z\" fill=\"#4A90E2\"/><rect x=\"17\" y=\"6\" width=\"3\" height=\"8\" rx=\"1\" fill=\"#FFC83D\"/><rect x=\"28\" y=\"6\" width=\"3\" height=\"8\" rx=\"1\" fill=\"#FFC83D\"/>", "fold": "<rect x=\"12\" y=\"10\" width=\"14\" height=\"14\" rx=\"2\" fill=\"#FF6B5E\"/><rect x=\"22\" y=\"8\" width=\"14\" height=\"16\" rx=\"2\" fill=\"#4A90E2\"/><path d=\"M5 22h38l-4 20H9z\" fill=\"#E2B07E\"/><path d=\"M5 22h38\" stroke=\"#B97A4A\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M13 28l2 9M24 28v9M35 28l-2 9\" stroke=\"#B97A4A\" stroke-width=\"2\" stroke-linecap=\"round\"/>", "towel": "<rect x=\"6\" y=\"30\" width=\"36\" height=\"10\" rx=\"3\" fill=\"#1DB37A\"/><rect x=\"8\" y=\"19\" width=\"32\" height=\"10\" rx=\"3\" fill=\"#BFE3FF\"/><rect x=\"10\" y=\"8\" width=\"28\" height=\"10\" rx=\"3\" fill=\"#FF8FA3\"/><path d=\"M32 30v10M34 19v10M32 8v10\" stroke=\"#FFFFFF\" stroke-width=\"2\"/>", "setbowl": "<path d=\"M7 26a12 7 0 0 1 34 0z\" fill=\"#BFE3FF\"/><path d=\"M5 26h38a19 17 0 0 1-38 0z\" fill=\"#FFFFFF\" stroke=\"#4A90E2\" stroke-width=\"2.5\"/><path d=\"M14 32h20\" stroke=\"#4A90E2\" stroke-width=\"2\"/><path d=\"M6 6l14 14M11 4l12 13\" stroke=\"#B97A4A\" stroke-width=\"2.6\" stroke-linecap=\"round\"/>", "clearbowl": "<ellipse cx=\"24\" cy=\"38\" rx=\"19\" ry=\"5\" fill=\"#9AA8C0\"/><ellipse cx=\"24\" cy=\"31\" rx=\"19\" ry=\"5\" fill=\"#FFFFFF\" stroke=\"#9AA8C0\" stroke-width=\"2\"/><ellipse cx=\"24\" cy=\"24\" rx=\"19\" ry=\"5\" fill=\"#FFFFFF\" stroke=\"#9AA8C0\" stroke-width=\"2\"/><path d=\"M8 18h32a16 10 0 0 1-32 0z\" fill=\"#4A90E2\"/><path d=\"M30 4l6 12M36 3l4 12\" stroke=\"#B97A4A\" stroke-width=\"2.6\" stroke-linecap=\"round\"/>", "table": "<rect x=\"4\" y=\"26\" width=\"40\" height=\"5\" rx=\"2\" fill=\"#B97A4A\"/><path d=\"M9 31v12M39 31v12\" stroke=\"#B97A4A\" stroke-width=\"4\" stroke-linecap=\"round\"/><rect x=\"14\" y=\"13\" width=\"20\" height=\"11\" rx=\"3\" fill=\"#FFC83D\"/><rect x=\"14\" y=\"13\" width=\"20\" height=\"4\" rx=\"2\" fill=\"#1DB37A\"/><circle cx=\"38\" cy=\"12\" r=\"3.5\" fill=\"#BFE3FF\"/><circle cx=\"10\" cy=\"15\" r=\"2.5\" fill=\"#BFE3FF\"/><circle cx=\"40\" cy=\"20\" r=\"2\" fill=\"#BFE3FF\"/>", "window": "<rect x=\"7\" y=\"5\" width=\"34\" height=\"38\" rx=\"3\" fill=\"#FFFFFF\"/><rect x=\"11\" y=\"9\" width=\"12\" height=\"15\" fill=\"#BFE3FF\"/><rect x=\"25\" y=\"9\" width=\"12\" height=\"15\" fill=\"#BFE3FF\"/><rect x=\"11\" y=\"26\" width=\"12\" height=\"13\" fill=\"#BFE3FF\"/><rect x=\"25\" y=\"26\" width=\"12\" height=\"13\" fill=\"#BFE3FF\"/><path d=\"M14 18l5-6M28 34l5-6\" stroke=\"#FFFFFF\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M37 8l1.2 2.8 2.8 1.2 -2.8 1.2 -1.2 2.8 -1.2 -2.8 -2.8 -1.2 2.8 -1.2z\" fill=\"#FFC83D\"/>", "dust": "<path d=\"M14 42L28 20\" stroke=\"#B97A4A\" stroke-width=\"3.5\" stroke-linecap=\"round\"/><ellipse cx=\"33\" cy=\"13\" rx=\"7\" ry=\"11\" transform=\"rotate(35 33 13)\" fill=\"#8C7CF0\"/><ellipse cx=\"27\" cy=\"11\" rx=\"5\" ry=\"9\" transform=\"rotate(10 27 11)\" fill=\"#FF8FA3\"/><ellipse cx=\"38\" cy=\"18\" rx=\"5\" ry=\"8\" transform=\"rotate(65 38 18)\" fill=\"#4A90E2\"/>", "shoes": "<path d=\"M5 34V20c0-2 2-3 4-2l6 4c3 2 7 2 9 0l3-3c3 4 9 6 15 7 3 1 3 4 3 8z\" fill=\"#FF6B5E\"/><rect x=\"4\" y=\"34\" width=\"42\" height=\"6\" rx=\"3\" fill=\"#FFFFFF\"/><path d=\"M16 25l3-3M20 26l3-3\" stroke=\"#FFFFFF\" stroke-width=\"2\" stroke-linecap=\"round\"/>", "veg": "<path d=\"M24 42c-10-4-16-14-14-28 6 0 12 6 14 14 2-8 8-14 14-14 2 14-4 24-14 28z\" fill=\"#1DB37A\"/><path d=\"M24 42V20\" stroke=\"#FFFFFF\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M24 30l-6-6M24 34l6-6\" stroke=\"#FFFFFF\" stroke-width=\"1.8\" stroke-linecap=\"round\"/><path transform=\"translate(10 38) scale(0.5)\" d=\"M0 -9c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z\" fill=\"#4A90E2\"/><path transform=\"translate(39 38) scale(0.5)\" d=\"M0 -9c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z\" fill=\"#4A90E2\"/>", "plant": "<path d=\"M12 28h24l-3 15H15z\" fill=\"#FF9F1C\"/><rect x=\"10\" y=\"25\" width=\"28\" height=\"5\" rx=\"2\" fill=\"#B97A4A\"/><path d=\"M24 25V12\" stroke=\"#128A5C\" stroke-width=\"2.5\"/><ellipse cx=\"17\" cy=\"15\" rx=\"7\" ry=\"4\" transform=\"rotate(30 17 15)\" fill=\"#1DB37A\"/><ellipse cx=\"31\" cy=\"12\" rx=\"7\" ry=\"4\" transform=\"rotate(-30 31 12)\" fill=\"#1DB37A\"/><path transform=\"translate(41 9) scale(0.45)\" d=\"M0 -9c4 6 6 9 6 12a6 6 0 0 1-12 0c0-3 2-6 6-12z\" fill=\"#4A90E2\"/>", "sofa": "<rect x=\"9\" y=\"12\" width=\"30\" height=\"16\" rx=\"4\" fill=\"#2F6FC0\"/><rect x=\"3\" y=\"20\" width=\"10\" height=\"16\" rx=\"4\" fill=\"#4A90E2\"/><rect x=\"35\" y=\"20\" width=\"10\" height=\"16\" rx=\"4\" fill=\"#4A90E2\"/><rect x=\"10\" y=\"26\" width=\"28\" height=\"10\" rx=\"3\" fill=\"#4A90E2\"/><path d=\"M24 26v10\" stroke=\"#2F6FC0\" stroke-width=\"2\"/><path d=\"M8 36v5M40 36v5\" stroke=\"#B97A4A\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"14\" y=\"16\" width=\"8\" height=\"8\" rx=\"2\" fill=\"#FFC83D\"/>", "fridge": "<rect x=\"11\" y=\"4\" width=\"26\" height=\"40\" rx=\"4\" fill=\"#FFFFFF\"/><path d=\"M11 18h26\" stroke=\"#D5DEEB\" stroke-width=\"2.5\"/><path d=\"M16 9v5M16 23v9\" stroke=\"#9AA8C0\" stroke-width=\"3\" stroke-linecap=\"round\"/><rect x=\"24\" y=\"23\" width=\"9\" height=\"7\" rx=\"2\" fill=\"#BFE3FF\"/><path d=\"M15 44v1M33 44v1\" stroke=\"#9AA8C0\" stroke-width=\"3\" stroke-linecap=\"round\"/>", "trash": "<path d=\"M11 15h26l-3 28H14z\" fill=\"#1DB37A\"/><rect x=\"8\" y=\"10\" width=\"32\" height=\"5\" rx=\"2\" fill=\"#128A5C\"/><rect x=\"20\" y=\"6\" width=\"8\" height=\"4\" rx=\"1.5\" fill=\"#128A5C\"/><path d=\"M19 21v16M24 21v16M29 21v16\" stroke=\"#FFFFFF\" stroke-width=\"2\" stroke-linecap=\"round\" opacity=\".7\"/>", "car": "<path d=\"M4 34v-7c0-2 1-3 3-3l5-8c1-2 3-3 5-3h14c2 0 4 1 5 3l5 8c2 0 3 1 3 3v7z\" fill=\"#FF6B5E\"/><path d=\"M14 23l3-6h6v6zM27 17h4l3 6h-7z\" fill=\"#BFE3FF\"/><circle cx=\"13\" cy=\"35\" r=\"5\" fill=\"#1F2B57\"/><circle cx=\"35\" cy=\"35\" r=\"5\" fill=\"#1F2B57\"/><circle cx=\"13\" cy=\"35\" r=\"2\" fill=\"#D5DEEB\"/><circle cx=\"35\" cy=\"35\" r=\"2\" fill=\"#D5DEEB\"/><circle cx=\"8\" cy=\"8\" r=\"4\" fill=\"#FFFFFF\"/><circle cx=\"15\" cy=\"6\" r=\"2.5\" fill=\"#FFFFFF\"/><circle cx=\"40\" cy=\"7\" r=\"3\" fill=\"#FFFFFF\"/>", "tidy": "<path d=\"M24 5L4 22h6v20h28V22h6z\" fill=\"#FFC83D\"/><path d=\"M24 5L4 22h6L24 10l14 12h6z\" fill=\"#FF6B5E\"/><rect x=\"20\" y=\"29\" width=\"8\" height=\"13\" rx=\"1.5\" fill=\"#B97A4A\"/><rect x=\"13\" y=\"25\" width=\"6\" height=\"6\" rx=\"1\" fill=\"#BFE3FF\"/><rect x=\"29\" y=\"25\" width=\"6\" height=\"6\" rx=\"1\" fill=\"#BFE3FF\"/><path d=\"M39 3l1.5 3.5 3.5 1.5 -3.5 1.5 -1.5 3.5 -1.5 -3.5 -3.5 -1.5 3.5 -1.5z\" fill=\"#FF9F1C\"/>"};
+const ico=(id,emoji)=>IC[id]?`<svg viewBox="0 0 48 48" aria-hidden="true">${IC[id]}</svg>`:emoji;
+const HABITS=[
+  {id:"oral",grp:"study",icon:"🪐",name:"口语星球",pts:2},
+  {id:"enbook",grp:"study",icon:"📖",name:"英文绘本",pts:2},
+  {id:"math_pre",grp:"study",icon:"🧮",name:"数学预习",pts:2},
+  {id:"cn_pre",grp:"study",icon:"📕",name:"语文预习",pts:2},
+  {id:"cn_read",grp:"study",icon:"🎙️",name:"课文朗读",pts:2},
+  {id:"math_hw",grp:"study",icon:"📝",name:"数学作业",pts:2},
+  {id:"cn_fix",grp:"study",icon:"🖍️",name:"语文订正",pts:2},
+  {id:"writing",grp:"study",icon:"✍️",name:"写字课",pts:2},
+  {id:"en_class",grp:"study",icon:"📘",name:"英语课内",pts:2},
+  {id:"en_daily",grp:"study",icon:"🎧",name:"英语打卡",pts:2},
+  {id:"teeth",icon:"🪥",name:"刷牙洗脸",pts:2},
+  {id:"teeth_self",slot:"teeth",icon:"😁",name:"主动刷牙",pts:5,hot:true},
+  {id:"nose",icon:"💦",name:"睡前洗鼻",pts:2},
+  {id:"nose_self",slot:"nose",icon:"👃",name:"主动洗鼻",pts:5,hot:true},
+  {id:"sleep_self",icon:"😴",name:"主动睡觉",pts:10,hot:true},
+  {id:"handwash",icon:"🧼",name:"饭前洗手",pts:2},
+  {id:"handwash_l",icon:"🫧",name:"午饭洗手",pts:2},
+  {id:"serve",icon:"🥄",name:"自己盛饭",pts:2},
+  {id:"meal_b",icon:"🥟",name:"专注早饭",pts:2},
+  {id:"meal_l",icon:"🍚",name:"专注午饭",pts:2},
+  {id:"meal_d",icon:"🥣",name:"专注晚饭",pts:2},
+  {id:"door",icon:"🚪",name:"随手关门",pts:2},
+  {id:"chair",icon:"🪑",name:"摆椅子",pts:2},
+  {id:"quilt",icon:"🛏️",name:"叠被子",pts:2},
+  {id:"books",icon:"📚",name:"整理书本",pts:2},
+  {id:"ac_self",icon:"❄️",name:"开空调",pts:2},
+];
+/* 同一个 slot 每天只记一次：刷牙洗脸和主动刷牙二选一 */
+const slotOf=h=>h.slot||h.id;
+const JOBS=[
+  {id:"mop",icon:"🪣",name:"拖地",full:"拖客厅的地"},
+  {id:"sweep",icon:"🧹",name:"扫地",full:"扫地"},
+  {id:"hang",icon:"👕",name:"晾衣服",full:"晾衣服"},
+  {id:"fold",icon:"🧺",name:"收衣服",full:"收衣服并分类"},
+  {id:"towel",icon:"🧦",name:"叠毛巾",full:"叠全家的毛巾或袜子"},
+  {id:"setbowl",icon:"🥢",name:"摆碗筷",full:"饭前帮全家摆碗筷"},
+  {id:"clearbowl",icon:"🍽️",name:"收碗筷",full:"饭后帮全家收碗筷"},
+  {id:"table",icon:"🧽",name:"擦餐桌",full:"擦餐桌"},
+  {id:"window",icon:"🪟",name:"擦玻璃",full:"擦玻璃门或低处窗户"},
+  {id:"dust",icon:"🪶",name:"擦灰",full:"擦低处家具的灰"},
+  {id:"shoes",icon:"👟",name:"摆鞋子",full:"摆好全家的鞋子"},
+  {id:"veg",icon:"🥬",name:"洗菜",full:"洗菜择菜"},
+  {id:"plant",icon:"🪴",name:"浇花",full:"浇花"},
+  {id:"sofa",icon:"🛋️",name:"整理沙发",full:"整理客厅沙发"},
+  {id:"fridge",icon:"🧊",name:"放冰箱",full:"把买的东西放进冰箱"},
+  {id:"trash",icon:"🗑️",name:"倒垃圾",full:"倒垃圾和垃圾分类"},
+  {id:"car",icon:"🚗",name:"洗车",full:"帮爸爸洗车"},
+  {id:"tidy",icon:"🏠",name:"整理家里",full:"整理家里"},
+  {id:"quilt",icon:"🛏️",name:"叠被子",full:"叠被子"},
+].map(j=>({price:1,...j}));
+const MAX_DEBT=10;
+
+const $=s=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,"0");
+const fmt=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const today=()=>fmt(new Date());
+function addDays(ds,n){const[y,m,d]=ds.split("-").map(Number);return fmt(new Date(y,m-1,d+n))}
+function dayLabel(ds){if(ds===today())return"今天";if(ds===addDays(today(),-1))return"昨天";const[,m,d]=ds.split("-").map(Number);return m+"/"+d}
+const rid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- 朗读：挑这台设备上最自然的中文声音，再按风格调音高和语速 ---------- */
+const STYLES={kid:{label:"🧒 小朋友",pitch:1.45,rate:1.05},normal:{label:"🙂 普通",pitch:1,rate:1},robot:{label:"🤖 机器人",pitch:.3,rate:.85}};
+let vPref={name:"",style:"kid"};
+try{Object.assign(vPref,JSON.parse(localStorage.getItem("xdj:voice")||"{}"))}catch(e){}
+function saveVPref(){try{localStorage.setItem("xdj:voice",JSON.stringify(vPref))}catch(e){}}
+function zhVoices(){try{return speechSynthesis.getVoices().filter(v=>/^(zh|cmn|yue)/i.test(v.lang))}catch(e){return[]}}
+function vScore(v){return(/premium|enhanced|natural|neural|优化|高级|高品质|增强/i.test(v.name)?20:0)+(/online/i.test(v.name)?8:0)+(/(zh|cmn)[-_]CN/i.test(v.lang)?5:/(zh|cmn)[-_](TW|HK)/i.test(v.lang)?2:0)}
+function pickVoice(){
+  const vs=zhVoices();if(!vs.length)return null;
+  if(vPref.name){const v=vs.find(x=>x.name===vPref.name);if(v)return v}
+  return vs.slice().sort((a,b)=>vScore(b)-vScore(a))[0];
+}
+function say(text){
+  try{
+    const u=new SpeechSynthesisUtterance(text),v=pickVoice(),s=STYLES[vPref.style]||STYLES.kid;
+    if(v){u.voice=v;u.lang=v.lang}else u.lang="zh-CN";
+    u.pitch=s.pitch;u.rate=s.rate;
+    speechSynthesis.cancel();speechSynthesis.speak(u);
+  }catch(e){}
+}
+function voiceUI(){
+  const sel=$("#voiceSel");if(!sel)return;
+  const vs=zhVoices().sort((a,b)=>vScore(b)-vScore(a));
+  sel.innerHTML=`<option value="">自动挑最好听的</option>`+vs.map(v=>`<option value="${esc(v.name)}" ${v.name===vPref.name?"selected":""}>${esc(v.name)}</option>`).join("");
+  document.querySelectorAll("[data-vs]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.vs===vPref.style)));
+  const v=pickVoice(),good=v&&vScore(v)>=20;
+  $("#voiceInfo").innerHTML=!vs.length?"还没找到中文声音。稍等几秒再打开这里；还是没有的话，按下面的步骤下载一个。"
+    :`这台设备有 <b>${vs.length}</b> 个中文声音，现在用的是 <b>${esc(v.name)}</b>　${good?"✅ 高品质":"⚠️ 普通品质，听起来会比较机械"}`;
+}
+document.querySelectorAll("details.parent").forEach(d=>d.addEventListener("toggle",voiceUI));
+try{speechSynthesis.addEventListener("voiceschanged",voiceUI)}catch(e){}
+
+/* ---------- 数字滚动 ---------- */
+const shown={};
+function countTo(id,val){
+  const el=document.getElementById(id);if(!el)return;const from=shown[id];shown[id]=val;
+  if(from===undefined||from===val||matchMedia("(prefers-reduced-motion: reduce)").matches){el.textContent=val;return}
+  const t0=performance.now(),dur=700;
+  (function step(t){const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);el.textContent=Math.round(from+(val-from)*e);if(k<1)requestAnimationFrame(step)})(t0);
+}
+function bump(id){const c=document.getElementById(id);if(!c)return;c.classList.remove("bump");void c.offsetWidth;c.classList.add("bump")}
+
+/* ---------- 存储 ---------- */
+const COLS=PAGE==="pts"?["points"]:["bank","settings"];
+const state={points:{},bank:{},settings:{}};
+const store={db:null};
+function localGet(col){try{return JSON.parse(localStorage.getItem("xdj:"+col)||"{}")}catch(e){return{}}}
+function localPut(col,m){try{localStorage.setItem("xdj:"+col,JSON.stringify(m))}catch(e){}}
+async function put(col,id,data){
+  if(store.db)await store.db.collection(col).doc(id).set(data);
+  else{const m=localGet(col);m[id]=data;localPut(col,m);state[col]=m;render();if(MODE==="gist")gs.queue(col,id,data)}
+}
+async function del(col,id){
+  if(store.db)await store.db.collection(col).doc(id).delete();
+  else{const m=localGet(col);delete m[id];localPut(col,m);state[col]=m;render();if(MODE==="gist")gs.queue(col,id,null)}
+}
+async function initStore(){
+  if(MODE==="gist"){for(const c of COLS)state[c]=localGet(c);render();gs.start();return}
+  let db=null;
+  try{db=window.claude&&window.claude.use?await window.claude.use("db"):null}catch(e){}
+  if(!db){for(const c of COLS)state[c]=localGet(c);$("#status").textContent="记录只保存在这台设备上";render();return}
+  store.db=db;let ok=0;
+  const timer=setTimeout(()=>{if(ok<COLS.length)$("#status").textContent="暂时连不上记录本，显示的可能不是最新的"},10000);
+  for(const c of COLS){
+    let first=true;
+    db.collection(c).onSnapshot(snap=>{
+      const m={};snap.docs.forEach(d=>{m[d.id]=d.data()});state[c]=m;
+      if(!snap.metadata.fromCache&&first){first=false;if(++ok===COLS.length){clearTimeout(timer);$("#status").textContent=""}}
+      render();
+    },()=>{clearTimeout(timer);$("#status").textContent="记录本打不开了，请刷新页面再试"});
+  }
+}
+
+/* ---------- GitHub 同步（独立版）：记录存在家长 GitHub 的一个私密 Gist 里 ----------
+   每台设备粘贴一次钥匙。每次改动先记在本机的待同步列表里，同步时取下最新的 Gist、
+   逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
+const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
+const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
+const lsSet=(k,v)=>{try{v==null?localStorage.removeItem("xdj:"+k):localStorage.setItem("xdj:"+k,JSON.stringify(v))}catch(e){}};
+const setSync=t=>{const el=$("#status");if(el)el.textContent=t};
+const hhmm=()=>{const d=new Date();return d.getHours()+":"+String(d.getMinutes()).padStart(2,"0")};
+const gs={
+  busy:false,again:false,
+  queue(col,id,data){const p=lsGet("pend",[]);p.push([col,id,data]);lsSet("pend",p);this.sync()},
+  async api(path,opt={}){
+    const r=await fetch("https://api.github.com"+path,{...opt,cache:"no-store",headers:{Authorization:"Bearer "+lsGet("key",""),Accept:"application/vnd.github+json",...(opt.body?{"Content-Type":"application/json"}:{})}});
+    if(!r.ok)throw r.status;return r.json()},
+  async gistId(){
+    const saved=lsGet("gist","");if(saved)return saved;
+    for(let page=1;page<=10;page++){const l=await this.api("/gists?per_page=100&page="+page);
+      const g=l.find(g=>g.description===GIST_DESC);if(g){lsSet("gist",g.id);return g.id}if(l.length<100)break}
+    throw "nogist"},
+  async sync(){
+    if(!lsGet("key","")){setSync("还没设置同步钥匙，记录先存在这台设备上（在最下面「家长看这里」里设置）");return}
+    if(this.busy){this.again=true;return}
+    this.busy=true;
+    try{
+      const id=await this.gistId(),g=await this.api("/gists/"+id+"?t="+Date.now());
+      const pend=lsGet("pend",[]),files={},remote={};
+      for(const c of COLS){
+        const f=g.files[c+".json"];
+        let m=f?JSON.parse((f.truncated?await (await fetch(f.raw_url,{cache:"no-store"})).text():f.content)||"{}"):{};
+        const mine=pend.filter(x=>x[0]===c);
+        for(const[,i,d]of mine){if(d===null)delete m[i];else m[i]=d}
+        if(mine.length)files[c+".json"]={content:JSON.stringify(m)};
+        remote[c]=m;
+      }
+      if(Object.keys(files).length)await this.api("/gists/"+id,{method:"PATCH",body:JSON.stringify({files})});
+      const rest=lsGet("pend",[]).slice(pend.length);lsSet("pend",rest);
+      for(const[c,i,d]of rest){if(d===null)delete remote[c][i];else remote[c][i]=d}
+      for(const c of COLS){state[c]=remote[c];localPut(c,remote[c])}
+      render();setSync("✅ 已和电脑、iPad 同步 "+hhmm());
+    }catch(e){
+      if(e===401||e===403)setSync("同步钥匙不对或过期了，请在「家长看这里」重新粘贴");
+      else if(e===404){lsSet("gist",null);setSync("找不到记录本，请稍后刷新再试")}
+      else if(e==="nogist")setSync("这把钥匙找不到记录本，请确认粘贴的是对的钥匙");
+      else setSync("暂时没连上网，记录先存在这台设备上，连上网会自动同步");
+    }finally{this.busy=false;if(this.again){this.again=false;this.sync()}}
+  },
+  start(){
+    this.sync();
+    setInterval(()=>{if(!document.hidden)this.sync()},30000);
+    document.addEventListener("visibilitychange",()=>{if(!document.hidden)this.sync()});
+    addEventListener("online",()=>this.sync());
+    const btn=$("#syncSave"),inp=$("#syncKey");
+    if(inp&&lsGet("key",""))inp.placeholder="已设置好 ✓（换钥匙才需要重新粘贴）";
+    if(btn)btn.addEventListener("click",()=>{const k=inp.value.trim();if(!k)return;lsSet("key",k);lsSet("gist",null);inp.value="";inp.placeholder="已设置好 ✓（换钥匙才需要重新粘贴）";setSync("正在同步…");this.sync()});
+  }
+};
+
+/* ---------- 计算 ---------- */
+function ptsCalc(){
+  const docs=Object.entries(state.points).map(([id,d])=>({id,...d}));
+  const total=docs.reduce((s,d)=>s+(Number(d.pts)||0),0);
+  const t=today();
+  const todayPts=docs.filter(d=>d.date===t&&d.pts>0).reduce((s,d)=>s+d.pts,0);
+  const studyDays=new Set(docs.filter(d=>d.habit==="study"||(HABITS.find(h=>h.id===d.habit)||{}).grp==="study").map(d=>d.date));
+  let day=studyDays.has(t)?t:addDays(t,-1),streak=0;
+  while(studyDays.has(day)){streak++;day=addDays(day,-1)}
+  return{docs,total,todayPts,streak};
+}
+function bankCalc(){
+  const docs=Object.entries(state.bank).map(([id,d])=>({id,...d})).sort((a,b)=>a.ts-b.ts);
+  let cash=0,debt=0;
+  for(const d of docs){
+    const a=Number(d.amount)||0;
+    if(d.type==="income"){const r=Math.min(a,debt);debt-=r;cash+=a-r;d._repaid=r}
+    else if(d.type==="expense")cash-=a;
+    else if(d.type==="advance"){cash+=a;debt+=a}
+    d._bal=cash;
+  }
+  return{docs,cash,debt};
+}
+/* 旧记录里存的是长名字，显示时换成格子上的短名字 */
+const shortName=d=>((PAGE==="pts"?HABITS.find(h=>h.id===d.habit):JOBS.find(j=>j.full===d.name||j.name===d.name))||{}).name||d.name;
+
+/* ---------- 渲染 ---------- */
+let histLimit=PAGE==="pts"?7:8;
+let recDay=null; /* null=今天；补记时是 "YYYY-MM-DD"；刷新页面回到今天 */
+const WD="日一二三四五六";
+const wdOf=ds=>{const[y,m,d]=ds.split("-").map(Number);return WD[new Date(y,m-1,d).getDay()]};
+const recDate=()=>recDay||today(),isPast=()=>recDate()!==today();
+function dayWord(ds){if(ds===today())return"今天";if(ds===addDays(today(),-1))return"昨天";const[,m,d]=ds.split("-").map(Number);return`${m}月${d}日星期${wdOf(ds)}`}
+function setDay(ds){recDay=!ds||ds===today()?null:ds;render();say(isPast()?"补记"+dayWord(recDate()):"记今天")}
+function render(){
+  const cur=recDate(),off=cur===today()?0:cur===addDays(today(),-1)?-1:null;
+  document.querySelectorAll(".days [data-day]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.day===off)));
+  const pk=$(".pick"),[,pm,pd]=cur.split("-").map(Number);
+  pk.classList.toggle("on",off===null);
+  $("#pickLbl").textContent=off===null?`📅 ${pm}/${pd} 周${wdOf(cur)}`:"📅 更早";
+  const di=$(".dpick");di.max=today();di.value=cur;
+  $("#tiles").classList.toggle("past",isPast());
+  if(PAGE==="pts")renderPts();else renderBank();
+}
+function renderPts(){
+  const p=ptsCalc(),t=recDate();
+  countTo("ptsTotal",p.total);
+  $("#ptsToday").textContent="今天 +"+p.todayPts;
+  const st=$("#ptsStreak");st.hidden=p.streak<2;st.textContent="🔥 连续学习 "+p.streak+" 天";
+  $("#tiles").innerHTML=HABITS.map((h,i)=>{
+    const sec=i===0?`<div class="tgrp">📚 学习</div>`:h.grp!=="study"&&HABITS[i-1].grp==="study"?`<div class="tgrp">🌞 生活</div>`:"";
+    const d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
+    return sec+`<button class="tile ${h.grp?"":"life"} ${h.hot?"hot":""} ${mine?"done":d?"off":""}" data-h="${h.id}" aria-label="${h.name}"><span class="e">${ico(h.id,h.icon)}</span><span class="n">${h.name}</span><span class="p ${d?"ok":""}">${mine?"做到啦":d?"已记":"+"+h.pts+" ★"}</span></button>`;
+  }).join("");
+  const byDay={};for(const d of p.docs)(byDay[d.date]=byDay[d.date]||[]).push(d);
+  let rows=[];
+  for(const ds of Object.keys(byDay).sort().reverse()){
+    const list=byDay[ds].sort((a,b)=>a.ts-b.ts),earn=list.filter(d=>d.pts>0);
+    if(earn.length)rows.push(`<div class="row" data-col="points" data-ids="${earn.map(d=>d.id).join(",")}"><span class="d">${dayLabel(ds)}</span><span class="w">${earn.map(d=>ico(d.habit,(HABITS.find(h=>h.id===d.habit)||d).icon)).join("")}</span><span class="v plus">+${earn.reduce((s,d)=>s+d.pts,0)}</span></div>`);
+    for(const d of list.filter(d=>d.pts<0))rows.push(`<div class="row" data-col="points" data-ids="${d.id}"><span class="d">${dayLabel(ds)}</span><span class="w txt">🎁 ${esc(d.name)}</span><span class="v minus">${d.pts}</span></div>`);
+  }
+  $("#hist").innerHTML=rows.length?rows.slice(0,histLimit).join("")+(rows.length>histLimit?`<button class="more" data-more>看更多</button>`:""):`<div class="empty"><span>🌱</span>还没有星星</div>`;
+}
+function renderBank(){
+  const b=bankCalc();
+  if(shown.bankCash!==undefined&&shown.bankCash!==b.cash)bump("bankCard");
+  countTo("bankCash",b.cash);
+  const dp=$("#bankDebt");dp.hidden=b.debt<=0;dp.textContent="欠 ¥"+b.debt;
+  const w=state.settings.main;
+  if(w&&w.wishName&&w.wishPrice>0){
+    $("#wishBox").hidden=false;const left=Math.max(0,w.wishPrice-b.cash);
+    $("#wishText").innerHTML=left>0?`${esc(w.wishName)} 还差 <b>¥${left}</b>`:`${esc(w.wishName)} 攒够啦！🎉`;
+    $("#wishBar").style.width=Math.min(100,Math.max(0,b.cash/w.wishPrice*100))+"%";
+  }else $("#wishBox").hidden=true;
+  const t=recDate();
+  $("#tiles").innerHTML=JOBS.map(j=>{const d=state.bank[jobId(t,j)];return`<button class="tile job ${d?"done":""}" data-j="${j.id}" aria-label="${j.name}"><span class="e">${ico(j.id,j.icon)}</span><span class="n">${j.name}</span><span class="p ${d?"ok":""}">${d?"存好啦":"+¥"+j.price}</span></button>`}).join("");
+  const bl=b.docs.slice().reverse();
+  $("#hist").innerHTML=bl.length?bl.slice(0,histLimit).map(d=>{
+    const k=d.type==="income"?"plus":d.type==="expense"?"minus":"adv";
+    const bub=d.type==="income"?"":d.type==="expense"?"out":"adv";
+    const name=d.type==="advance"?"预支":shortName(d);
+    return`<div class="row" data-col="bank" data-ids="${d.id}"><span class="bubble ${bub}">${(j=>j?ico(j.id,j.icon):d.icon||"💰")(d.type==="income"&&JOBS.find(j=>j.name===d.name||j.full===d.name))}</span><span class="w txt">${esc(name)}<br><span style="color:var(--soft);font-size:13px">${dayLabel(d.date)}${d._repaid?` · 还预支 ¥${d._repaid}`:""}</span></span><span class="v ${k}">${d.type==="expense"?"−":"+"}${d.amount}<small>余额 ${d._bal}</small></span></div>`;
+  }).join("")+(bl.length>histLimit?`<button class="more" data-more>看更多</button>`:""):`<div class="empty"><span>🐷</span>还没有存款</div>`;
+}
+
+/* 点一下就加：飘字 + 卡片跳一下 + 简短朗读 */
+function fly(r,text,kind){
+  const f=document.createElement("div");
+  f.className="fly"+(kind?" "+kind:"");f.textContent=text;
+  f.style.left=(r.left+r.width/2)+"px";f.style.top=(r.top+8)+"px";
+  document.body.appendChild(f);setTimeout(()=>f.remove(),1000);
+}
+/* 再点一次已经做到的格子 = 取消，格子回到没点过的样子；刷牙洗脸和主动刷牙二选一，点另一个只提醒 */
+async function tapHabit(h,btn){
+  const date=recDate(),id=date+"_"+slotOf(h),d=state.points[id],r=btn.getBoundingClientRect();
+  if(d&&d.habit!==h.id&&(d.habit||h.slot)){say(shortName(d)+"，已经记过啦");return}
+  if(d){await del("points",id);fly(r,"−"+(d.pts||h.pts)+" ★","neg");bump("ptsCard");say(h.name+"，取消啦");return}
+  await put("points",id,{date,habit:h.id,name:h.name,icon:h.icon,pts:h.pts,ts:Date.now()});
+  fly(r,"+"+h.pts+" ★");bump("ptsCard");
+  say(`${h.hot?"哇，自己主动的！":""}${isPast()?dayWord(recDate())+"的":""}${h.name}，加${h.pts}颗星！`);
+}
+/* 和积分卡同一条规则：每样活每天一次，再点一次就取消 */
+const jobId=(date,j)=>date+"_job_"+j.id;
+async function tapJob(j,btn){
+  const cur=bankCalc(),rect=btn.getBoundingClientRect(),id=jobId(recDate(),j),d=state.bank[id];
+  if(d){await del("bank",id);fly(rect,"−¥"+(d.amount||j.price),"neg");say(j.name+"，取消啦");return}
+  await put("bank",id,{type:"income",name:j.name,icon:j.icon,amount:j.price,date:recDate(),ts:Date.now()});
+  const r=Math.min(j.price,cur.debt),add=j.price-r;
+  fly(rect,"+¥"+j.price,"money");
+  say(`${isPast()?dayWord(recDate()):""}${j.name}，存进${j.price}块钱！`+(r?`先还了预支${r}块。`:""));
+}
+
+/* ---------- 结果弹窗 ---------- */
+function showPop({em,gain,cls,eq,items,msg,speech}){
+  $("#popBox").innerHTML=`<div class="em">${em}</div>${gain!==null?`<div class="gain ${cls}">${typeof gain==="number"&&gain>0?"+":""}${gain}</div>`:""}${eq?`<div class="eq">${eq}</div>`:""}${items&&items.length?`<div class="its">${items.map(i=>`<span class="it ${i.off?"off":""}">${esc(i.text)}</span>`).join("")}</div>`:""}${msg?`<div class="msg">${esc(msg)}</div>`:""}<div class="acts"><button class="again">🔊 再听</button><button class="ok">好的</button></div>`;
+  $("#pop").hidden=false;
+  $("#popBox .again").onclick=()=>say(speech);
+  $("#popBox .ok").onclick=closePop;
+  say(speech);
+}
+function closePop(){$("#pop").hidden=true}
+$("#pop").addEventListener("click",e=>{if(e.target.id==="pop")closePop()});
+
+/* ---------- 家长区：换奖励 ---------- */
+async function recordPts(parsed){
+  const before=ptsCalc().total,date=parsed.yesterday?addDays(today(),-1):today();
+  const items=[];let gain=0;const seen=new Set();
+  for(const it of parsed.items||[]){
+    const h=HABITS.find(x=>x.id===it.habit);if(!h||seen.has(slotOf(h)))continue;seen.add(slotOf(h));
+    const id=date+"_"+slotOf(h);
+    if(state.points[id]){items.push({text:h.icon+" "+h.name+" 记过了",off:true});continue}
+    await put("points",id,{date,habit:h.id,name:h.name,icon:h.icon,pts:h.pts,ts:Date.now()});
+    items.push({text:h.icon+" "+h.name+" +"+h.pts});gain+=h.pts;
+  }
+  let msg=parsed.reply||"";
+  if(parsed.redeem&&parsed.redeem.pts>0){
+    const cost=Math.round(parsed.redeem.pts);
+    if(before+gain>=cost){await put("points",rid(),{date:today(),name:"换 "+parsed.redeem.name,pts:-cost,ts:Date.now()});items.push({text:"🎁 "+parsed.redeem.name});gain-=cost;msg=""}
+    else msg=`还差 ${cost-before-gain} 颗星才能换${parsed.redeem.name}，加油！`;
+  }
+  if(gain===0){
+    const m=msg||(items.length?"这些已经记过啦":"没听清楚。可以说：我刷牙了、我学了口语星球");
+    showPop({em:items.length?"😊":"🤔",gain:null,items,msg:m,speech:m});return;
+  }
+  const n=Math.abs(gain);
+  const speech=(gain>0?`太棒了！加${n}颗星！`:`用掉${n}颗星。`)+(gain>0?"":msg);
+  showPop({em:gain>0?"🌟":"🎁",gain,cls:gain>0?"pts":"neg",items,msg:gain>0?"":msg,speech});
+}
+
+/* ---------- 家长区：花钱和预支 ---------- */
+async function recordBank(parsed){
+  const before=bankCalc().cash;const items=[];let msg=parsed.reply||"",gain=0,em="💰";
+  const incDate=parsed.yesterday?addDays(today(),-1):today();
+  for(const e of parsed.entries||[]){
+    const cur=bankCalc();
+    if(e.type==="income"){
+      const j=JOBS.find(x=>x.id===e.job);const name=j?j.name:e.name,amount=j?j.price:Number(e.amount);
+      if(!name)continue;
+      if(!(amount>0)){msg=`“${name}”还没定价，请妈妈说说多少钱`;continue}
+      await put("bank",rid(),{type:"income",name,icon:j?j.icon:"💪",amount,date:incDate,ts:Date.now()});
+      const r=Math.min(amount,cur.debt);items.push({text:(j?j.icon:"💪")+" "+name+(r?` · 还预支${r}`:"")});gain+=amount-r;
+    }else if(e.type==="expense"){
+      const amount=Number(e.amount);if(!(amount>0))continue;
+      if(amount>cur.cash){msg=`钱不够哦，还差 ${amount-cur.cash} 块`;em="🙈";continue}
+      await put("bank",rid(),{type:"expense",name:e.name||"花钱",icon:"🛍️",amount,date:today(),ts:Date.now()});
+      items.push({text:"🛍️ "+(e.name||"花钱")});gain-=amount;em="🛍️";
+    }else if(e.type==="advance"){
+      const amount=Number(e.amount);if(!(amount>0))continue;
+      if(cur.debt+amount>MAX_DEBT){msg=`预支最多欠 ${MAX_DEBT} 块，现在还能预支 ${Math.max(0,MAX_DEBT-cur.debt)} 块`;em="✋";continue}
+      await put("bank",rid(),{type:"advance",name:"预支",icon:"⏳",amount,date:today(),ts:Date.now()});
+      items.push({text:"⏳ 预支"});gain+=amount;em="⏳";
+    }
+  }
+  if(gain===0){
+    const m=msg||(items.length?"预支已经还掉啦":"没听清楚。可以说：我拖了地、我晾了衣服");
+    showPop({em:items.length?"👍":em==="💰"?"🤔":em,gain:null,items,msg:m,speech:m});return;
+  }
+  const n=Math.abs(gain);
+  const speech=(gain>0?`存进去${n}块钱！`:`花掉${n}块钱。`)+msg;
+  showPop({em:gain>0&&em==="💰"?"🐷":em,gain:(gain>0?"+¥":"−¥")+n,cls:gain>0?"money":"neg",items,msg,speech});
+}
+
+/* ---------- 交互 ---------- */
+document.addEventListener("click",e=>{
+  const hb=e.target.closest("[data-h]");if(hb){tapHabit(HABITS.find(x=>x.id===hb.dataset.h),hb);return}
+  const jb=e.target.closest("[data-j]");if(jb){tapJob(JOBS.find(x=>x.id===jb.dataset.j),jb);return}
+  const dy=e.target.closest("[data-day]");if(dy){setDay(addDays(today(),+dy.dataset.day));return}
+  const vs=e.target.closest("[data-vs]");if(vs){vPref.style=vs.dataset.vs;saveVPref();voiceUI();say("你好呀，我是小当家！");return}
+  if(e.target.closest("#voiceTry")){say("口语星球，加2颗星！");return}
+  if(e.target.closest("[data-more]")){histLimit+=PAGE==="pts"?14:20;render();return}
+  if(e.target.closest(".mini"))return;
+  const row=e.target.closest(".row");
+  document.querySelectorAll(".row .ops").forEach(o=>{if(!row||!row.contains(o))o.remove()});
+  if(!row||row.querySelector(".ops"))return;
+  const ops=document.createElement("div");ops.className="ops";
+  ops.innerHTML=`<button class="mini">不删</button><button class="mini danger">删除</button>`;
+  ops.children[0].onclick=()=>ops.remove();
+  ops.children[1].onclick=async()=>{for(const id of row.dataset.ids.split(","))await del(row.dataset.col,id)};
+  row.appendChild(ops);
+});
+$(".dpick").addEventListener("change",e=>{const v=e.target.value;if(v&&v<=today())setDay(v)});
+$("#voiceSel").addEventListener("change",e=>{vPref.name=e.target.value;saveVPref();say("你好呀，我是小当家！")});
+
+function onForm(id,fn){const f=$(id);if(f)f.addEventListener("submit",async e=>{e.preventDefault();if(await fn()!==false)f.reset()})}
+const num=id=>Math.round(Number($(id).value));
+onForm("#redeemForm",()=>{const name=$("#rdName").value.trim(),pts=num("#rdPts");if(!name||!(pts>0))return false;return recordPts({items:[],redeem:{name,pts}})});
+onForm("#spendForm",()=>{const name=$("#spName").value.trim()||"花钱",amount=num("#spAmt");if(!(amount>0))return false;return recordBank({entries:[{type:"expense",name,amount}]})});
+onForm("#advForm",()=>{const amount=num("#adAmt");if(!(amount>0))return false;return recordBank({entries:[{type:"advance",amount}]})});
+const wf=$("#wishForm");
+if(wf)wf.addEventListener("submit",async e=>{
+  e.preventDefault();const name=$("#wishName").value.trim(),price=Math.round(Number($("#wishPrice").value));
+  if(!name||!(price>0))return;await put("settings","main",{wishName:name,wishPrice:price});
+  $("#wishName").value="";$("#wishPrice").value="";
+});
+
+voiceUI();
+render();
+initStore();
+</script>
+</body></html>

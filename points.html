@@ -255,6 +255,7 @@ details.parent summary::-webkit-details-marker{display:none}
 .reg i{position:absolute;inset:0;width:0;background:#1DB37A}
 .reg.on i{width:100%;transition:width 1.3s linear}
 .flying{position:fixed;z-index:30;pointer-events:none}.flying svg{width:100%;height:100%}
+.ph{display:block;width:100%;height:100%;object-fit:cover;border-radius:22%;background:#fff;border:3px solid #fff;box-shadow:0 5px 0 rgba(122,74,36,.18)}
 .flying.coin{border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#FFC83D 55%,#F0A100);color:#fff;font-weight:900;display:grid;place-items:center}
 .confetti{position:fixed;top:-20px;z-index:31;width:12px;height:16px;border-radius:3px;pointer-events:none;animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r))}}
@@ -263,7 +264,8 @@ details.parent summary::-webkit-details-marker{display:none}
 .erows{display:flex;flex-direction:column;gap:8px;margin-top:12px}
 .erow{display:flex;gap:8px;align-items:center;background:var(--white);border-radius:16px;padding:8px}
 .erow .eic{flex:none;width:46px;height:46px;border-radius:50%;border:2px dashed #F2D6A6;background:#FFF0D4;display:grid;place-items:center;font-size:26px;padding:0}
-.erow .eic svg{width:32px;height:32px}
+.erow .eic svg{width:32px;height:32px}.erow .eic .ph{border-width:0;box-shadow:none;border-radius:50%}
+.erow .ecam{flex:none;border:0;border-radius:12px;padding:8px;font-size:18px;background:#F3EBDD}
 .erow input{min-width:0;font-size:16px;border:2px solid var(--line);border-radius:12px;padding:8px 10px}
 .erow .en{flex:1}.erow .ep{width:76px}
 .erow .estar{flex:none;border:0;border-radius:12px;padding:8px;font-size:18px;background:#F3EBDD;opacity:.5}.erow .estar.on{opacity:1;background:#FFE27A}
@@ -338,7 +340,8 @@ details.parent summary::-webkit-details-marker{display:none}
     <div id="wishSlot"></div>
     <div class="shelves" id="shelves"></div>
     <details class="shopedit"><summary>👩 家长：摆货和改价钱</summary>
-      <div class="erows" id="erows"></div>
+      <div style="color:var(--soft);font-size:14px;margin-top:8px">点 📷 可以给东西拍照或从相册选照片，孩子一看就认得。点照片可以换回图标。</div>
+      <div class="erows" id="erows"></div><input type="file" id="ePhoto" accept="image/*" hidden>
       <div style="display:flex;margin-top:10px;justify-content:center"><button class="mini" id="eAdd" type="button">➕ 摆上新东西</button></div>
       <div class="hint">点左边圆圈换图标；改名字和分数会自动保存；点 ⭐ 放进最上面的玻璃柜当「大愿望」（只能有一个）；🗑 撤下货架。<br>孩子把东西拿到柜台后，要家长按住收银机才会扣分。</div>
     </details>
@@ -495,7 +498,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="61339403b4";
+const BUILD="c854b7e1d3";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -692,6 +695,12 @@ const shopItems=()=>{const real=Object.entries(state.shop).filter(([id])=>id!=="
 const gico=k=>IC[k]?`<svg viewBox="0 0 48 48" aria-hidden="true">${IC[k]}</svg>`:esc(k||"🎁");
 async function ensureShop(){if(state.shop._meta||Object.keys(state.shop).length)return;
   for(const d of SHOP_DEFAULT){const{id,...x}=d;await put("shop",id,x)}await put("shop","_meta",{init:true})}
+const itIco=d=>d.photo?`<img class="ph" src="${d.photo}" alt="">`:gico(d.icon);
+/* 照片缩成 320px 见方的小图，存进商品里一起同步 */
+function shrinkPhoto(file){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);
+  img.onload=()=>{const k=Math.min(img.naturalWidth,img.naturalHeight),sz=Math.min(320,k),c=document.createElement("canvas");c.width=c.height=sz;
+    c.getContext("2d").drawImage(img,(img.naturalWidth-k)/2,(img.naturalHeight-k)/2,k,k,0,0,sz,sz);URL.revokeObjectURL(url);res(c.toDataURL("image/jpeg",.78))};
+  img.onerror=()=>{URL.revokeObjectURL(url);rej()};img.src=url})}
 async function shopSave(id,patch){await ensureShop();const cur=state.shop[id]||{};await put("shop",id,{...cur,...patch})}
 /* 小音效：门铃、收银机 */
 function tones(seq){try{const ac=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());if(ac.state==="suspended")ac.resume();
@@ -716,18 +725,18 @@ function renderShop(){
   $("#shopDot").hidden=!items.some(d=>total>=d.pts);
   $("#shopPts").textContent=total;
   $("#wishSlot").innerHTML=wish?(()=>{const pc=Math.min(100,Math.round(total/wish.pts*100)),ok=total>=wish.pts,away=picked===wish.id;
-    return`<button class="case ${ok?"can":""}" data-buy="${wish.id}" type="button" aria-label="大愿望 ${esc(wish.name)} ${wish.pts}分"><span class="ped"><span class="it" style="${away?"visibility:hidden":""}">${gico(wish.icon)}</span></span><span class="wt"><span class="rib">⭐ 我的大愿望</span><div class="nm">${esc(wish.name)}</div><div class="left">${ok?"🎉 星星够啦，可以拿下来！":"还要攒 "+(wish.pts-total)+" 分"}</div></span><span class="jar"><i style="height:${pc}%"></i><span>${wish.pts}</span></span></button>`})():"";
+    return`<button class="case ${ok?"can":""}" data-buy="${wish.id}" type="button" aria-label="大愿望 ${esc(wish.name)} ${wish.pts}分"><span class="ped"><span class="it" style="${away?"visibility:hidden":""}">${itIco(wish)}</span></span><span class="wt"><span class="rib">⭐ 我的大愿望</span><div class="nm">${esc(wish.name)}</div><div class="left">${ok?"🎉 星星够啦，可以拿下来！":"还要攒 "+(wish.pts-total)+" 分"}</div></span><span class="jar"><i style="height:${pc}%"></i><span>${wish.pts}</span></span></button>`})():"";
   const n=perRow(),rows=[];for(let i=0;i<rest.length;i+=n)rows.push(rest.slice(i,i+n));
   $("#shelves").innerHTML=rows.map(r=>`<div class="shelf" style="--n:${n}">${r.map(d=>{const ok=total>=d.pts;
-    return`<button class="slot ${ok?"can":""} ${picked===d.id?"away":""}" data-buy="${d.id}" type="button" aria-label="${esc(d.name)} ${d.pts}分"><span class="it">${gico(d.icon)}</span><span class="pl"></span><span class="tag"><b>${d.pts}分</b><small>${esc(d.name)}</small>${ok?"":`<em>还差${d.pts-total}</em>`}</span></button>`}).join("")}${"<span class=\"slot\" style=\"pointer-events:none\"><span class=\"it\"></span><span class=\"pl\"></span></span>".repeat(n-r.length)}</div>`).join("")
+    return`<button class="slot ${ok?"can":""} ${picked===d.id?"away":""}" data-buy="${d.id}" type="button" aria-label="${esc(d.name)} ${d.pts}分"><span class="it">${itIco(d)}</span><span class="pl"></span><span class="tag"><b>${d.pts}分</b><small>${esc(d.name)}</small>${ok?"":`<em>还差${d.pts-total}</em>`}</span></button>`}).join("")}${"<span class=\"slot\" style=\"pointer-events:none\"><span class=\"it\"></span><span class=\"pl\"></span></span>".repeat(n-r.length)}</div>`).join("")
     ||`<div style="text-align:center;color:var(--soft)">货架还空着，家长在下面摆上东西吧</div>`;
   const p=picked&&items.find(d=>d.id===picked);
-  $("#tray").innerHTML=p?`<span class="it" id="trayIt">${gico(p.icon)}</span><span class="tn">${esc(p.name)}</span>`:"👆 拿到柜台上";
+  $("#tray").innerHTML=p?`<span class="it" id="trayIt">${itIco(p)}</span><span class="tn">${esc(p.name)}</span>`:"👆 拿到柜台上";
   $("#tacts").hidden=!p;
   if(p&&!$("#regBtn"))$("#tacts").innerHTML=`<button class="back2" id="putBack" type="button">放回去</button><button class="reg" id="regBtn" type="button"><i></i>${gico("r_register")}<span>家长按住收银机</span></button>`;
   if(!p)$("#tacts").innerHTML="";
   const ed=$("#erows");if(ed.contains(document.activeElement))return;
-  ed.innerHTML=items.map(d=>`<div class="erow" data-id="${d.id}"><button class="eic" type="button" aria-label="换图标">${gico(d.icon)}</button><input class="en" value="${esc(d.name)}" aria-label="名字"><input class="ep" type="number" min="1" inputmode="numeric" value="${d.pts}" aria-label="几分"><button class="estar ${d.wish?"on":""}" type="button" aria-label="设成大愿望">⭐</button><button class="edel" type="button" aria-label="撤下">🗑</button></div>`).join("");
+  ed.innerHTML=items.map(d=>`<div class="erow" data-id="${d.id}"><button class="eic" type="button" aria-label="${d.photo?"去掉照片":"换图标"}">${itIco(d)}</button><button class="ecam" type="button" aria-label="用照片">📷</button><input class="en" value="${esc(d.name)}" aria-label="名字"><input class="ep" type="number" min="1" inputmode="numeric" value="${d.pts}" aria-label="几分"><button class="estar ${d.wish?"on":""}" type="button" aria-label="设成大愿望">⭐</button><button class="edel" type="button" aria-label="撤下">🗑</button></div>`).join("");
 }
 async function pickItem(d,el){
   if(busyShop)return;
@@ -737,13 +746,13 @@ async function pickItem(d,el){
   if(picked)await putBack(true);
   busyShop=true;const from=el.querySelector(".it").getBoundingClientRect();
   picked=d.id;renderShop();
-  await flyNode(gico(d.icon),from,$("#tray").getBoundingClientRect(),{size:from.width});
+  await flyNode(itIco(d),from,$("#tray").getBoundingClientRect(),{size:from.width});
   busyShop=false;renderShop();say(`${d.name}，${d.pts}分。请爸爸妈妈按住收银机。`);
 }
 async function putBack(quiet){
   const d=shopItems().find(x=>x.id===picked);if(!d){picked=null;renderShop();return}
   const it=$("#trayIt"),slot=$(`[data-buy="${d.id}"] .it`);busyShop=true;
-  if(it&&slot){const from=it.getBoundingClientRect();it.style.visibility="hidden";await flyNode(gico(d.icon),from,slot.getBoundingClientRect(),{size:from.width,dur:450})}
+  if(it&&slot){const from=it.getBoundingClientRect();it.style.visibility="hidden";await flyNode(itIco(d),from,slot.getBoundingClientRect(),{size:from.width,dur:450})}
   picked=null;busyShop=false;renderShop();if(!quiet)say("放回去啦");
 }
 async function checkout(){
@@ -754,7 +763,7 @@ async function checkout(){
   for(let i=0;i<Math.min(6,Math.ceil(d.pts/10));i++)setTimeout(()=>flyNode("★",purse,reg,{size:34,dur:500,cls:"coin"}),i*90);
   await put("points",rid(),{date:today(),name:"换 "+d.name,shop:d.id,icon:d.icon,pts:-d.pts,ts:Date.now()});
   const it=$("#trayIt");
-  if(it){const from=it.getBoundingClientRect();it.style.visibility="hidden";const sz=Math.min(200,innerWidth*.4);await flyNode(gico(d.icon),from,{left:innerWidth/2-sz/2,top:innerHeight/2-sz/2,width:sz,height:sz},{size:sz,dur:700})}
+  if(it){const from=it.getBoundingClientRect();it.style.visibility="hidden";const sz=Math.min(200,innerWidth*.4);await flyNode(itIco(d),from,{left:innerWidth/2-sz/2,top:innerHeight/2-sz/2,width:sz,height:sz},{size:sz,dur:700})}
   picked=null;busyShop=false;renderShop();
   confetti();say(`换到啦！${d.name}！`);
 }
@@ -778,6 +787,8 @@ if(PAGE==="pts"){
   $("#counter").addEventListener("contextmenu",e=>{if(e.target.closest("#regBtn"))e.preventDefault()});
   const ed=$("#erows");
   ed.addEventListener("click",async e=>{const row=e.target.closest(".erow");if(!row)return;const id=row.dataset.id,d=shopItems().find(x=>x.id===id);if(!d)return;
+    if(e.target.closest(".ecam")){photoFor=id;$("#ePhoto").value="";$("#ePhoto").click();return}
+    if(e.target.closest(".eic")&&d.photo){if(confirm("去掉照片，换回图标吗？"))await shopSave(id,{photo:null});return}
     if(e.target.closest(".eic")){const i=SHOP_ICONS.indexOf(d.icon);await shopSave(id,{icon:SHOP_ICONS[(i+1)%SHOP_ICONS.length]})}
     else if(e.target.closest(".estar")){await ensureShop();for(const x of shopItems())if(x.wish&&x.id!==id)await shopSave(x.id,{wish:false});await shopSave(id,{wish:!d.wish})}
     else if(e.target.closest(".edel")){if(confirm("把「"+d.name+"」撤下货架？")){await ensureShop();await del("shop",id)}}});
@@ -785,6 +796,9 @@ if(PAGE==="pts"){
     if(e.target.classList.contains("en")){const v=e.target.value.trim();if(v)await shopSave(id,{name:v})}
     if(e.target.classList.contains("ep")){const v=Math.round(Number(e.target.value));if(v>0)await shopSave(id,{pts:v})}
     e.target.blur();renderShop()});
+  let photoFor=null;
+  $("#ePhoto").addEventListener("change",async e=>{const f=e.target.files[0];if(!f||!photoFor)return;
+    try{await shopSave(photoFor,{photo:await shrinkPhoto(f)})}catch(err){alert("这张照片读不出来，换一张试试")}photoFor=null});
   $("#eAdd").addEventListener("click",async()=>{await ensureShop();const n=shopItems().reduce((m,x)=>Math.max(m,x.order||0),0)+1;await shopSave("s"+rid(),{name:"新东西",icon:"r_gift",pts:50,order:n})});
 }
 

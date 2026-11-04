@@ -509,7 +509,7 @@ function renderBank(){
     $("#wishBar").style.width=Math.min(100,Math.max(0,b.cash/w.wishPrice*100))+"%";
   }else $("#wishBox").hidden=true;
   const t=recDate();
-  $("#tiles").innerHTML=JOBS.map(j=>{const d=state.bank[jobId(t,j)];return`<button class="tile job ${d?"done":""}" data-j="${j.id}" aria-label="${j.name}"><span class="e">${ico(j.id,j.icon)}</span><span class="n">${j.name}</span><span class="p ${d?"ok":""}">${d?"存好啦":"+¥"+j.price}</span></button>`}).join("");
+  $("#tiles").innerHTML=JOBS.map(j=>{const d=state.bank[jobId(t,j)];return`<button class="tile job ${d?"done":""}" data-j="${j.id}" aria-label="${j.name}"><span class="e">${ico(j.id,j.icon)}</span><span class="n">${j.name}</span><span class="p ${d?"ok":""}">${d?"存好啦":"+"+j.price+"元"}</span></button>`}).join("");
   const bl=b.docs.slice().reverse();
   $("#hist").innerHTML=bl.length?bl.slice(0,histLimit).map(d=>{
     const k=d.type==="income"?"plus":d.type==="expense"?"minus":"adv";
@@ -539,10 +539,10 @@ async function tapHabit(h,btn){
 const jobId=(date,j)=>date+"_job_"+j.id;
 async function tapJob(j,btn){
   const cur=bankCalc(),rect=btn.getBoundingClientRect(),id=jobId(recDate(),j),d=state.bank[id];
-  if(d){await del("bank",id);fly(rect,"−¥"+(d.amount||j.price),"neg");say(j.name+"，取消啦");return}
+  if(d){await del("bank",id);fly(rect,"−"+(d.amount||j.price)+"元","neg");say(j.name+"，取消啦");return}
   await put("bank",id,{type:"income",name:j.name,icon:j.icon,amount:j.price,date:recDate(),ts:Date.now()});
   const r=Math.min(j.price,cur.debt),add=j.price-r;
-  fly(rect,"+¥"+j.price,"money");
+  fly(rect,"+"+j.price+"元","money");
   say(`${isPast()?dayWord(recDate()):""}${j.name}，存进${j.price}块钱！`+(r?`先还了预支${r}块。`:""));
 }
 
@@ -613,7 +613,7 @@ async function recordBank(parsed){
   }
   const n=Math.abs(gain);
   const speech=(gain>0?`存进去${n}块钱！`:`花掉${n}块钱。`)+msg;
-  showPop({em:gain>0&&em==="💰"?"🐷":em,gain:(gain>0?"+¥":"−¥")+n,cls:gain>0?"money":"neg",items,msg,speech});
+  showPop({em:gain>0&&em==="💰"?"🐷":em,gain:(gain>0?"+":"−")+n+"元",cls:gain>0?"money":"neg",items,msg,speech});
 }
 
 /* ---------- 交互 ---------- */

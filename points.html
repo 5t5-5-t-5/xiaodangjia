@@ -331,7 +331,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 机器人队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月06日 08:03</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月06日 08:07</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -449,8 +449,19 @@ function captainize(t){let m;
   return t}
 function capFlash(){if(vPref.style!=="captain"||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
   const f=document.createElement("div");f.className="capflash";document.body.appendChild(f);setTimeout(()=>f.remove(),700)}
+/* 队长开口前先"滴滴—嗡"一声；挑男声；一句一句停顿着说 */
+const capBeep=()=>tones([[880,0,.09,"square"],[880,.13,.09,"square"],[660,.3,.35,"sawtooth",110]]);
+let capTimer=0;
+function sayCaptain(text){
+  try{
+    clearTimeout(capTimer);speechSynthesis.cancel();capBeep();
+    const vs=zhVoices(),v=(vPref.name&&vs.find(x=>x.name===vPref.name))||vs.find(x=>/li-?mu|李牧|male|男/i.test(x.name))||pickVoice();
+    const parts=captainize(text).split(/(?<=[！。？，])/).map(x=>x.trim()).filter(Boolean);
+    capTimer=setTimeout(()=>{for(const p of parts){const u=new SpeechSynthesisUtterance(p);if(v){u.voice=v;u.lang=v.lang}else u.lang="zh-CN";u.pitch=.1;u.rate=.72;speechSynthesis.speak(u)}},650);
+  }catch(e){}
+}
 function say(text){
-  if(vPref.style==="captain")text=captainize(text);
+  if(vPref.style==="captain")return sayCaptain(text);
   try{
     const u=new SpeechSynthesisUtterance(text),v=pickVoice(),s=STYLES[vPref.style]||STYLES.kid;
     if(v){u.voice=v;u.lang=v.lang}else u.lang="zh-CN";
@@ -516,7 +527,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="8921c44f0c";
+const BUILD="0ae5636e95";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -722,8 +733,8 @@ function shrinkPhoto(file){return new Promise((res,rej)=>{const img=new Image(),
 async function shopSave(id,patch){await ensureShop();const cur=state.shop[id]||{};await put("shop",id,{...cur,...patch})}
 /* 小音效：门铃、收银机 */
 function tones(seq){try{const ac=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());if(ac.state==="suspended")ac.resume();
-  for(const[f,t,d]of seq){const o=ac.createOscillator(),g=ac.createGain(),t0=ac.currentTime+t;o.type="sine";o.frequency.value=f;
-    g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(.22,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g).connect(ac.destination);o.start(t0);o.stop(t0+d+.05)}}catch(e){}}
+  for(const[f,t,d,type,f2]of seq){const o=ac.createOscillator(),g=ac.createGain(),t0=ac.currentTime+t;o.type=type||"sine";o.frequency.setValueAtTime(f,t0);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t0+d);
+    g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(type?.07:.22,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g).connect(ac.destination);o.start(t0);o.stop(t0+d+.05)}}catch(e){}}
 const dingdong=()=>tones([[988,0,.6],[784,.32,.8]]),chaching=()=>tones([[1319,0,.12],[1760,.09,.25],[2349,.18,.45]]);
 function flyNode(html,from,to,{size=80,dur=650,cls=""}={}){return new Promise(res=>{
   const n=document.createElement("div");n.className="flying "+cls;n.innerHTML=html;

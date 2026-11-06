@@ -254,6 +254,8 @@ details.parent summary::-webkit-details-marker{display:none}
 .reg svg{position:relative;width:34px;height:34px}.reg span{position:relative}
 .reg i{position:absolute;inset:0;width:0;background:#1DB37A}
 .reg.on i{width:100%;transition:width 1.3s linear}
+.capflash{position:fixed;inset:0;z-index:40;pointer-events:none;box-shadow:inset 0 0 80px 24px rgba(74,144,226,.55);animation:capf .7s ease-out forwards}
+@keyframes capf{from{opacity:1}to{opacity:0}}
 .flying{position:fixed;z-index:30;pointer-events:none}.flying svg{width:100%;height:100%}
 .ph{display:block;width:100%;height:100%;object-fit:cover;border-radius:22%;background:#fff;border:3px solid #fff;box-shadow:0 5px 0 rgba(122,74,36,.18)}
 .flying.coin{border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#FFC83D 55%,#F0A100);color:#fff;font-weight:900;display:grid;place-items:center}
@@ -326,10 +328,10 @@ details.parent summary::-webkit-details-marker{display:none}
       <div><b>补记前几天：</b>点格子上方的“🌙 昨天”，或者“📅 更早”选日子（比如上周六），再点格子补上；点错了再点一下就取消。补完点“☀️ 今天”回来。</div>
       <div><b>朗读的声音：</b></div>
       <div id="voiceInfo"></div>
-      <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button></div>
+      <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 机器人队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月05日 22:46</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月06日 08:03</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -423,7 +425,7 @@ const rid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 /* ---------- 朗读：挑这台设备上最自然的中文声音，再按风格调音高和语速 ---------- */
-const STYLES={kid:{label:"🧒 小朋友",pitch:1.45,rate:1.05},normal:{label:"🙂 普通",pitch:1,rate:1},robot:{label:"🤖 机器人",pitch:.3,rate:.85}};
+const STYLES={kid:{label:"🧒 小朋友",pitch:1.45,rate:1.05},normal:{label:"🙂 普通",pitch:1,rate:1},robot:{label:"🤖 机器人",pitch:.3,rate:.85},captain:{label:"🦾 机器人队长",pitch:.2,rate:.78}};
 let vPref={name:"",style:"kid"};
 try{Object.assign(vPref,JSON.parse(localStorage.getItem("xdj:voice")||"{}"))}catch(e){}
 function saveVPref(){try{localStorage.setItem("xdj:voice",JSON.stringify(vPref))}catch(e){}}
@@ -434,7 +436,21 @@ function pickVoice(){
   if(vPref.name){const v=vs.find(x=>x.name===vPref.name);if(v)return v}
   return vs.slice().sort((a,b)=>vScore(b)-vScore(a))[0];
 }
+/* 机器人队长：把平常的话换成队长口吻 */
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function captainize(t){let m;
+  if(m=t.match(/^(哇，自己主动的！)?(.+)，加(\d+)分！$/)){const[,hot,nm,n]=m;
+    return(hot?"主动出击，好样的！":"")+pick([`问之队员，${nm}任务完成！奖励${n}分！`,`报告！${nm}任务完成，能量加${n}分！`,`干得漂亮，问之队员！${nm}，加${n}分！`])}
+  if(m=t.match(/^(.+)，要(\d+)分。还差(\d+)分，再加油！$/))return`${m[1]}需要${m[2]}分，能量还差${m[3]}分。继续执行任务，问之队员！`;
+  if(m=t.match(/^(.+)，(\d+)分。请爸爸妈妈按住收银机。$/))return`${m[1]}，${m[2]}分。请指挥官爸爸妈妈，按住收银机确认！`;
+  if(m=t.match(/^换到啦！(.+)！$/))return`补给成功！${m[1]}，已经到手！`;
+  if(t==="你好呀，我是小当家！")return"问之队员，我是机器人队长。准备好执行今天的任务了吗？";
+  if(t==="放回去啦")return"收到，物资放回货架。";
+  return t}
+function capFlash(){if(vPref.style!=="captain"||matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  const f=document.createElement("div");f.className="capflash";document.body.appendChild(f);setTimeout(()=>f.remove(),700)}
 function say(text){
+  if(vPref.style==="captain")text=captainize(text);
   try{
     const u=new SpeechSynthesisUtterance(text),v=pickVoice(),s=STYLES[vPref.style]||STYLES.kid;
     if(v){u.voice=v;u.lang=v.lang}else u.lang="zh-CN";
@@ -500,7 +516,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="de5f1884f3";
+const BUILD="8921c44f0c";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -654,7 +670,7 @@ async function tapHabit(h,btn){
   if(d&&d.habit!==h.id&&(d.habit||h.slot)){say(shortName(d)+"，已经记过啦");return}
   if(d){await del("points",id);fly(r,"−"+(d.pts||h.pts)+"分","neg");bump("ptsCard");say(h.name+"，取消啦");return}
   await put("points",id,{date,habit:h.id,name:h.name,icon:h.icon,pts:h.pts,ts:Date.now()});
-  fly(r,"+"+h.pts+"分");bump("ptsCard");
+  fly(r,"+"+h.pts+"分");bump("ptsCard");capFlash();
   say(`${h.hot?"哇，自己主动的！":""}${isPast()?dayWord(recDate())+"的":""}${h.name}，加${h.pts}分！`);
 }
 /* 和积分卡同一条规则：每样活每天一次，再点一次就取消 */

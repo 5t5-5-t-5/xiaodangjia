@@ -1,5 +1,12 @@
 # 问之队长配音接入与原稿合并
 
+## 本次音量增强（20261106-loud1）
+
+在同一版人声、语速和干脆收尾的基础上，提高语音主体响度，补一点低中频厚度，并使用压缩和过采样限幅控制峰值。新音频在 `audio/captain/v2/`，旧 v1 文件保留以兼容尚未刷新的页面。播放器逻辑和记账逻辑不变。
+
+首次接入已由 Claude 合并进原稿。这次请再把原稿中两个 script 标签的查询参数改为 `20261106-loud1`，并更新导出页面的 BUILD（当前分支为 `20261106captainloud1`）。保留并发布更新后的 `captain-voice-pack.js` 与 v2 录音目录，防止 iPad 继续读取缓存里的旧音量。
+
+
 这次把已确认的「清楚、句尾有力」声音接入现有任务卡。家长设置中选择 **🦾 问之队长** 即可使用。其余系统声音风格继续保留。
 
 ## 已接入的内容
@@ -13,14 +20,14 @@
 
 ## Claude 的 src.html 必须合并这些接入点
 
-`src.html` 不在这个仓库中。本次改动已应用到 `points.html` 和 `bank.html`，但重新生成页面前，必须把下面的接法加进 Claude 持有的原稿/生成器。
+`src.html` 不在这个仓库中。首次接入已合并到原稿；下面保留完整接法，后续重新生成页面时应继续保留。本次音量更新只需同步上文的版本参数与录音目录。
 
-1. 保留仓库根目录的 `captain-voice.js`、`captain-voice-pack.js` 和 `audio/captain/v1/`，不要在重新导出页面时删除它们。
+1. 保留仓库根目录的 `captain-voice.js`、`captain-voice-pack.js` 和 `audio/captain/v2/`，不要在重新导出页面时删除它们。
 2. 在生成的两个页面的主脚本 **之前** 加入：
 
 ```html
-<script src="captain-voice-pack.js?v=20261106-firm1"></script>
-<script src="captain-voice.js?v=20261106-firm1"></script>
+<script src="captain-voice-pack.js?v=20261106-loud1"></script>
+<script src="captain-voice.js?v=20261106-loud1"></script>
 ```
 
 3. 读取 `vPref` 之后加上：
@@ -54,7 +61,7 @@ if (window.XDJCaptainVoice) {
 }
 ```
 
-7. 两个生成页面的 `BUILD` 都更新为 `20261106captainvoice1`，以便已添加到 iPad 主屏幕的旧页面通过现有版本检查换上新页面。以后修改接入代码或录音时，也要更新版本及脚本查询参数。
+7. 两个生成页面的 `BUILD` 都更新为 `20261106captainloud1`，以便已添加到 iPad 主屏幕的旧页面通过现有版本检查换上新页面。以后修改接入代码或录音时，也要更新版本及脚本查询参数。
 
 ## 播放行为
 

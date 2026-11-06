@@ -331,7 +331,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月06日 · 问之队长专属配音</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月06日 10:48</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -430,6 +430,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const STYLES={kid:{label:"🧒 小朋友",pitch:1.45,rate:1.05},normal:{label:"🙂 普通",pitch:1,rate:1},robot:{label:"🤖 机器人",pitch:.3,rate:.85},captain:{label:"🦾 机器人队长",pitch:.2,rate:.78}};
 let vPref={name:"",style:"kid"};
 try{Object.assign(vPref,JSON.parse(localStorage.getItem("xdj:voice")||"{}"))}catch(e){}
+/* 问之队长专属录音（captain-voice.js，只在网站版加载）：句子有对应录音就播录音，没有就照旧用系统声音 */
 if(window.XDJCaptainVoice)window.XDJCaptainVoice.setEnabled(()=>vPref.style==="captain");
 function saveVPref(){try{localStorage.setItem("xdj:voice",JSON.stringify(vPref))}catch(e){}}
 function zhVoices(){try{return speechSynthesis.getVoices().filter(v=>/^(zh|cmn|yue)/i.test(v.lang))}catch(e){return[]}}
@@ -540,7 +541,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="20261106captainvoice1";
+const BUILD="ff745bdd8b";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};

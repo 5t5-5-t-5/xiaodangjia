@@ -218,13 +218,18 @@ details.parent summary::-webkit-details-marker{display:none}
 .case .ped .it{position:relative;z-index:1;width:76px;height:76px;margin-bottom:10px;animation:float 3s ease-in-out infinite}
 .case .ped .it svg{width:100%;height:100%;filter:drop-shadow(0 6px 0 rgba(0,0,0,.1))}
 @keyframes float{50%{transform:translateY(-6px)}}
-.case .rib{display:inline-block;white-space:nowrap;background:#FF6B5E;color:#fff;font-weight:700;font-size:15px;border-radius:999px;padding:3px 12px}
-.case .nm{font-family:"ZCOOL KuaiLe",var(--fun);font-size:21px;line-height:1.25;margin:6px 0 2px}
+.case{margin-top:12px}
+.case .rib{position:absolute;z-index:2;top:-15px;left:24px;white-space:nowrap;background:#FF6B5E;color:#fff;font-weight:700;font-size:15px;border-radius:999px;padding:4px 14px;box-shadow:0 3px 0 #D9483C}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:8px}
+.wbar{position:relative;flex:1;min-width:0;height:38px;border-radius:999px;background:#EAF4FF;border:3px solid #BFE3FF;overflow:hidden}
+.wbar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:#FFC83D radial-gradient(circle,#FFF3B0 0 3px,transparent 4px) 0 0/16px 16px;transition:width .8s}
+.wbar>span{position:relative;display:flex;align-items:center;justify-content:center;gap:4px;height:100%;font-weight:700;font-size:16px;color:var(--ink);white-space:nowrap}
+.wbar b{font-family:"Andika",sans-serif;font-size:22px;color:#E8890C;text-shadow:0 0 4px #fff,0 0 4px #fff}
+.goal{flex:none;display:flex;align-items:center;gap:5px;font-family:"Andika",sans-serif;font-weight:700;font-size:22px;color:#E8890C}
+.goal .cn{width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#FFC83D 55%,#F0A100);display:grid;place-items:center;color:#fff;font-size:17px}
+@media (max-width:759px){.case .ped{width:78px}.case .ped .it{width:66px;height:66px}.case .nm{font-size:22px}.wrow{gap:6px}.wbar{height:34px}.wbar>span{font-size:13px;gap:2px}.wbar b{font-size:18px}.goal{font-size:18px;gap:3px}.goal .cn{width:22px;height:22px;font-size:14px}}
+.case .nm{font-family:"ZCOOL KuaiLe",var(--fun);font-size:24px;line-height:1.2}
 .case .wt{flex:1;min-width:0}
-.case .left{font-weight:700;font-size:15px;color:#E8890C}
-.jar{flex:none;position:relative;width:50px;height:70px;border:5px solid #BFE3FF;border-top-width:12px;border-radius:16px 16px 24px 24px;background:rgba(255,255,255,.7);overflow:hidden}
-.jar i{position:absolute;left:0;right:0;bottom:0;background:#FFC83D;background-image:radial-gradient(circle,#FFF3B0 0 3px,transparent 4px);background-size:16px 16px;transition:height .8s}
-.jar span{position:absolute;inset:0;display:grid;place-items:center;font-family:"Andika",sans-serif;font-weight:700;font-size:16px;color:var(--ink)}
 .shelves{position:relative;display:flex;flex-direction:column;gap:14px;margin-top:26px;padding:16px 14px 18px;border-radius:16px;
   background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 3px,transparent 3px 11px,rgba(0,0,0,.06) 11px 13px,transparent 13px 23px),linear-gradient(90deg,#7A4A24,#A86B3C 14%,#94592E 50%,#A86B3C 86%,#7A4A24);
   box-shadow:0 10px 0 #5A3418,0 18px 24px rgba(90,52,24,.28),inset 0 0 0 3px #C98B55,inset 0 0 0 7px #7A4A24}
@@ -299,8 +304,8 @@ details.parent summary::-webkit-details-marker{display:none}
   .slot .tag small{font-size:15px}
   .hsign{margin-right:70px}.hsign b{font-size:36px;letter-spacing:3px}
   .case{gap:18px;padding:18px 22px}.case .ped{width:150px;height:160px}.case .ped .it{width:126px;height:126px}
-  .case .nm{font-size:34px}.case .left{font-size:18px}.case .rib{font-size:15px}
-  .jar{width:84px;height:116px}
+  .case .nm{font-size:36px}.case .rib{font-size:17px;padding:5px 18px}
+  .wrow{gap:14px;margin-top:14px}.wbar{height:52px;border-width:4px}.wbar>span{font-size:20px}.wbar b{font-size:30px}.goal{font-size:30px}.goal .cn{width:38px;height:38px;font-size:22px}
   .purse{padding:8px 14px;gap:8px}.purse .cn{width:38px;height:38px}.purse .pv{font-size:30px}
   .tray{height:80px;font-size:16px}.tray .it{width:70px;height:70px}.tray .tn{display:inline}
 
@@ -401,7 +406,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月08日 15:01</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月08日 17:23</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -627,7 +632,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="521257fb66";
+const BUILD="dcfea2f553";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -879,7 +884,7 @@ function renderShop(){
   $("#shopDot").hidden=!items.some(d=>total>=d.pts);
   $("#shopPts").textContent=total;
   $("#wishSlot").innerHTML=wish?(()=>{const pc=Math.min(100,Math.round(total/wish.pts*100)),ok=total>=wish.pts,away=picked===wish.id;
-    return`<button class="case ${ok?"can":""}" data-buy="${wish.id}" type="button" aria-label="大愿望 ${esc(wish.name)} ${wish.pts}分"><span class="ped"><span class="it" style="${away?"visibility:hidden":""}">${itIco(wish)}</span></span><span class="wt"><span class="rib">⭐ 我的大愿望</span><div class="nm">${esc(wish.name)}</div><div class="left">${ok?"🎉 星星够啦，可以拿下来！":"还要攒 "+(wish.pts-total)+" 分"}</div></span><span class="jar"><i style="height:${pc}%"></i><span>${wish.pts}</span></span></button>`})():"";
+    return`<button class="case ${ok?"can":""}" data-buy="${wish.id}" type="button" aria-label="大愿望 ${esc(wish.name)} ${wish.pts}分"><span class="ped"><span class="it" style="${away?"visibility:hidden":""}">${itIco(wish)}</span></span><span class="rib">⭐ 我的大愿望</span><span class="wt"><div class="nm">${esc(wish.name)}</div><div class="wrow"><span class="wbar"><i style="width:${Math.max(pc,ok?100:0)}%"></i><span>${ok?"🎉 可以换啦！":`还差<b>${wish.pts-total}</b>分`}</span></span><span class="goal"><span class="cn">★</span>${wish.pts}</span></div></span></button>`})():"";
   const n=perRow(),rows=[];for(let i=0;i<rest.length;i+=n)rows.push(rest.slice(i,i+n));
   $("#shelves").innerHTML=rows.map(r=>`<div class="shelf" style="--n:${n}">${r.map(d=>{const ok=total>=d.pts;
     return`<button class="slot ${ok?"can":""} ${picked===d.id?"away":""}" data-buy="${d.id}" type="button" aria-label="${esc(d.name)} ${d.pts}分"><span class="it">${itIco(d)}</span><span class="pl"></span><span class="tag"><b>${d.pts}分</b><small>${esc(d.name)}</small>${ok?"":`<em>还差${d.pts-total}</em>`}</span></button>`}).join("")}${Array.from({length:n-r.length},(_,k)=>`<span class="slot deco" aria-hidden="true"><span class="it">${gico(DECO[(k+rows.length)%DECO.length])}</span><span class="pl"></span></span>`).join("")}</div>`).join("")

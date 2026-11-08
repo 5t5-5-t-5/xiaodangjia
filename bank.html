@@ -361,6 +361,130 @@ details.parent summary::-webkit-details-marker{display:none}
 @media (prefers-reduced-motion:reduce){.hsign b,.case .ped .it,.slot.can .it::after,.tray .it,.garland i,.slot::before{animation:none}}
 @media (prefers-reduced-motion:reduce){.shine::after,.fly{animation:none}.pop .box,.bump{animation:none}.bar i{transition:none}}
 
+
+/* ---------- 高光日记：一本深红布面精装日记本，横线内页，一页一篇。翻页像手机“图书”那样从书角卷起来 ---------- */
+#diary{position:fixed;inset:0;z-index:15;overflow-y:auto;-webkit-overflow-scrolling:touch;color:#2B2A3A;
+  --desk:#EADCC4;--desk2:#E2D1B4;--ink:#2B2A3A;--soft:#7A6E5E;--line:5.4cqw;--pen:#26357A;--margin:#E8A0A0;
+  --cloth:#A8323A;--cloth-d:#7C2129;--gold:#F2C766;--paper:#FFFBF1;--rule:#E7DCC6;--q2:#4A90E2;
+  --fun:"ZCOOL KuaiLe","PingFang SC","Hiragino Sans GB",sans-serif;
+  background:radial-gradient(ellipse at 50% 35%,#F3E8D4,var(--desk) 60%,var(--desk2))}
+#diary[hidden]{display:none}
+#diary *{box-sizing:border-box}
+#diary .dwrap{max-width:1120px;margin:0 auto;padding-block:12px 44px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+#diary .dtop{display:flex;align-items:center;gap:12px}
+#diary .dclose{flex:none;border:0;border-radius:18px;background:var(--cloth);color:#FFF6E0;font-size:17px;font-weight:700;padding:10px 14px;box-shadow:0 5px 0 var(--cloth-d)}
+#diary .dclose:active{transform:translateY(4px);box-shadow:none}
+#diary .dtop h2{flex:1;margin:0;text-align:center;font-family:var(--fun);font-weight:400;font-size:26px;color:var(--cloth);margin-right:70px}
+#diary .dedit{border-top:2px dashed #D9C6A4;padding-top:12px}
+#diary .dedit summary{list-style:none;text-align:center;color:var(--soft);font-size:15px;cursor:pointer}
+#diary .dedit summary::-webkit-details-marker{display:none}
+#diary .drows{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+#diary .drow{display:grid;grid-template-columns:auto auto auto 1fr auto;gap:8px;align-items:start;background:#FFF8EA;border-radius:16px;padding:10px}
+#diary .drow input,#diary .drow select,#diary .drow textarea{font:inherit;font-size:16px;border:2px solid #EADBC2;border-radius:12px;padding:7px 9px;background:#fff;color:var(--ink);min-width:0}
+#diary .drow textarea{resize:vertical;min-height:44px;line-height:1.5}
+#diary .drow .ddel{border:0;background:none;font-size:20px;padding:6px}
+#diary .dhint{font-size:14px;color:var(--soft);margin-top:8px;line-height:1.6;text-align:center}
+@media (max-width:700px){#diary .drow{grid-template-columns:1fr 1fr 1fr auto}#diary .drow textarea{grid-column:1/-1;grid-row:2}}
+.dychip{border:0;color:var(--ink);cursor:pointer;touch-action:manipulation}
+.dychip:active{transform:translateY(3px);box-shadow:none}
+/* 写日记的小框（在结果弹窗里） */
+.pop .dyp{display:flex;flex-direction:column;gap:10px;text-align:left}
+.pop .dyp .t{font-family:"ZCOOL KuaiLe",var(--fun);font-size:24px;text-align:center}
+.pop .dyp .opts{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.pop .dyp .opts button{border:2px solid #EADBC2;background:#fff;border-radius:999px;padding:6px 12px;font-size:16px}
+.pop .dyp .opts button.on{border-color:var(--c,#FF9F1C);background:var(--c,#FFE7A3);color:#fff}
+.pop .dyp .opts.wx button.on{background:#FFF1C9;color:inherit}
+.pop .dyp textarea{width:100%;min-height:96px;border:2px solid #EADBC2;border-radius:14px;padding:10px;font:inherit;font-size:17px;line-height:1.6;resize:vertical}
+#diary .stage{padding:4.5% 0 3%;perspective:2400px;perspective-origin:50% 30%;overflow:hidden}
+#diary .book{position:relative;width:min(100%,960px,max(420px,(100svh - 310px)*1.48));aspect-ratio:1.48;margin:0 auto;container-type:inline-size;touch-action:pan-y;user-select:none;-webkit-user-select:none;transform-style:preserve-3d}
+#diary .boards{position:absolute;top:-1.6cqw;bottom:-1.6cqw;left:-1.4cqw;right:-1.4cqw;border-radius:1.2cqw;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.08),transparent 60%),repeating-linear-gradient(45deg,rgba(0,0,0,.05) 0 2px,transparent 2px 4px),var(--cloth);
+  box-shadow:0 2.6cqw 4cqw rgba(70,40,20,.35),0 .5cqw 0 var(--cloth-d)}
+#diary .book.closed .boards{left:calc(50% - .2cqw)}
+#diary .half{position:absolute;top:0;bottom:0;width:50%}
+#diary .half.l{left:0}
+#diary .half.r{right:0}
+#diary .cast{position:absolute;inset:0;pointer-events:none;opacity:0;z-index:3}
+#diary .half.r .cast{background:linear-gradient(90deg,rgba(40,20,0,.45),transparent 70%)}
+#diary .half.l .cast{background:linear-gradient(270deg,rgba(40,20,0,.45),transparent 70%)}
+#diary .pg{position:absolute;top:0;bottom:0;width:50cqw;overflow:hidden;padding:5cqw 5cqw 4.4cqw;display:flex;flex-direction:column;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .35 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),var(--paper)}
+#diary .pg::after{content:"";position:absolute;inset:0;pointer-events:none}
+#diary .pg.l{border-radius:.5cqw 0 0 .5cqw}
+#diary .pg.l::after{background:linear-gradient(90deg,rgba(255,255,255,.4),transparent 6%,transparent 82%,rgba(90,60,20,.10) 93%,rgba(60,35,10,.28))}
+#diary .pg.r{border-radius:0 .5cqw .5cqw 0}
+#diary .pg.r::after{background:linear-gradient(270deg,rgba(255,255,255,.4),transparent 6%,transparent 82%,rgba(90,60,20,.10) 93%,rgba(60,35,10,.28))}
+#diary .pno{position:absolute;bottom:2.2cqw;font-size:1.3cqw;color:#B8A68C;font-variant-numeric:tabular-nums}
+#diary .pg.l .pno{left:5cqw}
+#diary .pg.r .pno{right:5cqw}
+#diary .pg.cover{padding:0;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.12),transparent 55%),repeating-linear-gradient(45deg,rgba(0,0,0,.06) 0 2px,transparent 2px 4px),var(--cloth);border-radius:0 .9cqw .9cqw 0;align-items:center;justify-content:center;text-align:center;color:var(--gold)}
+#diary .pg.cover::after{background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(255,255,255,.12) 3%,transparent 7%)}
+#diary .cover .inner{position:absolute;inset:3.4cqw 3cqw 3.4cqw 4.6cqw;border:.35cqw solid var(--gold);border-radius:.8cqw;box-shadow:inset 0 0 0 .7cqw var(--cloth),inset 0 0 0 .9cqw rgba(242,199,102,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw}
+#diary .cover .em{width:11cqw;height:11cqw;border-radius:50%;display:grid;place-items:center;font-size:6cqw;color:var(--cloth-d);background:radial-gradient(circle at 35% 30%,#FFF1B8,var(--gold) 60%,#C9962E);box-shadow:0 .4cqw 0 rgba(0,0,0,.25)}
+#diary .cover h2{margin:0;font-family:var(--fun);font-weight:400;font-size:5.2cqw;line-height:1.25;letter-spacing:.3cqw;text-shadow:0 .25cqw 0 rgba(0,0,0,.35),0 -.08cqw 0 rgba(255,240,190,.5)}
+#diary .cover .yr{font-size:1.7cqw;letter-spacing:.5cqw;opacity:.9}
+#diary .cover .tap{position:absolute;bottom:5.4cqw;left:0;right:0;font-size:1.5cqw;color:rgba(255,236,190,.85);animation:dynudge 1.8s ease-in-out infinite}
+@keyframes dynudge{50%{transform:translateX(-.8cqw)}}
+#diary .cover .band{position:absolute;top:0;bottom:0;right:4.2cqw;width:1.5cqw;background:linear-gradient(90deg,#3A1418,#5A2228 45%,#3A1418);box-shadow:.2cqw 0 .4cqw rgba(0,0,0,.35)}
+#diary .corner{position:absolute;width:3.4cqw;height:3.4cqw;background:linear-gradient(135deg,#F7DE9C,#C9962E)}
+#diary .corner.a{right:0;top:0;clip-path:polygon(0 0,100% 0,100% 100%)}
+#diary .corner.b{right:0;bottom:0;clip-path:polygon(100% 0,100% 100%,0 100%)}
+#diary .pg.endp{background:radial-gradient(circle,rgba(168,50,58,.16) 0 .35cqw,transparent .45cqw) 0 0/3.2cqw 3.2cqw,radial-gradient(circle,rgba(242,199,102,.35) 0 .25cqw,transparent .35cqw) 1.6cqw 1.6cqw/3.2cqw 3.2cqw,#F6EBDD;align-items:center;justify-content:center}
+#diary .owner{background:var(--paper);border:.25cqw solid var(--cloth);border-radius:1cqw;padding:2.4cqw 3.4cqw;text-align:center;box-shadow:0 .5cqw 0 rgba(124,33,41,.2);transform:rotate(-2deg)}
+#diary .owner small{display:block;font-size:1.5cqw;color:var(--soft)}
+#diary .owner b{display:block;font-family:var(--fun);font-weight:400;font-size:4.4cqw;color:var(--cloth);margin:.6cqw 0}
+#diary .owner span{font-size:1.5cqw;color:var(--soft)}
+#diary .ttl{align-items:center;justify-content:center;text-align:center;gap:1.6cqw}
+#diary .ttl h3{margin:0;font-family:var(--fun);font-weight:400;font-size:4.4cqw;color:var(--cloth)}
+#diary .ttl .sub{font-size:1.8cqw;color:var(--soft)}
+#diary .ttl .tally{display:grid;grid-template-columns:1fr 1fr;gap:1cqw 2cqw;margin-top:1.4cqw}
+#diary .ttl .tally span{display:flex;align-items:center;gap:.6cqw;font-size:1.8cqw}
+#diary .ttl .tally i{font-style:normal;color:#fff;border-radius:99px;padding:.2cqw 1cqw;font-family:var(--fun);font-size:1.7cqw}
+#diary .pg.diary{padding:4.2cqw 3.6cqw 3.6cqw 6.6cqw;
+  background:linear-gradient(90deg,transparent 5.2cqw,var(--margin) 5.2cqw,var(--margin) calc(5.2cqw + 1px),transparent calc(5.2cqw + 1px)),
+    linear-gradient(transparent calc(var(--line) - 1px),#C9D6EC calc(var(--line) - 1px)) 0 calc(4.2cqw + var(--line))/100% var(--line) repeat-y,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .35 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),var(--paper)}
+#diary .dhead{display:flex;flex-wrap:nowrap;overflow:hidden;align-items:baseline;gap:.4cqw .5cqw;height:var(--line);font-size:1.8cqw;color:#9AA3B8;white-space:nowrap;margin-top:0}
+#diary .dhead b{font-family:var(--fun);font-weight:400;font-size:3cqw;color:var(--pen);margin:0 .3cqw}
+#diary .dbody{font-family:var(--fun);font-size:3.4cqw;line-height:var(--line);color:var(--pen);text-indent:6.8cqw;margin-top:0;letter-spacing:.05cqw}
+#diary .dsign{font-family:var(--fun);font-size:2.6cqw;line-height:var(--line);color:var(--pen);text-align:right;opacity:.85}
+#diary .stamp{position:relative;flex:none;align-self:flex-end;margin:1.2cqw 2.4cqw 0 0;width:18cqw;height:18cqw;border-radius:50%;border:.75cqw solid var(--c);color:var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-14deg);opacity:.85;font-family:var(--fun);line-height:1.05;
+  box-shadow:inset 0 0 0 .5cqw #fff,inset 0 0 0 .85cqw var(--c);background:rgba(255,255,255,.35)}
+#diary .stamp i{font-style:normal;font-size:5.6cqw}
+#diary .stamp span{font-size:3.8cqw;margin-top:.4cqw}
+#diary .toc h3{margin:0 0 0;height:calc(var(--line) * 2);display:flex;align-items:center;justify-content:center;font-family:var(--fun);font-weight:400;font-size:3.6cqw;color:var(--cloth)}
+#diary .toc ol{list-style:none;margin:0;padding:0;font-family:var(--fun);color:var(--pen)}
+#diary .toc li{display:flex;align-items:center;gap:1cqw;height:var(--line);font-size:2.6cqw}
+#diary .toc li .dot{flex:1;border-bottom:.2cqw dotted #B8C2D8;margin:0 .6cqw;transform:translateY(-.4cqw)}
+#diary .toc li i{font-style:normal;color:#fff;border-radius:99px;padding:0 1cqw;font-size:2cqw;line-height:3.2cqw}
+#diary .next .lines{display:none}
+#diary .next{align-items:center;justify-content:center;text-align:center;gap:1.4cqw;color:var(--soft)}
+#diary .next b{font-family:var(--fun);font-weight:400;font-size:3cqw;color:var(--ink)}
+#diary .next .lines{width:100%;height:16cqw;background:linear-gradient(transparent calc(4.2cqw - 1px),var(--rule) calc(4.2cqw - 1px)) 0 0/100% 4.2cqw}
+#diary .fin{align-items:center;justify-content:center;font-family:var(--fun);font-size:2.6cqw;color:var(--cloth)}
+#diary .fx{position:absolute;inset:0;pointer-events:none;z-index:6}
+#diary .fx .pgw{position:absolute;top:0;width:50%;height:100%}
+#diary .fx .flap{position:absolute;left:0;top:0;width:50%;height:100%;transform-origin:0 0;filter:drop-shadow(0 0 .6cqw rgba(40,25,10,.25))}
+#diary .fx .clip{position:absolute;inset:0;overflow:visible}
+#diary .fx .fbar{position:absolute;display:block;transform-origin:50% 50%}
+#diary .lboard{position:absolute;top:-1.6cqw;bottom:-1.6cqw;left:-1.4cqw;right:0;border-radius:1.2cqw 0 0 1.2cqw;
+  background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.08),transparent 60%),repeating-linear-gradient(45deg,rgba(0,0,0,.05) 0 2px,transparent 2px 4px),var(--cloth);box-shadow:0 .5cqw 0 var(--cloth-d)}
+#diary .leaf .fc{overflow:visible}
+#diary .leaf{position:absolute;top:0;bottom:0;width:50%;transform-style:preserve-3d;z-index:6;pointer-events:none}
+#diary .leaf.fwd{left:50%}
+#diary .leaf.back{left:0}
+#diary .st{position:absolute;top:0;bottom:0;transform-style:preserve-3d}
+#diary .fc{position:absolute;inset:0;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+#diary .fc.b{transform:rotateY(180deg)}
+#diary .fc .pg{left:0}
+#diary .sh{position:absolute;inset:0;background:#2A1A08;opacity:0;pointer-events:none}
+#diary .ctrl{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+#diary .ctrl button{border:0;border-radius:999px;padding:12px 24px;background:#FFF8EA;box-shadow:0 4px 0 #CDB894;font-family:var(--fun);font-size:20px}
+#diary .ctrl button:disabled{opacity:.35;cursor:default}
+#diary .ctrl button:focus-visible{outline:3px solid var(--q2);outline-offset:3px}
+#diary .ctrl .read{background:var(--q2);color:#fff;box-shadow:0 4px 0 #2F6DB5}
+#diary .ctrl .pos{font-family:var(--fun);font-size:17px;color:var(--soft);min-width:5em;text-align:center}
+#diary .tip{text-align:center;color:var(--soft);font-size:14px;margin-top:-6px}
 /* ---------- iPad：左边卡片固定，右边格子 ---------- */
 @media (min-width:760px){
   .wrap{max-width:1180px;display:grid;grid-template-columns:minmax(300px,36%) 1fr;gap:28px;align-items:start;padding-top:24px}
@@ -409,7 +533,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月08日 17:30</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月08日 20:17</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -431,7 +555,7 @@ const HABITS=[
   {id:"fingerread",grp:"study",icon:"👆",name:"手指指读",pts:5,hot:true,plain:true},
   {id:"read_nocry",grp:"study",icon:"😊",name:"读书没哭",pts:5,hot:true,plain:true},
   {id:"write_nocry",grp:"study",icon:"✏️",name:"写字没哭",pts:5,hot:true,plain:true},
-  {id:"persist",grp:"study",icon:"🏁",name:"坚持就是胜利",pts:4,hot:true,plain:true},
+  {id:"persist",grp:"study",icon:"🏁",name:"坚持就是胜利",pts:4,hot:true,plain:true,diary:"persist"},
   {id:"math_pre",grp:"study",icon:"🧮",name:"数学预习",pts:2},
   {id:"cn_pre",grp:"study",icon:"📕",name:"语文预习",pts:2},
   {id:"cn_read",grp:"study",icon:"🎙️",name:"课文朗读",pts:2},
@@ -440,7 +564,7 @@ const HABITS=[
   {id:"writing",grp:"study",icon:"✍️",name:"写字课",pts:2},
   {id:"en_class",grp:"study",icon:"📘",name:"英语课内",pts:2},
   {id:"en_daily",grp:"study",icon:"🎧",name:"英语打卡",pts:2},
-  {id:"brave",icon:"🦸",name:"问之很勇敢",pts:5,hot:true,plain:true},
+  {id:"brave",icon:"🦸",name:"问之很勇敢",pts:5,hot:true,plain:true,diary:"brave"},
   {id:"teeth",icon:"🪥",name:"刷牙洗脸",pts:2},
   {id:"teeth_self",slot:"teeth",icon:"😁",name:"主动刷牙",pts:5,hot:true},
   {id:"nose",icon:"💦",name:"睡前洗鼻",pts:2},
@@ -573,8 +697,8 @@ function countTo(id,val){
 function bump(id){const c=document.getElementById(id);if(!c)return;c.classList.remove("bump");void c.offsetWidth;c.classList.add("bump")}
 
 /* ---------- 存储 ---------- */
-const COLS=PAGE==="pts"?["points","shop"]:["bank","settings"];
-const state={points:{},bank:{},settings:{},shop:{}};
+const COLS=PAGE==="pts"?["points","shop","diary"]:["bank","settings"];
+const state={points:{},bank:{},settings:{},shop:{},diary:{}};
 const store={db:null};
 function localGet(col){try{return JSON.parse(localStorage.getItem("xdj:"+col)||"{}")}catch(e){return{}}}
 function localPut(col,m){try{localStorage.setItem("xdj:"+col,JSON.stringify(m))}catch(e){}}
@@ -608,7 +732,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="ff59b607b7";
+const BUILD="ce91f27500";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -706,7 +830,7 @@ function render(){
   $("#pickLbl").textContent=off===null?`📅 ${pm}/${pd} 周${wdOf(cur)}`:"📅 更早";
   const di=$(".dpick");di.max=today();di.value=cur;
   $("#tiles").classList.toggle("past",isPast());
-  if(PAGE==="pts"){renderPts();renderShop()}else renderBank();
+  if(PAGE==="pts"){renderPts();renderShop();Diary.refresh()}else renderBank();
 }
 function renderPts(){
   const p=ptsCalc(),t=recDate();
@@ -764,6 +888,7 @@ async function tapHabit(h,btn){
   await put("points",id,{date,habit:h.id,name:h.name,icon:h.icon,pts:h.pts,ts:Date.now()});
   fly(r,"+"+h.pts+"分");bump("ptsCard");capFlash();
   say(`${h.hot&&!h.plain?"哇，自己主动的！":""}${isPast()?dayWord(recDate())+"的":""}${h.name}，加${h.pts}分！`);
+  if(h.diary)setTimeout(()=>Diary.ask(h,date),1500);
 }
 /* 和积分卡同一条规则：每样活每天一次，再点一次就取消 */
 const jobId=(date,j)=>date+"_job_"+j.id;
@@ -996,6 +1121,207 @@ async function recordBank(parsed){
   const speech=(gain>0?`存进去${n}块钱！`:`花掉${n}块钱。`)+msg;
   showPop({em:gain>0&&em==="💰"?"🐷":em,gain:(gain>0?"+":"−")+n+"元",cls:gain>0?"money":"neg",items,msg,speech});
 }
+
+
+/* ---------- 高光日记：特别的时刻写成一篇日记，存在 diary 集合里（同步），像一本真日记本一样翻着看 ----------
+   书的坐标：右页 x∈[0,W]、左页 x∈[-W,0]，原点在书脊顶端。翻纸页时书角 C0 被拖到 P，
+   折痕是 C0 和 P 连线的垂直平分线：一边的纸还平铺着，另一边翻过来露出背面（镜像过去）。
+   硬封面不会弯，整块绕书脊转。 */
+const DQ={persist:{name:"坚持",ic:"🏁",c:"#FF9F1C"},brave:{name:"勇敢",ic:"🦸",c:"#4A90E2"},nocry:{name:"不哭",ic:"😊",c:"#FF5FA2"},self:{name:"主动",ic:"⭐",c:"#1DB37A"}};
+const DWX=["☀️","⛅","☁️","🌧️","❄️"];
+const diaryList=()=>Object.entries(state.diary||{}).map(([id,d])=>({id,...d})).filter(d=>d&&d.date)
+  .sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:(a.ts||0)-(b.ts||0));
+const Diary=(()=>{
+  if(PAGE!=="pts")return{refresh(){},ask(){}};
+  const root=$("#diary"),book=$("#dyBook"),hl=$("#dyL"),hr=$("#dyR"),prevB=$("#dyPrev"),nextB=$("#dyNext"),posEl=$("#dyPos");
+  let cur=-1,busy=false,open=false,S=[],LAST=0,M=[];
+  function build(){
+    M=diaryList();
+    const pages=M.map(m=>({t:"diary",m})).concat([{t:"blank"}]);
+    if(pages.length%2)pages.push({t:"fin"});
+    S=[[{t:"endp"},{t:"toc"}]];for(let i=0;i<pages.length;i+=2)S.push([pages[i],pages[i+1]]);
+    LAST=S.length-1;if(cur>LAST)cur=LAST;
+  }
+  const getL=i=>i<0?null:S[i][0],getR=i=>i<0?{t:"cover"}:S[i][1];
+  const pno=(i,side)=>i<1?"":`<span class="pno">${i*2-(side==="l"?1:0)}</span>`;
+  const md=ds=>ds.split("-").map(Number);
+  function pageHTML(p,side,i){
+    if(!p)return"";const cls="pg "+side;
+    switch(p.t){
+      case"cover":return`<div class="${cls} cover"><span class="corner a"></span><span class="corner b"></span><div class="inner"><div class="em">★</div><h2>问之的<br>高光日记</h2><div class="yr">${(M[0]?md(M[0].date)[0]:new Date().getFullYear())} · 一（3）班</div></div><span class="band"></span><div class="tap">点我打开 ▸</div></div>`;
+      case"endp":return`<div class="${cls} endp"><div class="owner"><small>这本日记属于</small><b>问之</b><span>一（3）班</span></div></div>`;
+      case"toc":{const show=M.slice(0,10);return`<div class="${cls} diary toc"><h3>目 录</h3><ol>${show.map((m,k)=>{const[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist;return`<li>${mo}月${da}日<i style="background:${q.c}">${q.ic} ${q.name}</i><span class="dot"></span>${k+1}</li>`}).join("")}${M.length>10?`<li style="justify-content:center">…… 还有 ${M.length-10} 篇</li>`:""}${M.length?"":`<li style="justify-content:center;opacity:.6">还没有日记，第一篇会写在这里</li>`}</ol></div>`}
+      case"diary":{const m=p.m,[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist;return`<div class="${cls} diary"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b></div>
+        <div class="dbody">${esc(m.text||"（还没写）")}</div><div class="dsign">—— 爸爸妈妈记 ✍️</div>
+        <span class="stamp" style="--c:${q.c}"><i>${q.ic}</i><span>${q.name}</span></span>${pno(i,side)}</div>`}
+      case"blank":return`<div class="${cls} diary"><div class="dhead"><b>　</b>月<b>　</b>日　星期<b>　</b>　天气<b>　</b></div><div class="dbody" style="opacity:.55">下一个高光时刻，会写在这里……</div>${pno(i,side)}</div>`;
+      case"fin":return`<div class="${cls} endp"><div class="owner" style="transform:rotate(2deg)"><small>未完待续</small><b style="font-size:3.4cqw">继续加油！</b><span>问之队员</span></div></div>`;
+    }
+  }
+  function stack(n,dir){let s=[];for(let k=1;k<=n;k++)s.push(`${dir*k*.18}cqw ${k*.1}cqw 0 ${k%2?"#EFE4CC":"#E3D5B8"}`);return s.join(",")||"none"}
+  function setStatic(li,ri){
+    hl.innerHTML=pageHTML(getL(li),"l",li);hr.innerHTML=pageHTML(getR(ri),"r",ri);
+    const lp=hl.querySelector(".pg"),rp=hr.querySelector(".pg");
+    if(lp)lp.style.boxShadow=stack(Math.min(6,li+1),-1);
+    if(rp&&ri>=0)rp.style.boxShadow=stack(Math.min(6,LAST-ri+1),1);
+  }
+  function show(){
+    setStatic(cur,cur);
+    book.classList.toggle("closed",cur<0);book.style.transform=cur<0?"translateX(-25%)":"";
+    prevB.disabled=cur<0;nextB.disabled=cur>=LAST;
+    posEl.textContent=cur<0?"封面":cur===0?"目录":`第 ${cur*2-1}–${cur*2} 页`;
+  }
+  let ac;function rustle(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume();
+    const len=ac.sampleRate*.45,buf=ac.createBuffer(1,len,ac.sampleRate),d=buf.getChannelData(0);
+    for(let i=0;i<len;i++){const t=i/len;d[i]=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*t),1.6)*(.6+.4*Math.random())}
+    const src=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();f.type="bandpass";f.frequency.value=2600;f.Q.value=.7;g.gain.value=.35;
+    src.buffer=buf;src.connect(f).connect(g).connect(ac.destination);src.start()}catch(e){}}
+  const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  /* 硬封面 */
+  let L=null;
+  function makeLeaf(dir){
+    const fwd=dir>0,to=cur+dir,frontP=fwd?getR(cur):getL(cur),backP=fwd?getL(to):getR(to);
+    const el=document.createElement("div");el.className="leaf "+(fwd?"fwd":"back");
+    const st=document.createElement("div");st.className="st";st.style.width="50cqw";
+    if(fwd){st.style.left="0";st.style.transformOrigin="0 50%"}else{st.style.right="0";st.style.transformOrigin="100% 50%"}
+    const lb='<div class="lboard"></div>';
+    st.innerHTML=`<div class="fc f">${fwd?"":lb}${pageHTML(frontP,fwd?"r":"l",cur)}<div class="sh"></div></div><div class="fc b">${fwd?lb:""}${pageHTML(backP,fwd?"l":"r",to)}<div class="sh"></div></div>`;
+    el.appendChild(st);book.appendChild(el);
+    if(fwd)setStatic(cur,to);else setStatic(to,cur);
+    if(!fwd&&to===-1)book.classList.add("closed");
+    L={dir,el,st,to,theta:0};draw(0);
+  }
+  function draw(theta){
+    if(!L)return;L.theta=theta;const c=Math.cos(theta*Math.PI/180);
+    L.st.style.transform=`rotateY(${L.dir>0?-theta:theta}deg) translateZ(.5px)`;
+    L.st.children[0].lastElementChild.style.opacity=(.4*(1-Math.max(0,c))).toFixed(3);
+    L.st.children[1].lastElementChild.style.opacity=(.4*(1+Math.min(0,c))).toFixed(3);
+    if(L.dir>0&&cur===-1)book.style.transform=`translateX(${-25*(1-theta/180)}%)`;
+    if(L.dir<0&&L.to===-1)book.style.transform=`translateX(${-25*(theta/180)}%)`;
+  }
+  function tween(to,ms,done){const from=L.theta,t0=performance.now();
+    const step=now=>{const t=Math.min(1,(now-t0)/ms);draw(from+(to-from)*ease(t));if(t<1)requestAnimationFrame(step);else done()};requestAnimationFrame(step)}
+  function finish(ok){const to=L.to;L.el.remove();L=null;if(ok)cur=to;show();busy=false}
+  /* 纸页：从书角卷起来 */
+  const fx=document.createElement("div");fx.className="fx";book.appendChild(fx);
+  let C=null;
+  function clipPoly(pts,f){const out=[];for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length],fa=f(a),fb=f(b);
+    if(fa>=0)out.push(a);if((fa>=0)!==(fb>=0)){const t=fa/(fa-fb);out.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t])}}return out}
+  const poly=ps=>ps.length<3?"polygon(0 0,0 0,0 0)":"polygon("+ps.map(p=>p[0].toFixed(1)+"px "+p[1].toFixed(1)+"px").join(",")+")";
+  function startCurl(dir,cy){
+    const fwd=dir>0,to=cur+dir,W=book.clientWidth/2,H=book.clientHeight;
+    if(fwd)setStatic(cur,to);else setStatic(to,cur);
+    const frontP=fwd?getR(cur):getL(cur),backP=fwd?getL(to):getR(to);
+    fx.innerHTML=`<div class="clip c-cast"><i class="fbar"></i></div><div class="pgw" style="left:${fwd?50:0}%">${pageHTML(frontP,fwd?"r":"l",cur)}</div>
+      <div class="clip c-front"><i class="fbar"></i></div><div class="flap">${pageHTML(backP,fwd?"l":"r",to)}</div><div class="clip c-shade"><i class="fbar"></i></div>`;
+    const C0={x:fwd?W:-W,y:cy};
+    C={fwd,to,W,H,C0,P:{...C0},front:fx.querySelector(".pgw"),flap:fx.querySelector(".flap"),cast:fx.querySelector(".c-cast"),shadeF:fx.querySelector(".c-front"),shade:fx.querySelector(".c-shade")};
+    renderCurl(C0);
+  }
+  function clampP(p){const{W,H,C0}=C,sb={x:0,y:C0.y},st={x:0,y:H-C0.y},D=Math.hypot(W,H);
+    let x=p.x,y=p.y,d=Math.hypot(x-sb.x,y-sb.y);if(d>W){x=sb.x+(x-sb.x)*W/d;y=sb.y+(y-sb.y)*W/d}
+    d=Math.hypot(x-st.x,y-st.y);if(d>D){x=st.x+(x-st.x)*D/d;y=st.y+(y-st.y)*D/d}return{x,y}}
+  function bar(clip,Q,a,W,grad,op){const b=clip.firstElementChild,Lb=W*5,h=W*.9;
+    b.style.cssText=`left:${(Q.x+W-Lb/2).toFixed(1)}px;top:${(Q.y-h).toFixed(1)}px;width:${Lb}px;height:${2*h}px;transform:rotate(${a}rad);background:${grad};opacity:${op.toFixed(3)}`}
+  function renderCurl(p){
+    const{W,H,C0,fwd,front,flap,cast,shade,shadeF}=C,P=clampP(p);C.P=P;
+    const dx=C0.x-P.x,dy=C0.y-P.y,len=Math.hypot(dx,dy);
+    if(len<1){front.style.clipPath="none";flap.style.visibility="hidden";[cast,shade,shadeF].forEach(e=>e.style.visibility="hidden");return}
+    flap.style.visibility="";[cast,shade,shadeF].forEach(e=>e.style.visibility="");
+    const n={x:dx/len,y:dy/len},Q={x:(C0.x+P.x)/2,y:(C0.y+P.y)/2};
+    const x0=fwd?0:-W,x1=fwd?W:0,rect=[[x0,0],[x1,0],[x1,H],[x0,H]],side=q=>(q[0]-Q.x)*n.x+(q[1]-Q.y)*n.y;
+    const keep=clipPoly(rect,q=>-side(q)),fold=clipPoly(rect,side);
+    front.style.clipPath=poly(keep.map(q=>[q[0]-x0,q[1]]));
+    const a=Math.atan2(n.x,-n.y),c2=Math.cos(2*a),s2=Math.sin(2*a);
+    const refl=q=>{const vx=q[0]-Q.x,vy=q[1]-Q.y;return[Q.x+c2*vx+s2*vy,Q.y+s2*vx-c2*vy]};
+    const g=fwd?W:0,t=refl([g,0]);
+    flap.style.transform=`matrix(${-c2},${-s2},${s2},${-c2},${t[0]+W},${t[1]})`;
+    flap.style.clipPath=poly(fold.map(q=>[g-q[0],q[1]]));
+    const toB=q=>[q[0]+W,q[1]];
+    cast.style.clipPath=poly(fold.map(toB));shade.style.clipPath=poly(fold.map(refl).map(toB));shadeF.style.clipPath=poly(keep.map(toB));
+    const k=Math.min(1,len/(W*.25)),far=Math.min(1,len/(2*W));
+    bar(cast,Q,a,W,"linear-gradient(to top,transparent 50%,rgba(40,25,10,.42) 50%,rgba(40,25,10,.12) 56%,transparent 64%)",k*(1-far*.7));
+    bar(shade,Q,a,W,"linear-gradient(to bottom,transparent 50%,rgba(40,25,10,.30) 50%,rgba(40,25,10,.06) 53%,rgba(255,255,255,.35) 58%,rgba(255,255,255,0) 66%,rgba(40,25,10,.08) 85%)",k);
+    bar(shadeF,Q,a,W,"linear-gradient(to bottom,transparent 50%,rgba(40,25,10,.16) 50%,transparent 53%)",k*(1-far));
+  }
+  function tweenCurl(target,ms,lift,done){const from={...C.P},t0=performance.now();
+    const step=now=>{const t=Math.min(1,(now-t0)/ms),e=ease(t);
+      renderCurl({x:from.x+(target.x-from.x)*e,y:from.y+(target.y-from.y)*e-lift*Math.sin(Math.PI*e)});
+      if(t<1)requestAnimationFrame(step);else done()};requestAnimationFrame(step)}
+  function endCurl(ok){const to=C.to;fx.innerHTML="";C=null;if(ok)cur=to;show();busy=false}
+  const coverFlip=dir=>(dir>0&&cur===-1)||(dir<0&&cur===0);
+  function turn(dir){
+    if(busy)return;const to=cur+dir;if(to<-1||to>LAST)return;
+    busy=true;rustle();const rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(coverFlip(dir)){makeLeaf(dir);if(rm){finish(true);return}tween(180,1000,()=>finish(true));return}
+    const H=book.clientHeight,W=book.clientWidth/2;
+    startCurl(dir,H);if(rm){endCurl(true);return}
+    tweenCurl({x:dir>0?-W:W,y:H},950,H*.16,()=>endCurl(true));
+  }
+  let drag=null;
+  book.addEventListener("pointerdown",e=>{
+    if(busy)return;const r=book.getBoundingClientRect(),x=e.clientX-r.left;
+    const dir=(cur<0||x>r.width/2)?1:-1,to=cur+dir;if(to<-1||to>LAST)return;
+    drag={dir,x0:e.clientX,y0:e.clientY,t0:performance.now(),r,moved:false,id:e.pointerId,cover:coverFlip(dir)};
+  });
+  book.addEventListener("pointermove",e=>{
+    if(!drag||e.pointerId!==drag.id)return;const dx=e.clientX-drag.x0,dy=e.clientY-drag.y0,r=drag.r,W=r.width/2;
+    if(!drag.moved){if(Math.hypot(dx,dy)<8)return;drag.moved=true;busy=true;rustle();try{book.setPointerCapture(e.pointerId)}catch(_){}
+      if(drag.cover)makeLeaf(drag.dir);else startCurl(drag.dir,(drag.y0-r.top)>r.height/2?r.height:0)}
+    if(drag.cover){draw(Math.max(0,Math.min(180,(drag.dir>0?-dx:dx)/(W*1.6)*180)));return}
+    renderCurl({x:e.clientX-r.left-W,y:e.clientY-r.top});
+  });
+  function endDrag(e){
+    if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;
+    if(!d.moved){turn(d.dir);return}
+    const v=Math.abs(e.clientX-d.x0)/(performance.now()-d.t0);
+    if(d.cover){const go=L.theta>70||v>.6;tween(go?180:0,go?Math.max(250,(180-L.theta)*4):Math.max(200,L.theta*4),()=>finish(go));return}
+    const W=C.W,go=(C.fwd?C.P.x<W*.25:C.P.x>-W*.25)||v>.6;
+    tweenCurl(go?{x:C.fwd?-W:W,y:C.C0.y}:{...C.C0},go?520:380,0,()=>endCurl(go));
+  }
+  book.addEventListener("pointerup",endDrag);book.addEventListener("pointercancel",endDrag);
+  prevB.onclick=()=>turn(-1);nextB.onclick=()=>turn(1);
+  const sayEntry=p=>{if(!p||p.t!=="diary")return"";const[,mo,da]=md(p.m.date),q=DQ[p.m.q]||DQ.persist;return`${mo}月${da}日，星期${wdOf(p.m.date)}。问之做到了${q.name}！${p.m.text||""}`};
+  $("#dyRead").onclick=()=>{let t;if(cur<0)t="问之的高光日记";else if(cur===0)t=M.length?`问之的高光日记，一共有${M.length}篇`:"问之的高光日记，第一篇还没写呢";
+    else t=[sayEntry(S[cur][0]),sayEntry(S[cur][1])].filter(Boolean).join("。")||"下一个高光时刻，会写在这里。继续加油，问之队员！";say(t)};
+  /* 家长区：写、改、删 */
+  const qOpts=v=>Object.entries(DQ).map(([k,q])=>`<option value="${k}" ${k===v?"selected":""}>${q.ic} ${q.name}</option>`).join("");
+  const wOpts=v=>[""].concat(DWX).map(w=>`<option value="${w}" ${w===(v||"")?"selected":""}>${w||"天气"}</option>`).join("");
+  function renderEditor(){
+    const box=$("#dyRows");if(!$("#dyEdit").open||box.contains(document.activeElement))return;
+    box.innerHTML=diaryList().slice().reverse().map(d=>`<div class="drow" data-id="${d.id}"><input type="date" class="dd" value="${d.date}" max="${today()}" aria-label="日期"><select class="dq" aria-label="品质">${qOpts(d.q)}</select><select class="dw" aria-label="天气">${wOpts(d.wx)}</select><textarea class="dt" rows="2" aria-label="发生了什么" placeholder="发生了什么？">${esc(d.text||"")}</textarea><button class="ddel" type="button" aria-label="删掉这一篇">🗑</button></div>`).join("")
+      ||`<div class="dhint">还没有日记。点下面的“✍️ 写一篇”。</div>`;
+  }
+  $("#dyEdit").addEventListener("toggle",renderEditor);
+  $("#dyRows").addEventListener("change",async e=>{const row=e.target.closest(".drow");if(!row)return;const id=row.dataset.id,d=state.diary[id];if(!d)return;
+    const patch={date:row.querySelector(".dd").value||d.date,q:row.querySelector(".dq").value,wx:row.querySelector(".dw").value,text:row.querySelector(".dt").value.trim()};
+    e.target.blur();await put("diary",id,{...d,...patch})});
+  $("#dyRows").addEventListener("click",async e=>{const b=e.target.closest(".ddel");if(!b)return;const id=b.closest(".drow").dataset.id;
+    if(confirm("删掉这一篇日记吗？"))await del("diary",id)});
+  $("#dyAdd").addEventListener("click",async()=>{const id="d"+rid();await put("diary",id,{date:today(),q:"persist",wx:"",text:"",ts:Date.now()});
+    renderEditor();const t=$(`#dyRows [data-id="${id}"] .dt`);if(t)t.focus()});
+  function openDiary(){build();cur=-1;open=true;root.hidden=false;root.scrollTop=0;document.body.style.overflow="hidden";show();renderEditor()}
+  function closeDiary(){if(busy)return;open=false;root.hidden=true;document.body.style.overflow=""}
+  $("#diaryGo").addEventListener("click",openDiary);$("#dyClose").addEventListener("click",closeDiary);
+  addEventListener("keydown",e=>{if(!open||/TEXTAREA|INPUT|SELECT/.test(e.target.tagName))return;if(e.key==="Escape")closeDiary();if(e.key==="ArrowRight")turn(1);if(e.key==="ArrowLeft")turn(-1)});
+  /* 点完“坚持就是胜利”“问之很勇敢”后：问要不要写进日记 */
+  function ask(h,date){
+    if(!$("#pop").hidden||open)return;
+    let q=h.diary,wx="";
+    $("#popBox").innerHTML=`<div class="dyp"><div class="t">📔 写进高光日记？</div>
+      <div class="opts" id="dyQ">${Object.entries(DQ).map(([k,v])=>`<button type="button" data-q="${k}" style="--c:${v.c}" class="${k===q?"on":""}">${v.ic} ${v.name}</button>`).join("")}</div>
+      <div class="opts wx" id="dyW">${DWX.map(w=>`<button type="button" data-w="${w}">${w}</button>`).join("")}</div>
+      <textarea id="dyText" placeholder="${esc(h.name)}：发生了什么？一两句话就好，可以按键盘上的 🎤 用说的"></textarea>
+      <div class="acts"><button class="again" type="button">跳过</button><button class="ok" type="button">✨ 写进日记</button></div></div>`;
+    $("#pop").hidden=false;
+    $("#dyQ").onclick=e=>{const b=e.target.closest("[data-q]");if(!b)return;q=b.dataset.q;$("#dyQ").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b))};
+    $("#dyW").onclick=e=>{const b=e.target.closest("[data-w]");if(!b)return;wx=wx===b.dataset.w?"":b.dataset.w;$("#dyW").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x.dataset.w===wx))};
+    $("#popBox .again").onclick=closePop;
+    $("#popBox .ok").onclick=async()=>{const text=$("#dyText").value.trim();if(!text){$("#dyText").focus();return}
+      closePop();await put("diary","d"+rid(),{date,q,wx,text,habit:h.id,ts:Date.now()});say("写进高光日记啦！")};
+  }
+  return{refresh(){if(open&&!busy){build();show()}if(open)renderEditor()},ask};
+})();
 
 /* ---------- 交互 ---------- */
 document.addEventListener("click",e=>{

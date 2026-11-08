@@ -353,7 +353,7 @@ details.parent summary::-webkit-details-marker{display:none}
 .entry.walk .cam{transform:scale(1.7)}
 .entry.open .leaf.l{transform:rotateY(-110deg)}.entry.open .leaf.r{transform:rotateY(110deg)}
 .entry.open .open-sign{opacity:0}
-.entry.open .bell{animation:ring .7s ease-in-out}
+.entry.ring .bell{animation:ring .7s ease-in-out}
 @keyframes ring{20%{transform:rotate(28deg)}45%{transform:rotate(-22deg)}70%{transform:rotate(12deg)}}
 .entry.thru .cam{transform:scale(6);transition:transform .7s cubic-bezier(.55,0,.85,.4)}
 .entry.thru{opacity:0;transition:opacity .5s .2s}
@@ -406,7 +406,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月08日 17:23</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月08日 17:30</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -632,7 +632,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="dcfea2f553";
+const BUILD="e7d7b51703";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -851,7 +851,7 @@ function flyNode(html,from,to,{size=80,dur=650,cls=""}={}){return new Promise(re
   setTimeout(()=>{n.remove();res()},dur)})}
 let shopOpen=false,picked=null,busyShop=false;
 function openShop(){shopOpen=true;picked=null;$("#shop").hidden=false;$("#counter").hidden=false;$("#shop").scrollTop=0;document.body.style.overflow="hidden";renderShop();playEntry()}
-/* 进门：镜头走到门口 → 叮咚，门打开 → 穿过门走进店里。点一下可以直接进去 */
+/* 进门：门先打开 → 镜头走到门口 → 叮咚 → 穿过门走进店里。点一下可以直接进去 */
 let entryT=[];
 function playEntry(){
   const en=$("#entry");
@@ -865,11 +865,12 @@ function playEntry(){
   const cam=en.querySelector(".cam"),dr=en.querySelector(".portal").getBoundingClientRect();
   cam.style.transformOrigin=`${dr.left+dr.width/2}px ${dr.top+dr.height*.55}px`;void en.offsetWidth;
   const at=(ms,f)=>entryT.push(setTimeout(f,ms));
-  at(40,()=>en.classList.add("walk"));
-  at(1000,()=>{en.classList.add("open");dingdong()});
-  at(1700,()=>{en.classList.add("thru");$("#shop").classList.add("arrive")});
-  at(2450,endEntry);
-  en.onclick=()=>{if(!en.classList.contains("open"))dingdong();endEntry()};
+  at(300,()=>en.classList.add("open"));
+  at(1000,()=>en.classList.add("walk"));
+  at(1900,()=>{en.classList.add("ring");dingdong()});
+  at(2400,()=>{en.classList.add("thru");$("#shop").classList.add("arrive")});
+  at(3150,endEntry);
+  en.onclick=()=>{if(!en.classList.contains("ring"))dingdong();endEntry()};
 }
 function endEntry(){entryT.forEach(clearTimeout);entryT=[];const en=$("#entry");en.hidden=true;en.className="entry";setTimeout(()=>$("#shop").classList.remove("arrive"),800)}
 function closeShop(){endEntry();shopOpen=false;picked=null;$("#shop").hidden=true;$("#counter").hidden=true;document.body.style.overflow=""}

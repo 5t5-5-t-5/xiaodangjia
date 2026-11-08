@@ -87,12 +87,12 @@ test('every current points and bank card has an exact matching recording, with e
   vm.runInNewContext(fs.readFileSync(path.join(root,'captain-voice-pack.js'),'utf8'),sandbox);
   const pack=sandbox.window.XDJ_CAPTAIN_VOICE_PACK;
   // 新加的卡片还没录音，先用系统队长声音；补好录音后从这里删掉
-  const AWAITING_RECORDING=['盛饭，存进1块钱！','手指指读，加5分！','语文阅读，加5分！','读书没哭，加5分！','写字没哭，加5分！','问之很勇敢，加5分！','哇，自己主动的！主动睡觉，加5分！'];
+  const AWAITING_RECORDING=['盛饭，存进1块钱！','手指指读，加5分！','语文阅读，加5分！','读书没哭，加5分！','写字没哭，加5分！','问之很勇敢，加5分！','坚持就是胜利，加4分！','哇，自己主动的！主动睡觉，加5分！'];
   for(const file of ['points.html','bank.html']){
     const html=fs.readFileSync(path.join(root,file),'utf8');
     const habits=vm.runInNewContext(html.match(/const HABITS=(\[[\s\S]*?\n\]);/)[1]);
     const jobs=vm.runInNewContext(html.match(/const JOBS=(\[[\s\S]*?\n\]\.map\(j=>\(\{price:1,\.\.\.j\}\)\));/)[1]);
-    assert.equal(habits.length,31);assert.equal(jobs.length,20);
+    assert.equal(habits.length,32);assert.equal(jobs.length,20);
     for(const h of habits){const text=(h.hot&&!h.plain?'哇，自己主动的！':'')+h.name+'，加'+h.pts+'分！';if(AWAITING_RECORDING.includes(text))continue;assert.ok(pack.phrases[text],text)}
     for(const j of jobs){const text=j.name+'，存进'+j.price+'块钱！';if(AWAITING_RECORDING.includes(text))continue;assert.ok(pack.phrases[text],text)}
   }

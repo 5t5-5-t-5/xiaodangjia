@@ -482,6 +482,10 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .dhead b{font-family:var(--fun);font-weight:400;font-size:3cqw;color:var(--pen);margin:0 .3cqw}
 #diary .dbody{font-family:var(--fun);font-size:3.4cqw;line-height:var(--line);color:var(--pen);text-indent:6.8cqw;margin-top:0;letter-spacing:.05cqw}
 #diary .dsign{font-family:var(--fun);font-size:2.6cqw;line-height:var(--line);color:var(--pen);text-align:right;opacity:.85}
+/* 日期那行、署名永远不被挤掉；字多时正文变小一点，照片和印章也缩小 */
+#diary .dhead,#diary .dsign{flex:none}#diary .dfoot{min-height:0}
+#diary .long .dbody{font-size:2.9cqw}#diary .long .dpic{width:15cqw}#diary .long .stamp{width:14cqw;height:14cqw}#diary .long .stamp i{font-size:4.4cqw}#diary .long .stamp span{font-size:3cqw}
+#diary .long2 .dbody{font-size:2.5cqw}#diary .long2 .dpic{width:13cqw}#diary .long2 .stamp{width:12cqw;height:12cqw;margin-top:.4cqw}#diary .long2 .stamp i{font-size:3.6cqw}#diary .long2 .stamp span{font-size:2.6cqw}
 #diary .stamp{position:relative;flex:none;align-self:flex-end;margin:1.2cqw 2.4cqw 0 0;width:18cqw;height:18cqw;border-radius:50%;border:.75cqw solid var(--c);color:var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-14deg);opacity:.85;font-family:var(--fun);line-height:1.05;
   box-shadow:inset 0 0 0 .5cqw #fff,inset 0 0 0 .85cqw var(--c);background:rgba(255,255,255,.35)}
 #diary .stamp i{font-style:normal;font-size:5.6cqw}
@@ -578,15 +582,11 @@ body{background:linear-gradient(#A9DBFF 0%,#D4EEFF 38%,#EEF8FF 70%,#F6FBEF 100%)
 @keyframes hop{0%,86%,100%{transform:none}90%{transform:translateY(-7px) rotate(-4deg)}95%{transform:translateY(0) rotate(2deg)}}
 
 /* ---------- 标题做成小彩旗 ---------- */
-.list>.hrow>h2,.o-hist>h2,.tgrp{position:relative;display:inline-flex;align-items:center;gap:6px;width:fit-content;justify-self:start;
-  margin:6px 0 2px;padding:7px 26px 7px 16px;font-size:21px;color:#fff;letter-spacing:.04em;border-radius:12px 4px 4px 12px;
-  background:linear-gradient(#FF9B4A,#FF7A2F);box-shadow:0 4px 0 #D9581A;text-shadow:0 1px 0 rgba(150,50,0,.35);
-  clip-path:polygon(0 0,100% 0,calc(100% - 12px) 50%,100% 100%,0 100%)}
-@media (max-width:759px){.list>.hrow>h2,.o-hist>h2,.tgrp{font-size:18px;padding:6px 22px 6px 12px}.days button{padding:7px 11px;font-size:17px}}
-.tgrp{margin-top:18px;background:linear-gradient(#5BC27C,#2FA65A);box-shadow:0 4px 0 #1E7F42;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 50%,100% 100%,0 100%)}
-.tgrp.g-brave{background:linear-gradient(#FF8A7A,#F25F5C);box-shadow:0 4px 0 #C2413F}
-.o-hist .hrow h2{background:linear-gradient(#7A8CFF,#5B6BEA);box-shadow:0 4px 0 #3D49B8}
-.page-bank .list>.hrow>h2{background:linear-gradient(#3CC48A,#1DA56A);box-shadow:0 4px 0 #10794B}
+.list>.hrow>h2,.o-hist>h2,.o-hist .hrow h2,.tgrp{position:relative;display:inline-flex;align-items:center;gap:6px;width:fit-content;justify-self:start;
+  margin:6px 0 2px;padding:7px 18px 7px 14px;font-size:19px;font-weight:700;color:#6B4A2B;letter-spacing:.06em;border-radius:999px;
+  background:rgba(255,255,255,.82);box-shadow:0 3px 0 #F3E3C6;text-shadow:none}
+@media (max-width:759px){.list>.hrow>h2,.o-hist>h2,.o-hist .hrow h2,.tgrp{font-size:17px;padding:6px 15px 6px 12px}.days button{padding:7px 11px;font-size:17px}}
+.tgrp{margin-top:18px}
 .streak{background:#fff;box-shadow:0 3px 0 #F3D7A6}
 
 /* 今天/昨天 */
@@ -717,7 +717,7 @@ details.parent summary{background:rgba(255,255,255,.7);border-radius:999px;paddi
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月09日 23:55</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月10日 00:09</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -733,6 +733,9 @@ const IC={"oral": "<g transform=\"rotate(-20 24 24)\"><ellipse cx=\"24\" cy=\"24
 const amt=(n,u)=>`<i>+</i>${n}<i>${u}</i>`;
 const ico=(id,emoji)=>IC[id]?`<svg viewBox="0 0 48 48" aria-hidden="true">${IC[id]}</svg>`:emoji;
 const HABITS=[
+  {id:"persist",grp:"brave",icon:"🏁",name:"坚持就是胜利",pts:4,hot:true,plain:true,diary:"persist"},
+  {id:"brave",grp:"brave",icon:"🦸",name:"问之很勇敢",pts:5,hot:true,plain:true,diary:"brave"},
+  {id:"focus_hw",grp:"brave",icon:"🎯",name:"专注写作业",pts:4,hot:true,plain:true,diary:"focus"},
   {id:"oral",grp:"study",icon:"🪐",name:"口语星球",pts:2},
   {id:"enbook",grp:"study",icon:"📖",name:"英文绘本",pts:2},
   {id:"reading",grp:"study",icon:"📚",name:"语文阅读",pts:5,hot:true,plain:true},
@@ -747,9 +750,6 @@ const HABITS=[
   {id:"writing",grp:"study",icon:"✍️",name:"写字课",pts:2},
   {id:"en_class",grp:"study",icon:"📘",name:"英语课内",pts:2},
   {id:"en_daily",grp:"study",icon:"🎧",name:"英语打卡",pts:2},
-  {id:"persist",grp:"brave",icon:"🏁",name:"坚持就是胜利",pts:4,hot:true,plain:true,diary:"persist"},
-  {id:"brave",grp:"brave",icon:"🦸",name:"问之很勇敢",pts:5,hot:true,plain:true,diary:"brave"},
-  {id:"focus_hw",grp:"brave",icon:"🎯",name:"专注写作业",pts:4,hot:true,plain:true,diary:"focus"},
   {id:"teeth",icon:"🪥",name:"刷牙洗脸",pts:2},
   {id:"teeth_self",slot:"teeth",icon:"😁",name:"主动刷牙",pts:5,hot:true},
   {id:"nose",icon:"💦",name:"睡前洗鼻",pts:2},
@@ -765,7 +765,6 @@ const HABITS=[
   {id:"chair",icon:"🪑",name:"摆椅子",pts:2},
   {id:"quilt",icon:"🛏️",name:"叠被子",pts:2},
   {id:"books",icon:"📚",name:"整理书本",pts:2},
-  {id:"ac_self",icon:"❄️",name:"开空调",pts:2},
 ];
 /* 同一个 slot 每天只记一次：刷牙洗脸和主动刷牙二选一 */
 const slotOf=h=>h.slot||h.id;
@@ -917,7 +916,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="dde0cd76f8";
+const BUILD="e44c186a23";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -1017,7 +1016,7 @@ function render(){
   $("#tiles").classList.toggle("past",isPast());
   if(PAGE==="pts"){renderPts();renderShop();Diary.refresh()}else renderBank();
 }
-const GRP_NAME={brave:"🏅 了不起","":"🌞 习惯"};
+const GRP_NAME={brave:"🏅 了不起",study:"📚 学习","":"🌞 习惯"};
 function renderPts(){
   const p=ptsCalc(),t=recDate();
   countTo("ptsTotal",p.total);
@@ -1134,6 +1133,21 @@ async function shopSave(id,patch){await ensureShop();const cur=state.shop[id]||{
 function tones(seq){try{const ac=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());if(ac.state==="suspended")ac.resume();
   for(const[f,t,d,type,f2]of seq){const o=ac.createOscillator(),g=ac.createGain(),t0=ac.currentTime+t;o.type=type||"sine";o.frequency.setValueAtTime(f,t0);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t0+d);
     g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(type?.07:.22,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g).connect(ac.destination);o.start(t0);o.stop(t0+d+.05)}}catch(e){}}
+/* 开门、关门声：咔哒门锁 + 吱呀合页（开门），吱呀 + 砰的一声 + 咔哒（关门） */
+function doorSnd(open){try{const ac=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());if(ac.state==="suspended")ac.resume();
+  const sr=ac.sampleRate,now=ac.currentTime;
+  const noise=(sec,fn)=>{const n=Math.floor(sr*sec),b=ac.createBuffer(1,n,sr),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=fn(i/n)*(Math.random()*2-1);return b};
+  const hit=(at,sec,type,f,q,vol)=>{const s=ac.createBufferSource(),fl=ac.createBiquadFilter(),g=ac.createGain();s.buffer=noise(sec,t=>Math.pow(1-t,4));fl.type=type;fl.frequency.value=f;fl.Q.value=q;g.gain.value=vol;s.connect(fl).connect(g).connect(ac.destination);s.start(now+at)};
+  const creak=(at,dur,f0,f1,vol)=>{const o=ac.createOscillator(),lfo=ac.createOscillator(),lg=ac.createGain(),fl=ac.createBiquadFilter(),g=ac.createGain(),t0=now+at;
+    o.type="sawtooth";o.frequency.setValueAtTime(f0,t0);o.frequency.linearRampToValueAtTime(f1,t0+dur);
+    lfo.frequency.value=23;lg.gain.value=f0*.18;lfo.connect(lg).connect(o.frequency);
+    fl.type="bandpass";fl.frequency.value=1400;fl.Q.value=3;
+    g.gain.setValueAtTime(.0001,t0);g.gain.linearRampToValueAtTime(vol,t0+dur*.25);g.gain.linearRampToValueAtTime(vol*.6,t0+dur*.8);g.gain.linearRampToValueAtTime(.0001,t0+dur);
+    o.connect(fl).connect(g).connect(ac.destination);o.start(t0);lfo.start(t0);o.stop(t0+dur+.05);lfo.stop(t0+dur+.05)};
+  const thud=(at,vol)=>{const o=ac.createOscillator(),g=ac.createGain(),t0=now+at;o.frequency.setValueAtTime(120,t0);o.frequency.exponentialRampToValueAtTime(45,t0+.25);
+    g.gain.setValueAtTime(vol,t0);g.gain.exponentialRampToValueAtTime(.0001,t0+.3);o.connect(g).connect(ac.destination);o.start(t0);o.stop(t0+.35);hit(at,.12,"lowpass",500,.7,1.2)};
+  if(open){hit(0,.03,"highpass",3000,1,.9);hit(.06,.03,"bandpass",1800,2,.7);creak(.12,.75,170,240,.16)}
+  else{creak(0,.35,230,160,.12);thud(.36,.55);hit(.42,.03,"highpass",2800,1,.8)}}catch(e){}}
 const dingdong=()=>tones([[988,0,.6],[784,.32,.8]]),chaching=()=>tones([[1319,0,.12],[1760,.09,.25],[2349,.18,.45]]);
 function flyNode(html,from,to,{size=80,dur=650,cls=""}={}){return new Promise(res=>{
   const n=document.createElement("div");n.className="flying "+cls;n.innerHTML=html;
@@ -1148,7 +1162,7 @@ function openShop(){shopOpen=true;picked=null;$("#shop").hidden=false;$("#counte
 let entryT=[];
 function playEntry(){
   const en=$("#entry");
-  if(matchMedia("(prefers-reduced-motion: reduce)").matches){dingdong();return}
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){doorSnd(true);setTimeout(dingdong,700);return}
   const it=shopItems().filter(d=>!d.wish);
   $("#winL").innerHTML=it.slice(0,2).map(d=>`<span>${itIco(d)}</span>`).join("");
   $("#winR").innerHTML=it.slice(2,4).map(d=>`<span>${itIco(d)}</span>`).join("");
@@ -1158,7 +1172,7 @@ function playEntry(){
   const cam=en.querySelector(".cam"),dr=en.querySelector(".portal").getBoundingClientRect();
   cam.style.transformOrigin=`${dr.left+dr.width/2}px ${dr.top+dr.height*.55}px`;void en.offsetWidth;
   const at=(ms,f)=>entryT.push(setTimeout(f,ms));
-  at(300,()=>en.classList.add("open"));
+  at(300,()=>{en.classList.add("open");doorSnd(true)});
   at(1000,()=>en.classList.add("walk"));
   at(1900,()=>{en.classList.add("ring");dingdong()});
   at(2400,()=>{en.classList.add("thru");$("#shop").classList.add("arrive")});
@@ -1166,7 +1180,7 @@ function playEntry(){
   en.onclick=()=>{if(!en.classList.contains("ring"))dingdong();endEntry()};
 }
 function endEntry(){entryT.forEach(clearTimeout);entryT=[];const en=$("#entry");en.hidden=true;en.className="entry";setTimeout(()=>$("#shop").classList.remove("arrive"),800)}
-function closeShop(){endEntry();shopOpen=false;picked=null;$("#shop").hidden=true;$("#counter").hidden=true;document.body.style.overflow=""}
+function closeShop(){if(shopOpen)doorSnd(false);endEntry();shopOpen=false;picked=null;$("#shop").hidden=true;$("#counter").hidden=true;document.body.style.overflow=""}
 const perRow=()=>innerWidth>=760?4:3;
 let migHero=false;try{migHero=!!localStorage.getItem("xdj:migHero")}catch(e){}
 function renderShop(){
@@ -1358,7 +1372,7 @@ const Diary=(()=>{
       case"cover":return`<div class="${cls} cover"><span class="corner a"></span><span class="corner b"></span><div class="inner"><div class="em">★</div><h2>问之的<br>高光日记</h2><div class="yr">${(M[0]?md(M[0].date)[0]:new Date().getFullYear())} · 一（3）班</div></div><span class="band"></span><div class="tap">点我打开 ▸</div></div>`;
       case"endp":return`<div class="${cls} endp"><div class="owner"><small>这本日记属于</small><b>问之</b><span>一（3）班</span></div></div>`;
       case"toc":{const show=M.slice(0,10);return`<div class="${cls} diary toc"><h3>目 录</h3><ol>${show.map((m,k)=>{const[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist;return`<li>${mo}月${da}日<i style="background:${q.c}">${q.ic} ${q.name}</i><span class="dot"></span>${k+1}</li>`}).join("")}${M.length>10?`<li style="justify-content:center">…… 还有 ${M.length-10} 篇</li>`:""}${M.length?"":`<li style="justify-content:center;opacity:.6">还没有日记，第一篇会写在这里</li>`}</ol></div>`}
-      case"diary":{const m=p.m,[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist;return`<div class="${cls} diary"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b></div>
+      case"diary":{const m=p.m,[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist,L=(m.text||"").length;return`<div class="${cls} diary${L>65?" long2":L>55?" long":""}"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b></div>
         <div class="dbody">${esc(m.text||"（还没写）")}</div><div class="dsign">—— 爸爸妈妈记 ✍️</div>
         <div class="dfoot">${m.photo?`<span class="dpic"><img src="${m.photo}" alt=""></span>`:""}<span class="stamp" style="--c:${q.c}"><i>${q.ic}</i><span>${q.name}</span></span></div>${pno(i,side)}</div>`}
       case"blank":return`<div class="${cls} diary"><div class="dhead"><b>　</b>月<b>　</b>日　星期<b>　</b>　天气<b>　</b></div><div class="dbody" style="opacity:.55">下一个高光时刻，会写在这里……</div>${pno(i,side)}</div>`;

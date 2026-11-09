@@ -92,7 +92,7 @@ test('every current points and bank card has an exact matching recording, with e
     const html=fs.readFileSync(path.join(root,file),'utf8');
     const habits=vm.runInNewContext(html.match(/const HABITS=(\[[\s\S]*?\n\]);/)[1]);
     const jobs=vm.runInNewContext(html.match(/const JOBS=(\[[\s\S]*?\n\]\.map\(j=>\(\{price:1,\.\.\.j\}\)\));/)[1]);
-    assert.equal(habits.length,33);assert.equal(jobs.length,20);
+    assert.equal(habits.length,32);assert.equal(jobs.length,20);
     for(const h of habits){const text=(h.hot&&!h.plain?'哇，自己主动的！':'')+h.name+'，加'+h.pts+'分！';if(AWAITING_RECORDING.includes(text))continue;assert.ok(pack.phrases[text],text)}
     for(const j of jobs){const text=j.name+'，存进'+j.price+'块钱！';if(AWAITING_RECORDING.includes(text))continue;assert.ok(pack.phrases[text],text)}
   }

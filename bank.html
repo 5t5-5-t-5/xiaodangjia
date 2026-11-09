@@ -198,12 +198,13 @@ details.parent summary::-webkit-details-marker{display:none}
 
 /* ---------- 积分商店：一间小杂货铺。货架上摆着东西，拿下来放到柜台，家长按收银机结账 ---------- */
 /* 积分卡下面的两扇门：小商店、高光日记，突出图标，字小一点 */
-.gates{display:flex;gap:10px;justify-content:center}
-.gate{flex:0 1 112px;border:0;background:var(--white);border-radius:18px;padding:8px 8px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 3px 0 var(--line);cursor:pointer;touch-action:manipulation;position:relative;color:var(--soft)}
-.gate .gi{height:clamp(48px,6.5vw,60px);width:auto;filter:drop-shadow(0 3px 2px rgba(0,0,0,.12));transition:transform .15s}
-.gate small{font-size:12px;letter-spacing:.1em;opacity:.8}
-.gate:active{transform:translateY(4px);box-shadow:0 1px 0 var(--line)}.gate:active .gi{transform:scale(.96)}
-.gate .dot{position:absolute;top:6px;right:8px;width:12px;height:12px;border-radius:50%;background:#FF6B5E;box-shadow:0 0 0 3px var(--white)}
+.gates{display:flex;align-items:stretch;width:100%;background:var(--white);border-radius:20px;box-shadow:0 4px 0 var(--line);overflow:hidden}
+.gate{flex:1;border:0;background:none;padding:8px 14px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;cursor:pointer;touch-action:manipulation;position:relative;color:var(--ink);min-height:68px}
+.gate+.gate{box-shadow:inset 1px 0 0 var(--line)}
+.gate .gi{height:48px;width:auto;flex:none;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12));transition:transform .15s}
+.gate small{font-size:17px;font-weight:700;letter-spacing:.04em}
+.gate:active{background:#F4F7FC}.gate:active .gi{transform:scale(.94)}
+.gate .dot{position:absolute;top:10px;right:12px;width:11px;height:11px;border-radius:50%;background:#FF6B5E;box-shadow:0 0 0 3px var(--white)}
 .streak{background:#FFF1DC;color:#E8890C;border-radius:999px;padding:4px 12px;font-family:var(--fun);font-weight:700;font-size:17px}
 .shopchip{border:0;display:inline-flex;align-items:center;gap:6px;color:var(--ink);cursor:pointer;touch-action:manipulation;position:relative}
 .shopchip svg{width:24px;height:24px}
@@ -568,7 +569,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月09日 15:05</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月09日 15:12</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -767,7 +768,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="3e1f0f815b";
+const BUILD="6e55596965";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};

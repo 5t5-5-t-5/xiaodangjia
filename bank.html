@@ -29,17 +29,17 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .o-card{order:1}.o-info{order:2}.o-tiles{order:3}.o-hist{order:4}.o-parent{order:6}.o-status{order:7}
 
 /* ---------- 卡片通用 ---------- */
-.kcard{position:relative;overflow:hidden;border-radius:22px;aspect-ratio:1.586;container-type:inline-size;padding:20px 22px;/* 不能用 cqw：卡片自身的 padding 会按整个屏幕宽算，iPad 上会把内容挤得很小 */display:flex;flex-direction:column;justify-content:space-between}
+.kcard{position:relative;overflow:hidden;border-radius:22px;aspect-ratio:1.586;container-type:inline-size;padding:5.5cqw 6.5cqw;display:flex;flex-direction:column;justify-content:space-between}
 .kcard>*{position:relative;z-index:1}
 .kcard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .brand{display:flex;align-items:center;gap:8px}
-.brand .logo{width:max(34px,11cqw);height:max(34px,11cqw);border-radius:50%;display:grid;place-items:center;font-size:max(19px,6.5cqw);flex:none}
-.brand b{display:block;font-family:var(--fun);font-weight:700;font-size:max(20px,6cqw);line-height:1.1}
-.brand small{display:block;font-size:max(9px,2.8cqw);letter-spacing:.18em;opacity:.8}
-.kind{text-align:right;font-family:var(--fun);font-weight:700;font-size:max(16px,5cqw);line-height:1.1}
-.kind small{display:block;font-family:var(--body);font-size:max(8px,2.6cqw);letter-spacing:.2em;opacity:.8}
-.cno{font-family:var(--body);font-weight:700;font-size:max(15px,5.6cqw);letter-spacing:.16em;font-variant-numeric:tabular-nums}
-.cap{font-size:max(14px,3.6cqw);font-weight:600;opacity:.85}
+.brand .logo{width:11cqw;height:11cqw;border-radius:50%;display:grid;place-items:center;font-size:6.5cqw;flex:none}
+.brand b{display:block;font-family:var(--fun);font-weight:700;font-size:6cqw;line-height:1.1}
+.brand small{display:block;font-size:2.8cqw;letter-spacing:.18em;opacity:.8}
+.kind{text-align:right;font-family:var(--fun);font-weight:700;font-size:5cqw;line-height:1.1}
+.kind small{display:block;font-family:var(--body);font-size:2.6cqw;letter-spacing:.2em;opacity:.8}
+.cno{font-family:var(--body);font-weight:700;font-size:5.6cqw;letter-spacing:.16em;font-variant-numeric:tabular-nums}
+.cap{font-size:3.6cqw;opacity:.85}
 .shine::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;z-index:2;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);animation:shine 5s ease-in-out infinite}
 @keyframes shine{0%,62%{left:-60%}100%{left:130%}}
 .bump{animation:bump .6s ease-out}
@@ -56,8 +56,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .pcard .logo{background:#4A2600;color:#FFD54A}
 .pcard .kind{background:#4A2600;color:#FFD95A;border-radius:10px;padding:1.4cqw 3cqw}
 .pcard .kind small{color:#FFE9A8}
-.pcard .total{font-family:var(--body);font-weight:700;font-size:84px;font-size:max(72px,27cqw);line-height:.9;color:#fff;text-shadow:0 .7cqw 0 #C9670C;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:2cqw}
-.pcard .total i{font-style:normal;font-size:max(30px,10cqw);color:#FFF6D0;text-shadow:none}
+.pcard .total{font-family:var(--body);font-weight:700;font-size:84px;font-size:27cqw;line-height:.9;color:#fff;text-shadow:0 .7cqw 0 #C9670C;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:2cqw}
+.pcard .total i{font-style:normal;font-size:10cqw;color:#FFF6D0;text-shadow:none}
 .pcard .bot{display:flex;justify-content:space-between;align-items:flex-end}
 .pcard .cno{color:#FFF8E1;text-shadow:0 1px 0 rgba(74,38,0,.55),0 -1px 0 rgba(255,255,255,.45)}
 .holo{width:14cqw;height:9cqw;border-radius:2cqw;background:conic-gradient(from 30deg,#ff9a9e,#fad0c4,#a1c4fd,#c2e9fb,#d4fc79,#96e6a1,#ff9a9e);opacity:.85;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
@@ -79,10 +79,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
     linear-gradient(135deg,#F8E08E,#D4A73A 60%,#F3D27A);box-shadow:inset 0 0 0 1px rgba(90,60,0,.25)}
 .nfc{width:7cqw;height:7cqw;opacity:.85}
 .bcard .balbox{text-align:right}
-.bcard .bal{font-family:var(--body);font-weight:700;font-size:60px;font-size:max(68px,17cqw);line-height:1;font-variant-numeric:tabular-nums}
-.bcard .bal small{font-size:max(30px,9cqw);margin-right:1cqw;opacity:.9}
+.bcard .bal{font-family:var(--body);font-weight:700;font-size:60px;font-size:17cqw;line-height:1;font-variant-numeric:tabular-nums}
+.bcard .bal small{font-size:9cqw;margin-right:1cqw;opacity:.9}
 .bcard .cno{color:#EAF4FF;text-shadow:0 1px 0 rgba(0,0,0,.45),0 -1px 0 rgba(255,255,255,.25)}
-.bcard .bot{display:flex;justify-content:space-between;align-items:center;font-size:max(11px,3.2cqw);letter-spacing:.12em;opacity:.95}
+.bcard .bot{display:flex;justify-content:space-between;align-items:center;font-size:3.2cqw;letter-spacing:.12em;opacity:.95}
 .owe{letter-spacing:0;background:var(--coral);border-radius:999px;padding:.6cqw 3cqw;font-size:4.4cqw;font-weight:700}
 
 /* 卡片下面的小信息 */
@@ -524,9 +524,7 @@ details.parent summary::-webkit-details-marker{display:none}
 @media (min-width:760px){
   .wrap{max-width:1180px;display:grid;grid-template-columns:minmax(300px,36%) 1fr;gap:28px;align-items:start;padding-top:24px}
   .side,.main{display:flex;flex-direction:column;gap:18px}
-  .side{position:sticky;top:20px;max-height:calc(100vh - 40px)}
-  .side .o-hist{min-height:0;flex:1;display:flex;flex-direction:column}
-  .side .o-hist>#hist{overflow-y:auto;-webkit-overflow-scrolling:touch;min-height:0;padding-bottom:6px}
+  .side{position:sticky;top:20px}
   .tiles{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px}
   .tile{padding:20px 8px 16px;border-radius:26px}
   .tile .e{width:84px;height:84px;font-size:50px}
@@ -551,10 +549,10 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="bot"><span>持卡人 ZHONG WENZHI</span><span class="owe" id="bankDebt" hidden></span></div>
     </div>
     <div class="wish o-info" id="wishBox" hidden><div class="wi">🎯</div><div class="wt"><div class="wl" id="wishText"></div><div class="bar"><i id="wishBar"></i></div></div></div>
-    <div class="list o-hist"><h2>🧾 账单</h2><div class="list" id="hist"></div></div>
   </div>
   <div class="main">
     <div class="list o-tiles"><div class="hrow"><h2>💪 干活赚钱</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true">☀️ 今天</button><button data-day="-1" aria-pressed="false">🌙 昨天</button><span class="pick" hidden><span id="pickLbl"></span></span></div></div><div class="tiles" id="tiles"></div></div>
+    <div class="list o-hist"><h2>🧾 账单</h2><div class="list" id="hist"></div></div>
     <details class="parent o-parent"><summary>👩 家长看这里</summary><div class="pbox">
       <div><b>能挣钱的：</b>本分之外、帮全家做的额外家务，每样每天 1 块。点错了再点一下格子就取消。收拾自己的东西、学习、刷牙不挣钱。</div>
       <div><b>花钱：</b></div>
@@ -571,7 +569,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月09日 15:31</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月09日 15:35</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -770,7 +768,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="a565139a51";
+const BUILD="2899724a9a";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};

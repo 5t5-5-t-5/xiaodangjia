@@ -532,8 +532,169 @@ details.parent summary::-webkit-details-marker{display:none}
   .tile .p{font-size:22px}
   .tile .p i{font-size:14px}
 }
+
+/* ===================== 方案一：阳光小镇 =====================
+   像一本暖色绘本：蓝天、白云、绿草坡，积分卡背后有一圈慢慢转的阳光。
+   格子做成厚厚的“糖果按钮”，点亮后变成金灿灿的星星奖章。
+   小商店：木头雕花招牌 + 一圈小灯泡；店里有条纹墙纸、吊灯、木地板。 */
+
+/* ---------- 天空和草地 ---------- */
+html,body{background:#CFEBFF}
+body{background:linear-gradient(#A9DBFF 0%,#D4EEFF 38%,#EEF8FF 70%,#F6FBEF 100%) fixed;background-image:none;background-color:#CFEBFF}
+.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.wrap{position:relative;z-index:1}
+.scene .cl{position:absolute;height:44px;border-radius:99px;background:#fff;opacity:.92;box-shadow:0 8px 0 rgba(160,200,235,.25);animation:drift linear infinite}
+.scene .cl::before,.scene .cl::after{content:"";position:absolute;border-radius:50%;background:#fff}
+.scene .cl::before{width:46%;height:150%;left:16%;bottom:30%}
+.scene .cl::after{width:34%;height:120%;left:52%;bottom:35%}
+.scene .c1{width:150px;top:6%;left:-160px;animation-duration:95s}
+.scene .c2{width:110px;top:32%;left:-120px;animation-duration:130s;animation-delay:-60s;opacity:.75}
+.scene .c3{width:180px;top:58%;left:-190px;animation-duration:160s;animation-delay:-110s;opacity:.6}
+@keyframes drift{to{transform:translateX(calc(100vw + 400px))}}
+.scene .hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px}
+.scene .fl{position:absolute;bottom:22px;font-size:22px;filter:saturate(1.1)}
+@media (prefers-reduced-motion:reduce){.scene .cl{animation:none;left:auto;right:10%}}
+
+/* ---------- 积分卡背后的阳光（只在 iPad 上，手机上卡片在最上面就够亮了） ---------- */
+@media (min-width:760px){
+  .side::before{content:"";position:absolute;left:50%;top:0;width:620px;height:620px;margin:-310px 0 0 -310px;top:120px;z-index:-1;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,236,150,.95) 0 18%,rgba(255,220,110,.35) 32%,transparent 62%),
+      repeating-conic-gradient(from 0deg,rgba(255,214,90,.32) 0 7deg,transparent 7deg 18deg);
+    -webkit-mask:radial-gradient(circle,#000 30%,transparent 66%);mask:radial-gradient(circle,#000 30%,transparent 66%);
+    animation:sunspin 80s linear infinite}
+}
+@keyframes sunspin{to{transform:rotate(360deg)}}
+@keyframes twk{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.side::before,.side::after{animation:none}}
+.pcard{box-shadow:0 18px 36px rgba(232,133,26,.42),0 0 0 4px rgba(255,255,255,.55),inset 0 0 0 2px rgba(255,255,255,.35)}
+.bcard{box-shadow:0 18px 36px rgba(18,62,115,.38),0 0 0 4px rgba(255,255,255,.55)}
+
+/* ---------- 入口条：一块暖暖的软木牌 ---------- */
+.gates{background:linear-gradient(#FFFDF6,#FFF1D6);border:3px solid #fff;border-radius:22px;box-shadow:0 6px 0 #EFCB8E,0 12px 22px rgba(232,137,12,.18)}
+.gate{color:#5A3418}
+.gate+.gate{box-shadow:inset 2px 0 0 #F3DDB4}
+.gate small{font-size:18px}
+.gate .gi{height:52px;animation:hop 4s ease-in-out infinite}
+.gate+.gate .gi{animation-delay:2s}
+@keyframes hop{0%,86%,100%{transform:none}90%{transform:translateY(-7px) rotate(-4deg)}95%{transform:translateY(0) rotate(2deg)}}
+
+/* ---------- 标题做成小彩旗 ---------- */
+.list>.hrow>h2,.o-hist>h2,.tgrp{position:relative;display:inline-flex;align-items:center;gap:6px;width:fit-content;justify-self:start;
+  margin:6px 0 2px;padding:7px 26px 7px 16px;font-size:21px;color:#fff;letter-spacing:.04em;border-radius:12px 4px 4px 12px;
+  background:linear-gradient(#FF9B4A,#FF7A2F);box-shadow:0 4px 0 #D9581A;text-shadow:0 1px 0 rgba(150,50,0,.35);
+  clip-path:polygon(0 0,100% 0,calc(100% - 12px) 50%,100% 100%,0 100%)}
+@media (max-width:759px){.list>.hrow>h2,.o-hist>h2,.tgrp{font-size:18px;padding:6px 22px 6px 12px}.days button{padding:7px 11px;font-size:17px}}
+.tgrp{margin-top:18px;background:linear-gradient(#5BC27C,#2FA65A);box-shadow:0 4px 0 #1E7F42;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 50%,100% 100%,0 100%)}
+.o-hist .hrow h2{background:linear-gradient(#7A8CFF,#5B6BEA);box-shadow:0 4px 0 #3D49B8}
+.page-bank .list>.hrow>h2{background:linear-gradient(#3CC48A,#1DA56A);box-shadow:0 4px 0 #10794B}
+.streak{background:#fff;box-shadow:0 3px 0 #F3D7A6}
+
+/* 今天/昨天 */
+.days{background:#fff;border:3px solid #fff;box-shadow:0 4px 0 #CFE3F5,0 8px 16px rgba(80,140,200,.15)}
+.days button[aria-pressed="true"]{background:linear-gradient(#FFE16A,#FFC83D);box-shadow:0 3px 0 #E8A100;color:#5A3418}
+.days button[data-day="-1"][aria-pressed="true"]{background:linear-gradient(#8C8CF5,#5B5BD6);box-shadow:0 3px 0 #3E3EA8;color:#fff}
+
+/* ---------- 格子：厚厚的糖果按钮 ---------- */
+.tile{background:linear-gradient(#FFFFFF,#FFF9EE);border:3px solid #fff;border-radius:28px;
+  box-shadow:0 7px 0 #F2D29B,0 12px 20px rgba(214,140,40,.16);transition:transform .12s}
+.tile .e{width:78px;height:78px;background:radial-gradient(circle at 38% 30%,#FFFDF5,#FFE9C2 70%,#FFDDA6);
+  box-shadow:inset 0 -5px 0 rgba(232,137,12,.14),0 0 0 4px #FFF6E4}
+.tile .n{font-weight:700;color:#4A3420}
+.tile .p,.page-pts .tile .p{color:#F08A00;font-weight:800}
+.page-pts .tile.hot{background:linear-gradient(#FFFFFF,#FFF4DA);box-shadow:0 7px 0 #F7B850,0 12px 22px rgba(255,150,30,.22)}
+.page-pts .tile.hot .p:not(.ok){background:linear-gradient(#FF9B4A,#FF7A2F);box-shadow:0 2px 0 #D9581A}
+.tile:active{transform:translateY(6px);box-shadow:0 1px 0 #F2D29B}
+/* 点亮：金色奖章 */
+.page-pts .tile.done,.tile.done{background:radial-gradient(circle at 50% 28%,#FFF6B8,#FFD84D 55%,#FFBE1F);border-color:#FFF3A8;
+  box-shadow:0 7px 0 #E09A00,0 0 0 3px rgba(255,255,255,.7),0 14px 26px rgba(255,170,0,.4)}
+.tile.done .n{color:#6B3A00}
+.tile.done .p,.page-pts .tile.done .p{color:#8A4B00;opacity:.8}
+.page-pts .tile.done .e,.tile.done .e{background:radial-gradient(circle at 38% 30%,#FFFFFF,#FFF4C4);box-shadow:0 0 0 4px rgba(255,255,255,.6),0 0 18px rgba(255,255,255,.9)}
+.page-pts .tile.done::after,.tile.done::after{content:"★";width:38px;height:38px;right:4px;top:4px;font-size:22px;color:#fff;
+  background:radial-gradient(circle at 35% 30%,#FF9C5B,#FF6A1F);box-shadow:0 3px 0 #C84A0C,0 0 0 3px #fff;animation:medal .5s cubic-bezier(.3,1.7,.5,1)}
+@keyframes medal{from{transform:scale(0) rotate(-120deg)}}
+.tile.done .e::before{content:"";position:absolute}
+/* 存折页的格子用绿色 */
+.page-bank .tile{box-shadow:0 7px 0 #BFE8D3,0 12px 20px rgba(29,179,122,.14)}
+.page-bank .tile .e{background:radial-gradient(circle at 38% 30%,#FAFFFC,#D9F6E8 70%,#C2EED9);box-shadow:inset 0 -5px 0 rgba(29,179,122,.14),0 0 0 4px #EEFBF4}
+.page-bank .tile .p{color:#13A36B}
+.page-bank .tile.done{background:radial-gradient(circle at 50% 28%,#E9FFF3,#8EE6B9 60%,#4FD08F);border-color:#E6FFF1;box-shadow:0 7px 0 #1F9E62,0 0 0 3px rgba(255,255,255,.7),0 14px 26px rgba(29,179,122,.35)}
+.page-bank .tile.done .n{color:#0D5A36}.page-bank .tile.done .p{color:#0D5A36}
+.page-bank .tile.done::after{content:"¥";background:radial-gradient(circle at 35% 30%,#FFD45A,#F2A900);box-shadow:0 3px 0 #B87D00,0 0 0 3px #fff}
+
+/* ---------- 星星记录 / 账单 ---------- */
+.row{border:3px solid #fff;background:linear-gradient(90deg,#FFFFFF,#FFFBF2);box-shadow:0 5px 0 #E7D7BC,0 10px 18px rgba(120,90,40,.1);border-radius:22px}
+.row .d{color:#B07A3A}
+.empty{background:rgba(255,255,255,.7);border-radius:22px}
+details.parent{border-top-color:rgba(120,160,200,.35)}
+details.parent summary{background:rgba(255,255,255,.7);border-radius:999px;padding:6px 14px;width:fit-content;margin:0 auto}
+
+/* ===================== 小商店 ===================== */
+/* 房间：条纹墙纸 + 顶上的木线 + 木护墙板和地板 + 吊灯的暖光 */
+.shop{background:
+  radial-gradient(ellipse 70% 48% at 50% -4%,rgba(255,232,170,.75),transparent 72%),
+  radial-gradient(ellipse 120% 90% at 50% 45%,transparent 58%,rgba(90,45,10,.30)),
+  linear-gradient(#5A3418,#8A5530 9px,#6E4020 14px,#C98B55 15px,#C98B55 17px,transparent 17px) top/100% 17px no-repeat,
+  repeating-linear-gradient(90deg,rgba(0,0,0,.14) 0 2px,transparent 2px 120px) bottom/100% 15vh no-repeat,
+  linear-gradient(#E2B07E,#E2B07E 6px,#7A4A24 6px,#7A4A24 9px,#A86B3C 9px,#94592E 60%,#7A4A24) bottom/100% 15vh no-repeat,
+  radial-gradient(circle,rgba(226,112,86,.30) 0 2.6px,transparent 3.2px) 14px 22px/58px 58px,
+  repeating-linear-gradient(90deg,#FDEFD8 0 25px,#F8E1C0 25px 29px,#FDEFD8 29px 54px,#F3D2AE 54px 58px);
+  background-color:#FBE9CF}
+.shopin{position:relative}
+/* 吊灯 */
+.lamps{position:absolute;left:0;right:0;top:-12px;height:0;pointer-events:none;z-index:0}
+.lamp{position:absolute;top:0;width:76px;margin-left:-38px}
+.lamp.l1{left:23%}.lamp.l2{left:77%}
+.lamp::before{content:"";position:absolute;left:37px;top:0;width:2px;height:44px;background:#4A2912}
+.lamp b{position:absolute;top:42px;left:0;width:76px;height:36px;border-radius:40px 40px 6px 6px;background:linear-gradient(#3F8F6B,#2C6E50);box-shadow:inset 0 -5px 0 #C9A04A,0 3px 0 rgba(0,0,0,.2)}
+.lamp b::before{content:"";position:absolute;left:24px;bottom:-12px;width:28px;height:16px;border-radius:0 0 16px 16px;background:radial-gradient(circle at 50% 20%,#FFFDE8,#FFE38A)}
+.lamp b::after{content:"";position:absolute;left:-90px;right:-90px;top:30px;height:260px;background:radial-gradient(ellipse 50% 60% at 50% 0,rgba(255,236,170,.55),transparent 70%);animation:glow 3.5s ease-in-out infinite}
+@keyframes glow{50%{opacity:.75}}
+@media (max-width:759px){.lamps{display:none}}
+.stop,.garland,#wishSlot,.shelves,.shopedit{position:relative;z-index:1}
+
+/* 招牌：木头雕出来的字，金边，一圈小灯泡 */
+.hsign{padding-top:30px}
+.hsign b{font-size:30px;letter-spacing:4px;padding:16px 38px 18px;border-radius:20px;color:#FFE7A8;
+  background:repeating-linear-gradient(176deg,rgba(255,255,255,.05) 0 3px,transparent 3px 9px,rgba(0,0,0,.06) 9px 11px,transparent 11px 17px),
+    radial-gradient(ellipse at 30% 20%,#C9874A,transparent 60%),linear-gradient(#A8642E,#7E4520);
+  text-shadow:0 3px 0 #4A2210,0 -1px 0 rgba(255,240,200,.5),0 0 16px rgba(255,190,80,.55);
+  box-shadow:inset 0 0 0 4px #E8B657,inset 0 0 0 7px #6B3814,inset 0 3px 10px rgba(255,255,255,.25),0 8px 0 #4A2210,0 16px 24px rgba(74,34,16,.35)}
+.hsign b::before,.hsign b::after{top:-34px;width:6px;height:36px;border-radius:3px;background:repeating-linear-gradient(40deg,#D9B27A 0 4px,#9C7344 4px 8px)}
+.hsign b .bulbs{position:absolute;inset:-12px;border-radius:28px;pointer-events:none;
+  background:
+    radial-gradient(circle at 11px 8px,#FFFBE0 0 2.5px,#FFC83D 3px 4.6px,transparent 5.2px) top left/22px 16px repeat-x,
+    radial-gradient(circle at 11px 8px,#FFFBE0 0 2.5px,#FFC83D 3px 4.6px,transparent 5.2px) bottom left/22px 16px repeat-x;
+  filter:drop-shadow(0 0 4px rgba(255,200,60,.9));animation:marq 1.2s steps(2) infinite}
+@keyframes marq{50%{filter:drop-shadow(0 0 1px rgba(255,200,60,.4)) brightness(.8)}}
+.hsign b em{display:block;font-style:normal;font-size:11px;letter-spacing:5px;color:#F6CE7E;margin-top:2px;text-shadow:0 1px 0 #4A2210}
+@media (max-width:759px){.hsign b{font-size:20px;letter-spacing:2px;padding:10px 18px 12px}.hsign b em{font-size:9px;letter-spacing:3px}}
+.door{background:linear-gradient(#A8642E,#7E4520);box-shadow:0 5px 0 #4A2210,inset 0 0 0 2px #E8B657}
+
+/* 大愿望：玻璃柜，金边，玻璃反光 */
+.case{background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(232,244,255,.85));border:6px solid #F3D27A;
+  box-shadow:0 8px 0 #C99A3C,0 18px 30px rgba(90,52,24,.28),inset 0 0 0 3px #fff}
+.case::after{content:"";position:absolute;inset:0;border-radius:22px;pointer-events:none;
+  background:linear-gradient(112deg,rgba(255,255,255,.7) 0 6%,transparent 6% 12%,rgba(255,255,255,.4) 12% 14%,transparent 14%)}
+
+/* 货架：更深的木头，上面打着光 */
+.shelves{box-shadow:0 10px 0 #4A2912,0 26px 34px rgba(60,30,10,.4),inset 0 0 0 3px #D9A26A,inset 0 0 0 7px #6B3814}
+.slot{background:radial-gradient(ellipse 70% 55% at 50% 0,rgba(255,224,150,.75),transparent 75%),linear-gradient(#3E2210,#62381A 72%,#4E2C14)}
+.slot .tag{border-radius:8px;box-shadow:0 4px 0 rgba(90,52,24,.25),0 6px 10px rgba(0,0,0,.25)}
+
+/* 右上角小钱包 */
+.counter .purse{background:linear-gradient(#FFFDF2,#FFEFC8);box-shadow:0 5px 0 #A86B3C,0 10px 18px rgba(74,34,16,.3);border:3px solid #fff}
+
+/* 店门口招牌也换成木雕 */
+.facade .esign{color:#FFE7A8;background:repeating-linear-gradient(176deg,rgba(255,255,255,.05) 0 .4cqw,transparent .4cqw 1.2cqw),linear-gradient(#A8642E,#7E4520);
+  text-shadow:0 .5cqw 0 #4A2210,0 0 2cqw rgba(255,190,80,.6);box-shadow:inset 0 0 0 .7cqw #E8B657,inset 0 0 0 1.2cqw #6B3814,0 1.2cqw 0 #4A2210,0 0 0 1.1cqw rgba(255,214,90,.0);
+  outline:.9cqw dotted #FFD54A;outline-offset:.9cqw}
+.entry{background:linear-gradient(#8ED0FF,#CDEBFF 60%)}
 </style>
 
+<div class="scene" aria-hidden="true"><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
+<svg class="hills" viewBox="0 0 1200 150" preserveAspectRatio="none"><path d="M0 70 C180 20 360 30 560 70 S920 120 1200 50 V150 H0Z" fill="#CDEDB6"/><path d="M0 110 C240 60 430 80 640 105 S1000 140 1200 95 V150 H0Z" fill="#A6DD8F"/><path d="M0 135 C300 112 600 122 900 132 S1100 128 1200 124 V150 H0Z" fill="#8CCF78"/></svg>
+<span class="fl" style="left:6%">🌼</span><span class="fl" style="left:31%;bottom:14px">🌷</span><span class="fl" style="left:58%;bottom:26px">🌼</span><span class="fl" style="left:83%;bottom:12px">🌸</span></div>
 <div class="wrap page-bank">
   <div class="side">
     <div class="kcard bcard shine o-card" id="bankCard">
@@ -569,7 +730,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月09日 15:35</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月09日 15:53</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -768,7 +929,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="2899724a9a";
+const BUILD="a0eb696f7c";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};

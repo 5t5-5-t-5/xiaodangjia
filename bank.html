@@ -183,6 +183,14 @@ details.parent summary::-webkit-details-marker{display:none}
 .status{text-align:center;font-size:13px;color:var(--soft)}
 
 /* ---------- 积分商店：一间小杂货铺。货架上摆着东西，拿下来放到柜台，家长按收银机结账 ---------- */
+/* 积分卡下面的两扇门：小商店、高光日记，突出图标，字小一点 */
+.gates{display:flex;gap:14px;justify-content:center}
+.gate{flex:1;max-width:190px;border:0;background:var(--white);border-radius:24px;padding:12px 10px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 5px 0 var(--line);cursor:pointer;touch-action:manipulation;position:relative;color:var(--soft)}
+.gate .gi{height:clamp(88px,13vw,118px);width:auto;filter:drop-shadow(0 3px 2px rgba(0,0,0,.12));transition:transform .15s}
+.gate small{font-size:13px;letter-spacing:.1em;opacity:.8}
+.gate:active{transform:translateY(4px);box-shadow:0 1px 0 var(--line)}.gate:active .gi{transform:scale(.96)}
+.gate .dot{position:absolute;top:10px;right:14px;width:12px;height:12px;border-radius:50%;background:#FF6B5E;box-shadow:0 0 0 3px var(--white)}
+.streak{background:#FFF1DC;color:#E8890C;border-radius:999px;padding:4px 12px;font-family:var(--fun);font-size:17px}
 .shopchip{border:0;display:inline-flex;align-items:center;gap:6px;color:var(--ink);cursor:pointer;touch-action:manipulation;position:relative}
 .shopchip svg{width:24px;height:24px}
 .shopchip .dot{position:absolute;top:2px;right:6px;width:9px;height:9px;border-radius:50%;background:#FF6B5E}
@@ -385,8 +393,6 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .drow .ddel{border:0;background:none;font-size:20px;padding:6px}
 #diary .dhint{font-size:14px;color:var(--soft);margin-top:8px;line-height:1.6;text-align:center}
 @media (max-width:700px){#diary .drow{grid-template-columns:1fr 1fr 1fr auto}#diary .drow textarea{grid-column:1/-1;grid-row:2}}
-.dychip{border:0;color:var(--ink);cursor:pointer;touch-action:manipulation}
-.dychip:active{transform:translateY(3px);box-shadow:none}
 /* 写日记的小框（在结果弹窗里） */
 .pop .dyp{display:flex;flex-direction:column;gap:10px;text-align:left}
 .pop .dyp .t{font-family:"ZCOOL KuaiLe",var(--fun);font-size:24px;text-align:center}
@@ -533,7 +539,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月08日 20:17</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月09日 11:20</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -732,7 +738,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="ce91f27500";
+const BUILD="4eed441371";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -835,7 +841,6 @@ function render(){
 function renderPts(){
   const p=ptsCalc(),t=recDate();
   countTo("ptsTotal",p.total);
-  $("#ptsToday").textContent="今天 +"+p.todayPts;
   const st=$("#ptsStreak");st.hidden=p.streak<2;st.textContent="🔥 连续学习 "+p.streak+" 天";
   $("#tiles").innerHTML=HABITS.map((h,i)=>{
     const sec=i===0?`<div class="tgrp">📚 学习</div>`:h.grp!=="study"&&HABITS[i-1].grp==="study"?`<div class="tgrp">🌞 生活</div>`:"";
@@ -982,7 +987,6 @@ function renderShop(){
   /* 大愿望原来的小熊图标换成小英雄（只换一次，之后家长可以自己改） */
   if(!migHero&&state.shop.s_toy){migHero=true;try{localStorage.setItem("xdj:migHero","1")}catch(e){}if(state.shop.s_toy.icon==="r_toy"){shopSave("s_toy",{icon:"r_hero"});return}}
   const total=ptsCalc().total,items=shopItems(),wish=items.find(d=>d.wish),rest=items.filter(d=>!d.wish);
-  const gi=$("#shopGoIcon");if(!gi.innerHTML)gi.innerHTML=gico("r_store");
   $("#shopDot").hidden=!items.some(d=>total>=d.pts);
   $("#shopPts").textContent=total;
   $("#wishSlot").innerHTML=wish?(()=>{const pc=Math.min(100,Math.round(total/wish.pts*100)),ok=total>=wish.pts,away=picked===wish.id;
@@ -1171,11 +1175,16 @@ const Diary=(()=>{
     prevB.disabled=cur<0;nextB.disabled=cur>=LAST;
     posEl.textContent=cur<0?"封面":cur===0?"目录":`第 ${cur*2-1}–${cur*2} 页`;
   }
-  let ac;function rustle(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume();
-    const len=ac.sampleRate*.45,buf=ac.createBuffer(1,len,ac.sampleRate),d=buf.getChannelData(0);
-    for(let i=0;i<len;i++){const t=i/len;d[i]=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*t),1.6)*(.6+.4*Math.random())}
-    const src=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();f.type="bandpass";f.frequency.value=2600;f.Q.value=.7;g.gain.value=.35;
-    src.buffer=buf;src.connect(f).connect(g).connect(ac.destination);src.start()}catch(e){}}
+  let ac;function rustle(){try{ac=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());if(ac.state==="suspended")ac.resume();
+    const sr=ac.sampleRate,now=ac.currentTime,noise=(sec,fn)=>{const n=Math.floor(sr*sec),b=ac.createBuffer(1,n,sr),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=fn(i/n)*(Math.random()*2-1);return b};
+    const play=(buf,at,type,f0,f1,q,vol)=>{const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=buf;f.type=type;f.Q.value=q;
+      f.frequency.setValueAtTime(f0,now+at);f.frequency.exponentialRampToValueAtTime(f1,now+at+buf.duration);g.gain.value=vol;s.connect(f).connect(g).connect(ac.destination);s.start(now+at)};
+    /* 1 纸页被掀起、滑过去的“唰——” */
+    play(noise(.42,t=>Math.pow(Math.sin(Math.PI*Math.min(1,t*1.15)),1.4)),0,"bandpass",900,4200,.9,1.1);
+    /* 2 纸面轻轻的沙沙声（一颗颗小颗粒） */
+    play(noise(.38,t=>(Math.random()<.06?1:.18)*Math.sin(Math.PI*t)),.03,"highpass",2500,3500,.7,.7);
+    /* 3 纸页落下的“啪” */
+    play(noise(.09,t=>Math.pow(1-t,3)),.36,"lowpass",900,300,.8,1.4)}catch(e){}}
   const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
   /* 硬封面 */
   let L=null;

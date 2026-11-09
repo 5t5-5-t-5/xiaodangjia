@@ -183,6 +183,14 @@ details.parent summary::-webkit-details-marker{display:none}
 .status{text-align:center;font-size:13px;color:var(--soft)}
 
 /* ---------- 积分商店：一间小杂货铺。货架上摆着东西，拿下来放到柜台，家长按收银机结账 ---------- */
+/* 积分卡下面的两扇门：小商店、高光日记，突出图标，字小一点 */
+.gates{display:flex;gap:14px;justify-content:center}
+.gate{flex:1;max-width:190px;border:0;background:var(--white);border-radius:24px;padding:12px 10px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 5px 0 var(--line);cursor:pointer;touch-action:manipulation;position:relative;color:var(--soft)}
+.gate .gi{height:clamp(88px,13vw,118px);width:auto;filter:drop-shadow(0 3px 2px rgba(0,0,0,.12));transition:transform .15s}
+.gate small{font-size:13px;letter-spacing:.1em;opacity:.8}
+.gate:active{transform:translateY(4px);box-shadow:0 1px 0 var(--line)}.gate:active .gi{transform:scale(.96)}
+.gate .dot{position:absolute;top:10px;right:14px;width:12px;height:12px;border-radius:50%;background:#FF6B5E;box-shadow:0 0 0 3px var(--white)}
+.streak{background:#FFF1DC;color:#E8890C;border-radius:999px;padding:4px 12px;font-family:var(--fun);font-size:17px}
 .shopchip{border:0;display:inline-flex;align-items:center;gap:6px;color:var(--ink);cursor:pointer;touch-action:manipulation;position:relative}
 .shopchip svg{width:24px;height:24px}
 .shopchip .dot{position:absolute;top:2px;right:6px;width:9px;height:9px;border-radius:50%;background:#FF6B5E}
@@ -385,8 +393,6 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .drow .ddel{border:0;background:none;font-size:20px;padding:6px}
 #diary .dhint{font-size:14px;color:var(--soft);margin-top:8px;line-height:1.6;text-align:center}
 @media (max-width:700px){#diary .drow{grid-template-columns:1fr 1fr 1fr auto}#diary .drow textarea{grid-column:1/-1;grid-row:2}}
-.dychip{border:0;color:var(--ink);cursor:pointer;touch-action:manipulation}
-.dychip:active{transform:translateY(3px);box-shadow:none}
 /* 写日记的小框（在结果弹窗里） */
 .pop .dyp{display:flex;flex-direction:column;gap:10px;text-align:left}
 .pop .dyp .t{font-family:"ZCOOL KuaiLe",var(--fun);font-size:24px;text-align:center}
@@ -509,11 +515,11 @@ details.parent summary::-webkit-details-marker{display:none}
       <div><div class="cap">我的积分</div><div class="total"><span id="ptsTotal">0</span><i>★</i></div></div>
       <div class="bot"><span class="cno">No. 0331</span><span class="holo"></span></div>
     </div>
-    <div class="chips o-info"><span class="chipx" id="ptsToday">今天 +0</span><span class="chipx" id="ptsStreak" hidden></span><button class="chipx shopchip" id="shopGo" type="button" aria-label="小商店"><span id="shopGoIcon"></span>小商店<span class="dot" id="shopDot" hidden></span></button><button class="chipx dychip" id="diaryGo" type="button" aria-label="高光日记">📔 高光日记</button></div>
+    <div class="gates o-info"><button class="gate" id="shopGo" type="button" aria-label="小商店"><svg class="gi" viewBox="0 0 100 92" aria-hidden="true"><defs><linearGradient id="giGlow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1A8"/><stop offset="1" stop-color="#FFC83D"/></linearGradient></defs><rect x="10" y="22" width="80" height="67" rx="3" fill="#F1B77E" stroke="#8A5530" stroke-width="3"/><path d="M12 50H88M12 62H88M12 74H88" stroke="#E3A56C" stroke-width="1.6"/><rect x="4" y="16" width="92" height="8" rx="3" fill="#7A4A24"/><rect x="31" y="3" width="38" height="15" rx="4" fill="#D49A62" stroke="#7A4A24" stroke-width="2.4"/><text x="50" y="14.6" text-anchor="middle" font-size="11" fill="#7A4A24">★</text><path d="M11 25H89V36H11Z" fill="#FFF6E0"/><path d="M11 25h8v11h-8zM27 25h8v11h-8zM43 25h8v11h-8zM59 25h8v11h-8zM75 25h8v11h-8z" fill="#FF6B5E"/><g fill="#FF6B5E"><circle cx="15" cy="36" r="4"/><circle cx="31" cy="36" r="4"/><circle cx="47" cy="36" r="4"/><circle cx="63" cy="36" r="4"/><circle cx="79" cy="36" r="4"/></g><g fill="#FFF6E0"><circle cx="23" cy="36" r="4"/><circle cx="39" cy="36" r="4"/><circle cx="55" cy="36" r="4"/><circle cx="71" cy="36" r="4"/><circle cx="87" cy="36" r="2.5"/></g><rect x="15" y="47" width="19" height="22" rx="2" fill="#FFF4D6" stroke="#8A5530" stroke-width="2.6"/><rect x="66" y="47" width="19" height="22" rx="2" fill="#FFF4D6" stroke="#8A5530" stroke-width="2.6"/><circle cx="24.5" cy="60" r="4" fill="#FF9F1C"/><path d="M71 64l4-8 4 8z" fill="#4A90E2"/><path d="M38 89V58a12 12 0 0 1 24 0V89Z" fill="url(#giGlow)" stroke="#6E4020" stroke-width="3"/><path d="M38.5 89V60l5 2V89Z M61.5 89V60l-5 2V89Z" fill="#A86B3C"/><text x="50" y="80" text-anchor="middle" font-size="12" fill="#E8890C">★</text><circle cx="50" cy="45" r="3.4" fill="#FFC83D" stroke="#A86B00" stroke-width="1"/></svg><small>小商店</small><span class="dot" id="shopDot" hidden></span></button><button class="gate" id="diaryGo" type="button" aria-label="高光日记"><svg class="gi" viewBox="0 0 80 96" aria-hidden="true"><rect x="6" y="6" width="72" height="88" rx="6" fill="#5A1A20"/><rect x="66" y="9" width="9" height="82" rx="2" fill="#FFFBF1"/><path d="M68 14H74M68 20H74M68 26H74M68 32H74M68 38H74M68 44H74M68 50H74M68 56H74M68 62H74M68 68H74M68 74H74M68 80H74M68 86H74" stroke="#E7DCC6" stroke-width="1"/><rect x="2" y="2" width="66" height="90" rx="6" fill="#A8323A"/><rect x="2" y="2" width="9" height="90" rx="5" fill="#000" opacity=".22"/><rect x="16" y="10" width="44" height="74" rx="3" fill="none" stroke="#F2C766" stroke-width="2"/><rect x="19" y="13" width="38" height="68" rx="2" fill="none" stroke="#F2C766" stroke-width=".8" opacity=".6"/><circle cx="38" cy="36" r="11" fill="#F2C766"/><circle cx="35" cy="33" r="5" fill="#FFF1B8" opacity=".6"/><text x="38" y="41.5" text-anchor="middle" font-size="15" fill="#7C2129">★</text><rect x="26" y="54" width="24" height="3.4" rx="1.7" fill="#F2C766"/><rect x="29" y="61" width="18" height="3.4" rx="1.7" fill="#F2C766"/><rect x="54" y="2" width="5" height="90" fill="#5A2228"/></svg><small>高光日记</small></button></div>
   </div>
   <div class="main">
     <div class="list o-tiles"><div class="hrow"><h2>👆 做到了吗？</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true">☀️ 今天</button><button data-day="-1" aria-pressed="false">🌙 昨天</button><label class="pick"><span id="pickLbl">📅 更早</span><input type="date" class="dpick" aria-label="选更早的一天"></label></div></div><div class="tiles" id="tiles"></div></div>
-    <div class="list o-hist"><h2>⭐ 星星记录</h2><div class="list" id="hist"></div></div>
+    <div class="list o-hist"><div class="hrow"><h2>⭐ 星星记录</h2><span class="streak" id="ptsStreak" hidden></span></div><div class="list" id="hist"></div></div>
     <details class="parent o-parent"><summary>👩 家长看这里</summary><div class="pbox">
       <div><b>学习每项 2 星：</b>口语星球、英文绘本、数学预习、语文预习、课文朗读、数学作业（课内作业书写）、语文订正、写字课、英语课内、英语打卡。语文阅读、手指指读、读书没哭、写字没哭每项 5 星。</div>
       <div><b>问之很勇敢：</b>5 星，一天记一次。</div>
@@ -531,7 +537,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月08日 20:17</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月09日 11:20</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -768,7 +774,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="15ee1f4bec";
+const BUILD="b3da5ca8fe";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -871,7 +877,6 @@ function render(){
 function renderPts(){
   const p=ptsCalc(),t=recDate();
   countTo("ptsTotal",p.total);
-  $("#ptsToday").textContent="今天 +"+p.todayPts;
   const st=$("#ptsStreak");st.hidden=p.streak<2;st.textContent="🔥 连续学习 "+p.streak+" 天";
   $("#tiles").innerHTML=HABITS.map((h,i)=>{
     const sec=i===0?`<div class="tgrp">📚 学习</div>`:h.grp!=="study"&&HABITS[i-1].grp==="study"?`<div class="tgrp">🌞 生活</div>`:"";
@@ -1018,7 +1023,6 @@ function renderShop(){
   /* 大愿望原来的小熊图标换成小英雄（只换一次，之后家长可以自己改） */
   if(!migHero&&state.shop.s_toy){migHero=true;try{localStorage.setItem("xdj:migHero","1")}catch(e){}if(state.shop.s_toy.icon==="r_toy"){shopSave("s_toy",{icon:"r_hero"});return}}
   const total=ptsCalc().total,items=shopItems(),wish=items.find(d=>d.wish),rest=items.filter(d=>!d.wish);
-  const gi=$("#shopGoIcon");if(!gi.innerHTML)gi.innerHTML=gico("r_store");
   $("#shopDot").hidden=!items.some(d=>total>=d.pts);
   $("#shopPts").textContent=total;
   $("#wishSlot").innerHTML=wish?(()=>{const pc=Math.min(100,Math.round(total/wish.pts*100)),ok=total>=wish.pts,away=picked===wish.id;
@@ -1207,11 +1211,16 @@ const Diary=(()=>{
     prevB.disabled=cur<0;nextB.disabled=cur>=LAST;
     posEl.textContent=cur<0?"封面":cur===0?"目录":`第 ${cur*2-1}–${cur*2} 页`;
   }
-  let ac;function rustle(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume();
-    const len=ac.sampleRate*.45,buf=ac.createBuffer(1,len,ac.sampleRate),d=buf.getChannelData(0);
-    for(let i=0;i<len;i++){const t=i/len;d[i]=(Math.random()*2-1)*Math.pow(Math.sin(Math.PI*t),1.6)*(.6+.4*Math.random())}
-    const src=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();f.type="bandpass";f.frequency.value=2600;f.Q.value=.7;g.gain.value=.35;
-    src.buffer=buf;src.connect(f).connect(g).connect(ac.destination);src.start()}catch(e){}}
+  let ac;function rustle(){try{ac=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());if(ac.state==="suspended")ac.resume();
+    const sr=ac.sampleRate,now=ac.currentTime,noise=(sec,fn)=>{const n=Math.floor(sr*sec),b=ac.createBuffer(1,n,sr),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=fn(i/n)*(Math.random()*2-1);return b};
+    const play=(buf,at,type,f0,f1,q,vol)=>{const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=buf;f.type=type;f.Q.value=q;
+      f.frequency.setValueAtTime(f0,now+at);f.frequency.exponentialRampToValueAtTime(f1,now+at+buf.duration);g.gain.value=vol;s.connect(f).connect(g).connect(ac.destination);s.start(now+at)};
+    /* 1 纸页被掀起、滑过去的“唰——” */
+    play(noise(.42,t=>Math.pow(Math.sin(Math.PI*Math.min(1,t*1.15)),1.4)),0,"bandpass",900,4200,.9,1.1);
+    /* 2 纸面轻轻的沙沙声（一颗颗小颗粒） */
+    play(noise(.38,t=>(Math.random()<.06?1:.18)*Math.sin(Math.PI*t)),.03,"highpass",2500,3500,.7,.7);
+    /* 3 纸页落下的“啪” */
+    play(noise(.09,t=>Math.pow(1-t,3)),.36,"lowpass",900,300,.8,1.4)}catch(e){}}
   const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
   /* 硬封面 */
   let L=null;

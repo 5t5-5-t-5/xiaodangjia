@@ -584,6 +584,7 @@ body{background:linear-gradient(#A9DBFF 0%,#D4EEFF 38%,#EEF8FF 70%,#F6FBEF 100%)
   clip-path:polygon(0 0,100% 0,calc(100% - 12px) 50%,100% 100%,0 100%)}
 @media (max-width:759px){.list>.hrow>h2,.o-hist>h2,.tgrp{font-size:18px;padding:6px 22px 6px 12px}.days button{padding:7px 11px;font-size:17px}}
 .tgrp{margin-top:18px;background:linear-gradient(#5BC27C,#2FA65A);box-shadow:0 4px 0 #1E7F42;clip-path:polygon(0 0,100% 0,calc(100% - 12px) 50%,100% 100%,0 100%)}
+.tgrp.g-brave{background:linear-gradient(#FF8A7A,#F25F5C);box-shadow:0 4px 0 #C2413F}
 .o-hist .hrow h2{background:linear-gradient(#7A8CFF,#5B6BEA);box-shadow:0 4px 0 #3D49B8}
 .page-bank .list>.hrow>h2{background:linear-gradient(#3CC48A,#1DA56A);box-shadow:0 4px 0 #10794B}
 .streak{background:#fff;box-shadow:0 3px 0 #F3D7A6}
@@ -716,7 +717,7 @@ details.parent summary{background:rgba(255,255,255,.7);border-radius:999px;paddi
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月09日 23:48</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月09日 23:55</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -738,8 +739,6 @@ const HABITS=[
   {id:"fingerread",grp:"study",icon:"👆",name:"手指指读",pts:5,hot:true,plain:true},
   {id:"read_nocry",grp:"study",icon:"😊",name:"读书没哭",pts:5,hot:true,plain:true},
   {id:"write_nocry",grp:"study",icon:"✏️",name:"写字没哭",pts:5,hot:true,plain:true},
-  {id:"persist",grp:"study",icon:"🏁",name:"坚持就是胜利",pts:4,hot:true,plain:true,diary:"persist"},
-  {id:"focus_hw",grp:"study",icon:"🎯",name:"专注写作业",pts:4,hot:true,plain:true},
   {id:"math_pre",grp:"study",icon:"🧮",name:"数学预习",pts:2},
   {id:"cn_pre",grp:"study",icon:"📕",name:"语文预习",pts:2},
   {id:"cn_read",grp:"study",icon:"🎙️",name:"课文朗读",pts:2},
@@ -748,7 +747,9 @@ const HABITS=[
   {id:"writing",grp:"study",icon:"✍️",name:"写字课",pts:2},
   {id:"en_class",grp:"study",icon:"📘",name:"英语课内",pts:2},
   {id:"en_daily",grp:"study",icon:"🎧",name:"英语打卡",pts:2},
-  {id:"brave",icon:"🦸",name:"问之很勇敢",pts:5,hot:true,plain:true,diary:"brave"},
+  {id:"persist",grp:"brave",icon:"🏁",name:"坚持就是胜利",pts:4,hot:true,plain:true,diary:"persist"},
+  {id:"brave",grp:"brave",icon:"🦸",name:"问之很勇敢",pts:5,hot:true,plain:true,diary:"brave"},
+  {id:"focus_hw",grp:"brave",icon:"🎯",name:"专注写作业",pts:4,hot:true,plain:true,diary:"focus"},
   {id:"teeth",icon:"🪥",name:"刷牙洗脸",pts:2},
   {id:"teeth_self",slot:"teeth",icon:"😁",name:"主动刷牙",pts:5,hot:true},
   {id:"nose",icon:"💦",name:"睡前洗鼻",pts:2},
@@ -916,7 +917,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="1c8c815102";
+const BUILD="dde0cd76f8";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -1016,12 +1017,13 @@ function render(){
   $("#tiles").classList.toggle("past",isPast());
   if(PAGE==="pts"){renderPts();renderShop();Diary.refresh()}else renderBank();
 }
+const GRP_NAME={brave:"🏅 了不起","":"🌞 习惯"};
 function renderPts(){
   const p=ptsCalc(),t=recDate();
   countTo("ptsTotal",p.total);
   const st=$("#ptsStreak");st.hidden=p.streak<2;st.textContent="🔥 连续学习 "+p.streak+" 天";
   $("#tiles").innerHTML=HABITS.map((h,i)=>{
-    const sec=i===0?"":h.grp!=="study"&&HABITS[i-1].grp==="study"?`<div class="tgrp">🌞 生活</div>`:"";
+    const g=h.grp||"",sec=i>0&&g!==(HABITS[i-1].grp||"")?`<div class="tgrp g-${g||"life"}">${GRP_NAME[g]}</div>`:"";
     const d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
     return sec+`<button class="tile ${h.grp?"":"life"} ${h.hot?"hot":""} ${mine?"done":d?"off":""} ${armed(t+"_"+slotOf(h))}" data-h="${h.id}" aria-label="${h.name}"><span class="e">${ico(h.id,h.icon)}</span><span class="n">${h.name}</span><span class="p ${d?"ok":""}">${amt(h.pts,"分")}</span></button>`;
   }).join("");
@@ -1332,7 +1334,7 @@ async function recordBank(parsed){
    书的坐标：右页 x∈[0,W]、左页 x∈[-W,0]，原点在书脊顶端。翻纸页时书角 C0 被拖到 P，
    折痕是 C0 和 P 连线的垂直平分线：一边的纸还平铺着，另一边翻过来露出背面（镜像过去）。
    硬封面不会弯，整块绕书脊转。 */
-const DQ={persist:{name:"坚持",ic:"🏁",c:"#FF9F1C"},brave:{name:"勇敢",ic:"🦸",c:"#4A90E2"},nocry:{name:"不哭",ic:"😊",c:"#FF5FA2"},self:{name:"主动",ic:"⭐",c:"#1DB37A"}};
+const DQ={persist:{name:"坚持",ic:"🏁",c:"#FF9F1C"},brave:{name:"勇敢",ic:"🦸",c:"#4A90E2"},focus:{name:"专注",ic:"🎯",c:"#8C7CF0"},nocry:{name:"不哭",ic:"😊",c:"#FF5FA2"},self:{name:"主动",ic:"⭐",c:"#1DB37A"}};
 const DWX=["☀️","⛅","☁️","🌧️","❄️"];
 const diaryList=()=>Object.entries(state.diary||{}).map(([id,d])=>({id,...d})).filter(d=>d&&d.date)
   .sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:(a.ts||0)-(b.ts||0));
@@ -1523,7 +1525,7 @@ const Diary=(()=>{
   function closeDiary(){if(busy)return;open=false;root.hidden=true;document.body.style.overflow=""}
   $("#diaryGo").addEventListener("click",openDiary);$("#dyClose").addEventListener("click",closeDiary);
   addEventListener("keydown",e=>{if(!open||/TEXTAREA|INPUT|SELECT/.test(e.target.tagName))return;if(e.key==="Escape")closeDiary();if(e.key==="ArrowRight")turn(1);if(e.key==="ArrowLeft")turn(-1)});
-  /* 点完“坚持就是胜利”“问之很勇敢”后：问要不要写进日记 */
+  /* 点完“了不起”里的格子（坚持就是胜利、问之很勇敢、专注写作业）后：问要不要写进日记 */
   function ask(h,date){
     if(!$("#pop").hidden||open)return;
     let q=h.diary,wx="",photo=null;

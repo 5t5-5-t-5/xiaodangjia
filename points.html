@@ -105,6 +105,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .days button[aria-pressed="true"]{background:var(--sun);color:var(--ink)}
 .days button[data-day="-1"][aria-pressed="true"],.days .pick.on{background:#5B5BD6;color:#fff}
 .days .pick{position:relative;border-radius:999px;padding:7px 12px;font-family:"ZCOOL KuaiLe",var(--fun);font-size:18px;color:var(--soft);white-space:nowrap;cursor:pointer}
+.pickp{position:relative;display:inline-block;cursor:pointer}
 .dpick{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
 .hrow{flex-wrap:wrap}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -172,6 +173,16 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .pop .msg{font-size:18px;color:var(--ink)}
 .pop .acts{display:flex;gap:10px;justify-content:center}
 .pop .acts button{border:0;border-radius:999px;padding:12px 22px;font-family:"ZCOOL KuaiLe",var(--fun);font-size:22px}
+.buyp{display:flex;flex-direction:column;align-items:center;gap:6px}
+.buyp .bi{width:150px;height:150px;animation:float 2s ease-in-out infinite;filter:drop-shadow(0 6px 6px rgba(0,0,0,.15))}.buyp .bi svg,.buyp .bi img{width:100%;height:100%;border-radius:22px;object-fit:cover}
+.buyp .bn{font-family:"ZCOOL KuaiLe",var(--fun);font-size:32px;line-height:1.2}
+.buyp .bp{display:flex;align-items:center;gap:6px;font-family:"Andika",sans-serif;font-weight:700;font-size:30px;color:#E8890C}
+.buyp .bp .cn{width:32px;height:32px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF1A8,#FFC83D 55%,#F0A100);display:grid;place-items:center;color:#fff;font-size:19px}
+.buyp .bl{font-size:16px;color:var(--soft)}
+.buyp .bgo{border:0;width:100%;margin-top:10px;padding:18px;border-radius:999px;background:linear-gradient(#FFB443,#FF8A1C);color:#fff;font-family:"ZCOOL KuaiLe",var(--fun);font-size:40px;letter-spacing:.1em;box-shadow:0 7px 0 #D06A00;animation:bgo 1.4s ease-in-out infinite;touch-action:manipulation}
+.buyp .bgo:active{transform:translateY(5px);box-shadow:0 2px 0 #D06A00;animation:none}
+.buyp .bno{border:0;background:none;color:var(--soft);font-size:18px;padding:8px 20px}
+@keyframes bgo{50%{transform:scale(1.04)}}
 .pop .again{background:var(--sky)} .pop .ok{background:var(--ink);color:#fff}
 @keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
 
@@ -231,7 +242,14 @@ details.parent summary::-webkit-details-marker{display:none}
 @keyframes float{50%{transform:translateY(-6px)}}
 .case{margin-top:12px}
 .case .rib{position:absolute;z-index:2;top:-15px;left:24px;white-space:nowrap;background:#FF6B5E;color:#fff;font-weight:700;font-size:15px;border-radius:999px;padding:4px 14px;box-shadow:0 3px 0 #D9483C}
-.wrow{display:flex;align-items:center;gap:10px;margin-top:8px}
+.wrow{display:flex;align-items:center;gap:10px;margin-top:8px;margin-bottom:26px}
+.wbw{position:relative;flex:1;min-width:0;display:flex}.wbw .wbar{flex:1}
+.wbar s{position:absolute;top:5px;bottom:5px;width:3px;margin-left:-1.5px;border-radius:2px;background:rgba(255,255,255,.95);box-shadow:0 0 0 1px #BFE3FF}
+.mks{position:absolute;left:0;right:0;top:100%;height:28px;pointer-events:none}
+.mks i{position:absolute;top:3px;transform:translateX(-50%);display:flex;align-items:center;gap:1px;font-style:normal;font-family:"Andika",sans-serif;font-weight:700;font-size:14px;color:#AFC0D6;white-space:nowrap}
+.mks i b{font-size:22px;line-height:1;color:#D5DFEC}
+.mks i.on{color:#E8890C}.mks i.on b{color:#FFC83D;text-shadow:0 0 8px rgba(255,200,61,.9),0 1px 0 #E8A100;animation:msPop .7s}
+@keyframes msPop{0%{transform:scale(.3)}60%{transform:scale(1.35)}100%{transform:scale(1)}}
 .wbar{position:relative;flex:1;min-width:0;height:38px;border-radius:999px;background:#EAF4FF;border:3px solid #BFE3FF;overflow:hidden}
 .wbar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:#FFC83D radial-gradient(circle,#FFF3B0 0 3px,transparent 4px) 0 0/16px 16px;transition:width .8s}
 .wbar>span{position:relative;display:flex;align-items:center;justify-content:center;gap:4px;height:100%;font-weight:700;font-size:16px;color:var(--ink);white-space:nowrap}
@@ -391,10 +409,16 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .dedit summary{list-style:none;text-align:center;color:var(--soft);font-size:15px;cursor:pointer}
 #diary .dedit summary::-webkit-details-marker{display:none}
 #diary .drows{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-#diary .drow{display:grid;grid-template-columns:auto auto auto 1fr auto;gap:8px;align-items:start;background:#FFF8EA;border-radius:16px;padding:10px}
+#diary .drow{display:grid;grid-template-columns:auto auto auto 1fr auto auto;gap:8px;align-items:start;background:#FFF8EA;border-radius:16px;padding:10px}
 #diary .drow input,#diary .drow select,#diary .drow textarea{font:inherit;font-size:16px;border:2px solid #EADBC2;border-radius:12px;padding:7px 9px;background:#fff;color:var(--ink);min-width:0}
 #diary .drow textarea{resize:vertical;min-height:44px;line-height:1.5}
 #diary .drow .ddel{border:0;background:none;font-size:20px;padding:6px}
+#diary .drow .dcam{border:0;border-radius:12px;background:#F3EBDD;font-size:18px;width:44px;height:44px;padding:0;overflow:hidden}#diary .drow .dcam img{width:100%;height:100%;object-fit:cover}
+#diary .dfoot{display:flex;align-items:flex-end;gap:2cqw}#diary .dfoot .stamp{margin-left:auto}
+#diary .dpic{position:relative;flex:none;width:19cqw;padding:1cqw 1cqw 3cqw;background:#fff;border-radius:.4cqw;box-shadow:0 .5cqw 1.2cqw rgba(0,0,0,.18);transform:rotate(-5deg);margin:1.6cqw 0 0 .6cqw}
+#diary .dpic img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
+#diary .dpic::before{content:"";position:absolute;left:50%;top:-1.2cqw;width:8cqw;height:2.6cqw;margin-left:-4cqw;background:rgba(255,236,170,.75);transform:rotate(3deg);box-shadow:0 .2cqw .4cqw rgba(0,0,0,.08)}
+.pop .dyp .pho{border:0;border-radius:14px;background:#F3EBDD;padding:8px 14px;font-size:16px;display:inline-flex;align-items:center;gap:8px;align-self:center}.pop .dyp .pho img{width:44px;height:44px;border-radius:8px;object-fit:cover}
 #diary .dhint{font-size:14px;color:var(--soft);margin-top:8px;line-height:1.6;text-align:center}
 @media (max-width:700px){#diary .drow{grid-template-columns:1fr 1fr 1fr auto}#diary .drow textarea{grid-column:1/-1;grid-row:2}}
 /* 写日记的小框（在结果弹窗里） */
@@ -522,7 +546,7 @@ details.parent summary::-webkit-details-marker{display:none}
     <div class="gates o-info"><button class="gate" id="shopGo" type="button" aria-label="小商店"><svg class="gi" viewBox="0 0 100 92" aria-hidden="true"><defs><linearGradient id="giGlow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1A8"/><stop offset="1" stop-color="#FFC83D"/></linearGradient></defs><rect x="10" y="22" width="80" height="67" rx="3" fill="#F1B77E" stroke="#8A5530" stroke-width="3"/><path d="M12 50H88M12 62H88M12 74H88" stroke="#E3A56C" stroke-width="1.6"/><rect x="4" y="16" width="92" height="8" rx="3" fill="#7A4A24"/><rect x="31" y="3" width="38" height="15" rx="4" fill="#D49A62" stroke="#7A4A24" stroke-width="2.4"/><text x="50" y="14.6" text-anchor="middle" font-size="11" fill="#7A4A24">★</text><path d="M11 25H89V36H11Z" fill="#FFF6E0"/><path d="M11 25h8v11h-8zM27 25h8v11h-8zM43 25h8v11h-8zM59 25h8v11h-8zM75 25h8v11h-8z" fill="#FF6B5E"/><g fill="#FF6B5E"><circle cx="15" cy="36" r="4"/><circle cx="31" cy="36" r="4"/><circle cx="47" cy="36" r="4"/><circle cx="63" cy="36" r="4"/><circle cx="79" cy="36" r="4"/></g><g fill="#FFF6E0"><circle cx="23" cy="36" r="4"/><circle cx="39" cy="36" r="4"/><circle cx="55" cy="36" r="4"/><circle cx="71" cy="36" r="4"/><circle cx="87" cy="36" r="2.5"/></g><rect x="15" y="47" width="19" height="22" rx="2" fill="#FFF4D6" stroke="#8A5530" stroke-width="2.6"/><rect x="66" y="47" width="19" height="22" rx="2" fill="#FFF4D6" stroke="#8A5530" stroke-width="2.6"/><circle cx="24.5" cy="60" r="4" fill="#FF9F1C"/><path d="M71 64l4-8 4 8z" fill="#4A90E2"/><path d="M38 89V58a12 12 0 0 1 24 0V89Z" fill="url(#giGlow)" stroke="#6E4020" stroke-width="3"/><path d="M38.5 89V60l5 2V89Z M61.5 89V60l-5 2V89Z" fill="#A86B3C"/><text x="50" y="80" text-anchor="middle" font-size="12" fill="#E8890C">★</text><circle cx="50" cy="45" r="3.4" fill="#FFC83D" stroke="#A86B00" stroke-width="1"/></svg><small>小商店</small><span class="dot" id="shopDot" hidden></span></button><button class="gate" id="diaryGo" type="button" aria-label="高光日记"><svg class="gi" viewBox="0 0 80 96" aria-hidden="true"><rect x="6" y="6" width="72" height="88" rx="6" fill="#5A1A20"/><rect x="66" y="9" width="9" height="82" rx="2" fill="#FFFBF1"/><path d="M68 14H74M68 20H74M68 26H74M68 32H74M68 38H74M68 44H74M68 50H74M68 56H74M68 62H74M68 68H74M68 74H74M68 80H74M68 86H74" stroke="#E7DCC6" stroke-width="1"/><rect x="2" y="2" width="66" height="90" rx="6" fill="#A8323A"/><rect x="2" y="2" width="9" height="90" rx="5" fill="#000" opacity=".22"/><rect x="16" y="10" width="44" height="74" rx="3" fill="none" stroke="#F2C766" stroke-width="2"/><rect x="19" y="13" width="38" height="68" rx="2" fill="none" stroke="#F2C766" stroke-width=".8" opacity=".6"/><circle cx="38" cy="36" r="11" fill="#F2C766"/><circle cx="35" cy="33" r="5" fill="#FFF1B8" opacity=".6"/><text x="38" y="41.5" text-anchor="middle" font-size="15" fill="#7C2129">★</text><rect x="26" y="54" width="24" height="3.4" rx="1.7" fill="#F2C766"/><rect x="29" y="61" width="18" height="3.4" rx="1.7" fill="#F2C766"/><rect x="54" y="2" width="5" height="90" fill="#5A2228"/></svg><small>高光日记</small></button></div>
   </div>
   <div class="main">
-    <div class="list o-tiles"><div class="hrow"><h2>👆 做到了吗？</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true">☀️ 今天</button><button data-day="-1" aria-pressed="false">🌙 昨天</button><label class="pick"><span id="pickLbl">📅 更早</span><input type="date" class="dpick" aria-label="选更早的一天"></label></div></div><div class="tiles" id="tiles"></div></div>
+    <div class="list o-tiles"><div class="hrow"><h2>👆 做到了吗？</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true">☀️ 今天</button><button data-day="-1" aria-pressed="false">🌙 昨天</button><span class="pick" hidden><span id="pickLbl"></span></span></div></div><div class="tiles" id="tiles"></div></div>
     <div class="list o-hist"><div class="hrow"><h2>⭐ 星星记录</h2><span class="streak" id="ptsStreak" hidden></span></div><div class="list" id="hist"></div></div>
     <details class="parent o-parent"><summary>👩 家长看这里</summary><div class="pbox">
       <div><b>学习每项 2 星：</b>口语星球、英文绘本、数学预习、语文预习、课文朗读、数学作业（课内作业书写）、语文订正、写字课、英语课内、英语打卡。语文阅读、手指指读、读书没哭、写字没哭每项 5 星。</div>
@@ -535,13 +559,14 @@ details.parent summary::-webkit-details-marker{display:none}
       <div><b>换奖励：</b>用星星换一件事，比如 去公园 20 颗星。</div>
       <form id="redeemForm"><input id="rdName" placeholder="换什么，比如 去公园"><input id="rdPts" type="number" min="1" inputmode="numeric" placeholder="几颗星"><button class="mini">换</button></form>
       <div><b>同步钥匙：</b>电脑和 iPad 上各粘贴一次，两边的记录就会自动同步。</div><div class="line"><input id="syncKey" type="password" autocomplete="off" placeholder="粘贴钥匙 github_pat_…" aria-label="同步钥匙"><button class="mini" id="syncSave" type="button">保存</button></div>
-      <div><b>补记前几天：</b>点格子上方的“🌙 昨天”，或者“📅 更早”选日子（比如上周六），再点格子补上；点错了再点一下就取消。补完点“☀️ 今天”回来。</div>
+      <div><b>补记前几天：</b>昨天的点格子上方的“🌙 昨天”；更早的在这里选日子（比如上周六），再点格子补上。补完点“☀️ 今天”回来。</div>
+      <div class="line"><label class="mini pickp">📅 选更早的一天<input type="date" class="dpick" aria-label="选更早的一天"></label></div>
       <div><b>朗读的声音：</b></div>
       <div id="voiceInfo"></div>
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月09日 11:47</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月09日 12:43</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -557,7 +582,7 @@ details.parent summary::-webkit-details-marker{display:none}
       <div style="color:var(--soft);font-size:14px;margin-top:8px">点 📷 可以给东西拍照或从相册选照片，孩子一看就认得。点照片可以换回图标。</div>
       <div class="erows" id="erows"></div><input type="file" id="ePhoto" accept="image/*" hidden>
       <div style="display:flex;margin-top:10px;justify-content:center"><button class="mini" id="eAdd" type="button">➕ 摆上新东西</button></div>
-      <div class="hint">点左边圆圈换图标；改名字和分数会自动保存；点 ⭐ 放进最上面的玻璃柜当「大愿望」（只能有一个）；🗑 撤下货架。<br>孩子把东西拿到柜台后，要家长按住收银机才会扣分。</div>
+      <div class="hint">点左边圆圈换图标；改名字和分数会自动保存；点 ⭐ 放进最上面的玻璃柜当「大愿望」（只能有一个）；🗑 撤下货架。<br>孩子点一下买得起的东西，会弹出大按钮“换它！”，按了就扣分；买不起的会晃一晃，告诉他还差几分。</div>
     </details>
   </div>
 </div>
@@ -577,12 +602,13 @@ details.parent summary::-webkit-details-marker{display:none}
   <details class="dedit" id="dyEdit"><summary>👩 家长：写日记、改日记</summary>
     <div class="drows" id="dyRows"></div>
     <div style="display:flex;margin-top:10px;justify-content:center"><button class="mini" id="dyAdd" type="button">✍️ 写一篇</button></div>
-    <div class="dhint">改日期、品质、天气和内容会自动保存；🗑 删掉这一篇。<br>点“坚持就是胜利”“问之很勇敢”这两个格子后，也会弹出小框问要不要写进日记。</div>
+    <div class="dhint">改日期、品质、天气和内容会自动保存；📷 给这一篇加照片（再点一下可以去掉）；🗑 删掉这一篇。<br>点“坚持就是胜利”“问之很勇敢”这两个格子后，也会弹出小框问要不要写进日记。</div>
   </details>
 </div></div>
 <div class="counter" id="counter" hidden>
   <div class="purse"><span class="cn">★</span><span class="pv" id="shopPts">0</span><span class="pl2">分</span></div>
   <div class="tray" id="tray"></div>
+  <input type="file" id="dyPhoto" accept="image/*" hidden>
   <div class="tacts" id="tacts" hidden></div>
 </div>
 <div class="pop" id="pop" hidden><div class="box" id="popBox"></div></div>
@@ -778,7 +804,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="545a464277";
+const BUILD="b0062c7a04";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -872,8 +898,8 @@ function render(){
   const cur=recDate(),off=cur===today()?0:cur===addDays(today(),-1)?-1:null;
   document.querySelectorAll(".days [data-day]").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.day===off)));
   const pk=$(".pick"),[,pm,pd]=cur.split("-").map(Number);
-  pk.classList.toggle("on",off===null);
-  $("#pickLbl").textContent=off===null?`📅 ${pm}/${pd} 周${wdOf(cur)}`:"📅 更早";
+  pk.classList.toggle("on",off===null);pk.hidden=off!==null;
+  $("#pickLbl").textContent=off===null?`📅 ${pm}/${pd} 周${wdOf(cur)}`:"";
   const di=$(".dpick");di.max=today();di.value=cur;
   $("#tiles").classList.toggle("past",isPast());
   if(PAGE==="pts"){renderPts();renderShop();Diary.refresh()}else renderBank();
@@ -985,8 +1011,8 @@ async function ensureShop(){if(state.shop._meta||Object.keys(state.shop).length)
   for(const d of SHOP_DEFAULT){const{id,...x}=d;await put("shop",id,x)}await put("shop","_meta",{init:true})}
 const itIco=d=>d.photo?`<img class="ph" src="${d.photo}" alt="">`:gico(d.icon);
 /* 照片缩成 320px 见方的小图，存进商品里一起同步 */
-function shrinkPhoto(file){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);
-  img.onload=()=>{const k=Math.min(img.naturalWidth,img.naturalHeight),sz=Math.min(320,k),c=document.createElement("canvas");c.width=c.height=sz;
+function shrinkPhoto(file,max=320){return new Promise((res,rej)=>{const img=new Image(),url=URL.createObjectURL(file);
+  img.onload=()=>{const k=Math.min(img.naturalWidth,img.naturalHeight),sz=Math.min(max,k),c=document.createElement("canvas");c.width=c.height=sz;
     c.getContext("2d").drawImage(img,(img.naturalWidth-k)/2,(img.naturalHeight-k)/2,k,k,0,0,sz,sz);URL.revokeObjectURL(url);res(c.toDataURL("image/jpeg",.78))};
   img.onerror=()=>{URL.revokeObjectURL(url);rej()};img.src=url})}
 async function shopSave(id,patch){await ensureShop();const cur=state.shop[id]||{};await put("shop",id,{...cur,...patch})}
@@ -1036,14 +1062,16 @@ function renderShop(){
   const total=ptsCalc().total,items=shopItems(),wish=items.find(d=>d.wish),rest=items.filter(d=>!d.wish);
   $("#shopDot").hidden=!items.some(d=>total>=d.pts);
   $("#shopPts").textContent=total;
+  /* 大愿望路上的里程碑：50、100、200 分各一颗星，攒到就点亮（目标太小时改成四分之一、一半、四分之三） */
+  let MS=wish?[50,100,200].filter(m=>m<wish.pts):[];if(wish&&MS.length<2)MS=[.25,.5,.75].map(f=>Math.round(wish.pts*f));
   $("#wishSlot").innerHTML=wish?(()=>{const pc=Math.min(100,Math.round(total/wish.pts*100)),ok=total>=wish.pts,away=picked===wish.id;
-    return`<button class="case ${ok?"can":""}" data-buy="${wish.id}" type="button" aria-label="大愿望 ${esc(wish.name)} ${wish.pts}分"><span class="ped"><span class="it" style="${away?"visibility:hidden":""}">${itIco(wish)}</span></span><span class="rib">⭐ 我的大愿望</span><span class="wt"><div class="nm">${esc(wish.name)}</div><div class="wrow"><span class="wbar"><i style="width:${Math.max(pc,ok?100:0)}%"></i><span>${ok?"🎉 可以换啦！":`还差<b>${wish.pts-total}</b>分`}</span></span><span class="goal"><span class="cn">★</span>${wish.pts}</span></div></span></button>`})():"";
+    return`<button class="case ${ok?"can":""}" data-buy="${wish.id}" type="button" aria-label="大愿望 ${esc(wish.name)} ${wish.pts}分"><span class="ped"><span class="it" style="${away?"visibility:hidden":""}">${itIco(wish)}</span></span><span class="rib">⭐ 我的大愿望</span><span class="wt"><div class="nm">${esc(wish.name)}</div><div class="wrow"><span class="wbw"><span class="wbar"><i style="width:${Math.max(pc,ok?100:0)}%"></i>${MS.map(m=>`<s style="left:${m/wish.pts*100}%"></s>`).join("")}<span>${ok?"🎉 可以换啦！":`还差<b>${wish.pts-total}</b>分`}</span></span><span class="mks">${MS.map(m=>`<i class="${total>=m?"on":""}" style="left:${m/wish.pts*100}%"><b>★</b>${m}</i>`).join("")}</span></span><span class="goal"><span class="cn">★</span>${wish.pts}</span></div></span></button>`})():"";
   const n=perRow(),rows=[];for(let i=0;i<rest.length;i+=n)rows.push(rest.slice(i,i+n));
   $("#shelves").innerHTML=rows.map(r=>`<div class="shelf" style="--n:${n}">${r.map(d=>{const ok=total>=d.pts;
     return`<button class="slot ${ok?"can":""} ${picked===d.id?"away":""}" data-buy="${d.id}" type="button" aria-label="${esc(d.name)} ${d.pts}分"><span class="it">${itIco(d)}</span><span class="pl"></span><span class="tag"><b>${d.pts}分</b><small>${esc(d.name)}</small>${ok?"":`<em>还差 ${d.pts-total} 分</em><i class="tb"><i style="width:${Math.max(4,Math.round(total/d.pts*100))}%"></i></i>`}</span></button>`}).join("")}${Array.from({length:n-r.length},(_,k)=>`<span class="slot deco" aria-hidden="true"><span class="it">${gico(DECO[(k+rows.length)%DECO.length])}</span><span class="pl"></span></span>`).join("")}</div>`).join("")
     ||`<div style="text-align:center;color:var(--soft)">货架还空着，家长在下面摆上东西吧</div>`;
   const p=picked&&items.find(d=>d.id===picked);
-  $("#tray").innerHTML=p?`<span class="it" id="trayIt">${itIco(p)}</span><span class="tn">${esc(p.name)}</span>`:"👆 拿到柜台上";
+  $("#tray").innerHTML=p?`<span class="it" id="trayIt">${itIco(p)}</span><span class="tn">${esc(p.name)}</span>`:"👆 点一下想换的东西";
   $("#tacts").hidden=!p;
   if(p&&!$("#regBtn"))$("#tacts").innerHTML=`<button class="back2" id="putBack" type="button">放回去</button><button class="reg" id="regBtn" type="button"><i></i>${gico("r_register")}<span>家长按住收银机</span></button>`;
   if(!p)$("#tacts").innerHTML="";
@@ -1055,11 +1083,25 @@ async function pickItem(d,el){
   const total=ptsCalc().total;
   if(picked===d.id)return;
   if(total<d.pts){el.classList.remove("nope");void el.offsetWidth;el.classList.add("nope");say(`${d.name}，要${d.pts}分。还差${d.pts-total}分，再加油！`);return}
-  if(picked)await putBack(true);
-  busyShop=true;const from=el.querySelector(".it").getBoundingClientRect();
-  picked=d.id;renderShop();
-  await flyNode(itIco(d),from,$("#tray").getBoundingClientRect(),{size:from.width});
-  busyShop=false;renderShop();say(`${d.name}，${d.pts}分。请爸爸妈妈按住收银机。`);
+  askBuy(d);
+}
+/* 点一下买得起的东西：弹出大图和大按钮“换它！” */
+function askBuy(d){
+  const total=ptsCalc().total;
+  $("#popBox").innerHTML=`<div class="buyp"><div class="bi">${itIco(d)}</div><div class="bn">${esc(d.name)}</div><div class="bp"><span class="cn">★</span>${d.pts} 分</div><div class="bl">换完还剩 ${total-d.pts} 分</div><button class="bgo" type="button">换它！</button><button class="bno" type="button">再想想</button></div>`;
+  $("#pop").hidden=false;say(`${d.name}，${d.pts}分。要换它吗？`);
+  $("#popBox .bno").onclick=()=>{closePop();say("好，再想想")};
+  $("#popBox .bgo").onclick=()=>buyNow(d);
+}
+async function buyNow(d){
+  if(busyShop)return;if(ptsCalc().total<d.pts){closePop();return}
+  busyShop=true;const from=$("#popBox .bi").getBoundingClientRect();closePop();chaching();
+  const purse=$(".purse").getBoundingClientRect();
+  for(let i=0;i<Math.min(6,Math.ceil(d.pts/10));i++)setTimeout(()=>flyNode("★",purse,from,{size:34,dur:500,cls:"coin"}),i*90);
+  await put("points",rid(),{date:today(),name:"换 "+d.name,shop:d.id,icon:d.icon,pts:-d.pts,ts:Date.now()});
+  const sz=Math.min(200,innerWidth*.4);
+  await flyNode(itIco(d),from,{left:innerWidth/2-sz/2,top:innerHeight/2-sz/2,width:sz,height:sz},{size:sz,dur:700});
+  busyShop=false;renderShop();confetti();say(`换到啦！${d.name}！`);
 }
 async function putBack(quiet){
   const d=shopItems().find(x=>x.id===picked);if(!d){picked=null;renderShop();return}
@@ -1204,7 +1246,7 @@ const Diary=(()=>{
       case"toc":{const show=M.slice(0,10);return`<div class="${cls} diary toc"><h3>目 录</h3><ol>${show.map((m,k)=>{const[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist;return`<li>${mo}月${da}日<i style="background:${q.c}">${q.ic} ${q.name}</i><span class="dot"></span>${k+1}</li>`}).join("")}${M.length>10?`<li style="justify-content:center">…… 还有 ${M.length-10} 篇</li>`:""}${M.length?"":`<li style="justify-content:center;opacity:.6">还没有日记，第一篇会写在这里</li>`}</ol></div>`}
       case"diary":{const m=p.m,[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist;return`<div class="${cls} diary"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b></div>
         <div class="dbody">${esc(m.text||"（还没写）")}</div><div class="dsign">—— 爸爸妈妈记 ✍️</div>
-        <span class="stamp" style="--c:${q.c}"><i>${q.ic}</i><span>${q.name}</span></span>${pno(i,side)}</div>`}
+        <div class="dfoot">${m.photo?`<span class="dpic"><img src="${m.photo}" alt=""></span>`:""}<span class="stamp" style="--c:${q.c}"><i>${q.ic}</i><span>${q.name}</span></span></div>${pno(i,side)}</div>`}
       case"blank":return`<div class="${cls} diary"><div class="dhead"><b>　</b>月<b>　</b>日　星期<b>　</b>　天气<b>　</b></div><div class="dbody" style="opacity:.55">下一个高光时刻，会写在这里……</div>${pno(i,side)}</div>`;
       case"fin":return`<div class="${cls} endp"><div class="owner" style="transform:rotate(2deg)"><small>未完待续</small><b style="font-size:3.4cqw">继续加油！</b><span>问之队员</span></div></div>`;
     }
@@ -1220,7 +1262,8 @@ const Diary=(()=>{
     setStatic(cur,cur);
     book.classList.toggle("closed",cur<0);book.style.transform=cur<0?"translateX(-25%)":"";
     prevB.disabled=cur<0;nextB.disabled=cur>=LAST;
-    posEl.textContent=cur<0?"封面":cur===0?"目录":`第 ${cur*2-1}–${cur*2} 页`;
+    const lab=p=>!p?"":p.t==="diary"?`${(DQ[p.m.q]||DQ.persist).ic} ${md(p.m.date)[1]}月${md(p.m.date)[2]}日`:p.t==="blank"?"✏️ 下一篇":"";
+    posEl.textContent=cur<0?"📕 封面":cur===0?"📑 目录":[lab(S[cur][0]),lab(S[cur][1])].filter(Boolean).join("　")||"⭐ 未完待续";
   }
   let ac;function rustle(){try{ac=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());if(ac.state==="suspended")ac.resume();
     const sr=ac.sampleRate,now=ac.currentTime,noise=(sec,fn)=>{const n=Math.floor(sr*sec),b=ac.createBuffer(1,n,sr),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=fn(i/n)*(Math.random()*2-1);return b};
@@ -1345,14 +1388,22 @@ const Diary=(()=>{
   const wOpts=v=>[""].concat(DWX).map(w=>`<option value="${w}" ${w===(v||"")?"selected":""}>${w||"天气"}</option>`).join("");
   function renderEditor(){
     const box=$("#dyRows");if(!$("#dyEdit").open||box.contains(document.activeElement))return;
-    box.innerHTML=diaryList().slice().reverse().map(d=>`<div class="drow" data-id="${d.id}"><input type="date" class="dd" value="${d.date}" max="${today()}" aria-label="日期"><select class="dq" aria-label="品质">${qOpts(d.q)}</select><select class="dw" aria-label="天气">${wOpts(d.wx)}</select><textarea class="dt" rows="2" aria-label="发生了什么" placeholder="发生了什么？">${esc(d.text||"")}</textarea><button class="ddel" type="button" aria-label="删掉这一篇">🗑</button></div>`).join("")
+    box.innerHTML=diaryList().slice().reverse().map(d=>`<div class="drow" data-id="${d.id}"><input type="date" class="dd" value="${d.date}" max="${today()}" aria-label="日期"><select class="dq" aria-label="品质">${qOpts(d.q)}</select><select class="dw" aria-label="天气">${wOpts(d.wx)}</select><textarea class="dt" rows="2" aria-label="发生了什么" placeholder="发生了什么？">${esc(d.text||"")}</textarea><button class="dcam" type="button" aria-label="${d.photo?"去掉照片":"加照片"}">${d.photo?`<img src="${d.photo}" alt="">`:"📷"}</button><button class="ddel" type="button" aria-label="删掉这一篇">🗑</button></div>`).join("")
       ||`<div class="dhint">还没有日记。点下面的“✍️ 写一篇”。</div>`;
   }
   $("#dyEdit").addEventListener("toggle",renderEditor);
   $("#dyRows").addEventListener("change",async e=>{const row=e.target.closest(".drow");if(!row)return;const id=row.dataset.id,d=state.diary[id];if(!d)return;
     const patch={date:row.querySelector(".dd").value||d.date,q:row.querySelector(".dq").value,wx:row.querySelector(".dw").value,text:row.querySelector(".dt").value.trim()};
     e.target.blur();await put("diary",id,{...d,...patch})});
-  $("#dyRows").addEventListener("click",async e=>{const b=e.target.closest(".ddel");if(!b)return;const id=b.closest(".drow").dataset.id;
+  /* 日记照片：缩成 480px 见方存进这一篇里一起同步 */
+  let photoCb=null;
+  function pickPhoto(cb){photoCb=cb;const i=$("#dyPhoto");i.value="";i.click()}
+  $("#dyPhoto").addEventListener("change",async e=>{const f=e.target.files[0],cb=photoCb;photoCb=null;if(!f||!cb)return;
+    try{cb(await shrinkPhoto(f,480))}catch(err){alert("这张照片读不出来，换一张试试")}});
+  $("#dyRows").addEventListener("click",async e=>{const c=e.target.closest(".dcam");if(c){const id=c.closest(".drow").dataset.id,d=state.diary[id];if(!d)return;
+      if(d.photo){if(confirm("去掉这张照片吗？"))await put("diary",id,{...d,photo:null});return}
+      pickPhoto(async ph=>{const cur=state.diary[id];if(cur)await put("diary",id,{...cur,photo:ph})});return}
+    const b=e.target.closest(".ddel");if(!b)return;const id=b.closest(".drow").dataset.id;
     if(confirm("删掉这一篇日记吗？"))await del("diary",id)});
   $("#dyAdd").addEventListener("click",async()=>{const id="d"+rid();await put("diary",id,{date:today(),q:"persist",wx:"",text:"",ts:Date.now()});
     renderEditor();const t=$(`#dyRows [data-id="${id}"] .dt`);if(t)t.focus()});
@@ -1363,18 +1414,20 @@ const Diary=(()=>{
   /* 点完“坚持就是胜利”“问之很勇敢”后：问要不要写进日记 */
   function ask(h,date){
     if(!$("#pop").hidden||open)return;
-    let q=h.diary,wx="";
+    let q=h.diary,wx="",photo=null;
     $("#popBox").innerHTML=`<div class="dyp"><div class="t">📔 写进高光日记？</div>
       <div class="opts" id="dyQ">${Object.entries(DQ).map(([k,v])=>`<button type="button" data-q="${k}" style="--c:${v.c}" class="${k===q?"on":""}">${v.ic} ${v.name}</button>`).join("")}</div>
       <div class="opts wx" id="dyW">${DWX.map(w=>`<button type="button" data-w="${w}">${w}</button>`).join("")}</div>
       <textarea id="dyText" placeholder="${esc(h.name)}：发生了什么？一两句话就好，可以按键盘上的 🎤 用说的"></textarea>
+      <button class="pho" id="dyPho" type="button">📷 加一张照片</button>
       <div class="acts"><button class="again" type="button">跳过</button><button class="ok" type="button">✨ 写进日记</button></div></div>`;
     $("#pop").hidden=false;
     $("#dyQ").onclick=e=>{const b=e.target.closest("[data-q]");if(!b)return;q=b.dataset.q;$("#dyQ").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b))};
     $("#dyW").onclick=e=>{const b=e.target.closest("[data-w]");if(!b)return;wx=wx===b.dataset.w?"":b.dataset.w;$("#dyW").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x.dataset.w===wx))};
+    $("#dyPho").onclick=()=>pickPhoto(ph=>{photo=ph;const b=$("#dyPho");if(b)b.innerHTML=`<img src="${ph}" alt="">换一张`});
     $("#popBox .again").onclick=closePop;
     $("#popBox .ok").onclick=async()=>{const text=$("#dyText").value.trim();if(!text){$("#dyText").focus();return}
-      closePop();await put("diary","d"+rid(),{date,q,wx,text,habit:h.id,ts:Date.now()});say("写进高光日记啦！")};
+      closePop();await put("diary","d"+rid(),{date,q,wx,text,habit:h.id,ts:Date.now(),...(photo?{photo}:{})});say("写进高光日记啦！")};
   }
   return{refresh(){if(open&&!busy){build();show()}if(open)renderEditor()},ask};
 })();

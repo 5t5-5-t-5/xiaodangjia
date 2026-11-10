@@ -582,6 +582,15 @@ body{background-image:none;color:var(--ink2)}
 .gate:active .gi{transform:none}
 .gate .dot{top:12px;right:12px;box-shadow:0 0 0 3px #FFE9E4}
 @media (max-width:759px){.gate{min-height:110px}.gate .gi{height:64px}}
+/* iPad 入口和手机一样简约（2026-11-10）：不要小字说明，底色和字色淡一些 */
+.gsub{display:none}
+@media (min-width:760px){
+  #shopGo{background:#FFF1ED}#diaryGo{background:#F4F0FF}
+  #shopGo:active{background:#FFE6E0}#diaryGo:active{background:#EBE4FF}
+  .gate small{font-size:19px;font-weight:700}
+  #shopGo small{color:#E2604F}#diaryGo small{color:#7C62E3}
+  .gate .dot{box-shadow:0 0 0 3px #FFF1ED}
+}
 
 /* 标题：前面一个同色小方块图标，右边是完成了几项 */
 .list h2,.tgrp{display:flex;align-items:center;gap:10px;margin:0;font-family:var(--fun);font-weight:800;font-size:22px;color:var(--ink2);background:none;box-shadow:none;padding:0}
@@ -610,9 +619,9 @@ body{background-image:none;color:var(--ink2)}
 .tile .e,.page-pts .tile .e{width:64px;height:64px;border-radius:20px;background:var(--gl);box-shadow:none;margin:0}
 .tile .e svg{width:72%;height:72%}
 .tile .n{font-size:16px;font-weight:700;color:var(--ink2);line-height:1.25}
-.tile .p,.page-pts .tile .p,.page-pts .tile .p.ok{font-family:var(--round);font-weight:800;font-size:15px;line-height:1.5;color:var(--gc);background:var(--gl);border-radius:99px;padding:0 12px;opacity:1}
+.tile .p,.page-pts .tile .p,.page-pts .tile .p.ok{font-family:var(--round);font-weight:800;font-size:16px;line-height:1.5;color:var(--gc);background:none;border-radius:0;padding:0;opacity:1}
 .tile .p i{font-size:12px}
-.tile.hot .p,.page-pts .tile.hot .p:not(.ok),.page-pts .tile.hot .p.ok{background:var(--sun-deep);color:#fff}
+.tile.hot .p,.page-pts .tile.hot .p:not(.ok),.page-pts .tile.hot .p.ok{background:none;color:var(--sun-deep)}
 .tile.done,.page-pts .tile.done,.page-bank .tile.done{background:var(--gl);box-shadow:none}
 .tile.done .e,.page-pts .tile.done .e,.page-bank .tile.done .e{background:#fff}
 .tile.done::after,.page-pts .tile.done::after{content:"✓";width:26px;height:26px;right:10px;top:10px;font-size:15px;background:var(--gc);box-shadow:none}
@@ -833,7 +842,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月10日 22:45</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月10日 23:31</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1034,7 +1043,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="abbfcdd96b";
+const BUILD="e69914ad39";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -1160,7 +1169,6 @@ function renderPts(){
   $("#todayLbl").textContent=dayWord(t)+"得到";$("#todayPts").textContent="+"+got+" ★";
   $("#mtLbl").textContent=off2(t);$("#mtPts").textContent="+"+got;
   $("#todayBar").style.width=(na?nd/na*100:0)+"%";
-  $("#todayTip").textContent=nd?`完成了 ${nd} 件${na>nd?`，还有 ${na-nd} 件可以做`:"，全部完成啦！"}`:"还没开始，点一个格子吧";
   const byDay={};for(const d of p.docs)(byDay[d.date]=byDay[d.date]||[]).push(d);
   let rows=[];
   for(const ds of Object.keys(byDay).sort().reverse()){

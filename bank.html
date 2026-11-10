@@ -540,7 +540,7 @@ details.parent summary::-webkit-details-marker{display:none}
    像儿童 App：浅灰白底、明亮的纯色、圆角、没有立体投影。积分卡保留原来的金色卡。
    三组各一个颜色：学习蓝、习惯绿、了不起橙；存折页的格子用绿色。
    小商店、高光日记保持写实，不在这一段。 */
-:root{--bg2:#F4F7FB;--ink2:#22304A;--mute2:#8A97AD;
+:root{--bg2:#FBF7F0;--ink2:#22304A;--mute2:#8A97AD;
   --c-study:#3D8BFF;--l-study:#EAF3FF;--c-life:#14B37A;--l-life:#E4F8EF;--c-brave:#FF8A1F;--l-brave:#FFF0E0;
   --c-shop:#FF6B6B;--c-diary:#8B6CF6;
   --round:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
@@ -561,16 +561,22 @@ body{background-image:none;color:var(--ink2)}
 .tbar i{display:block;height:100%;width:0;min-width:12px;border-radius:99px;background:#FFB020;transition:width .5s}
 .today small{display:block;margin-top:8px;font-size:14px;color:var(--mute2)}
 
-/* 小商店、高光日记：两块彩色大按钮 */
+/* 小商店、高光日记：两块淡彩卡片，左上角彩色大字 + 一句短说明，右下角露出写实的小商店和日记本（2026-11-10 家长选的 C） */
 .gates{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:none;border-radius:0;box-shadow:none;overflow:visible}
-.gate{flex-direction:row;justify-content:center;gap:10px;padding:16px 12px;border-radius:24px;color:#fff;white-space:nowrap}
-#shopGo{background:var(--c-shop)}#diaryGo{background:var(--c-diary)}
+.gate{position:relative;overflow:hidden;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:2px;min-height:120px;padding:16px;border-radius:24px;color:var(--ink2);text-align:left}
 .gate+.gate{box-shadow:none}
+#shopGo{background:#FFE9E4}#diaryGo{background:#EEE8FF}
+#shopGo:active{background:#FFDDD5}#diaryGo:active{background:#E4DBFF}
 .gate:active{transform:scale(.96)}
-#shopGo:active{background:#F25C5C}#diaryGo:active{background:#7C5CEB}
-.gate .gi{height:42px;filter:none;animation:none}
-.gate small{font-size:19px;font-weight:800;letter-spacing:.02em}
-.gate .dot{box-shadow:0 0 0 3px #fff;background:#FFD43B}
+.gtx{display:flex;flex-direction:column;align-items:flex-start;gap:2px;position:relative;z-index:1}
+.gate small{font-size:20px;font-weight:800;letter-spacing:.02em}
+#shopGo small{color:#D84A3A}#diaryGo small{color:#6B4FD8}
+.gsub{font-size:14px;font-weight:600;color:var(--mute2)}
+.gico{position:absolute;right:10px;bottom:-4px}
+.gate .gi{height:70px;filter:none;animation:none}
+.gate:active .gi{transform:none}
+.gate .dot{top:12px;right:12px;box-shadow:0 0 0 3px #FFE9E4}
+@media (max-width:759px){.gate{min-height:110px}.gate .gi{height:64px}}
 
 /* 标题：前面一个同色小方块图标，右边是完成了几项 */
 .list h2,.tgrp{display:flex;align-items:center;gap:10px;margin:0;font-family:var(--fun);font-weight:800;font-size:22px;color:var(--ink2);background:none;box-shadow:none;padding:0}
@@ -616,6 +622,82 @@ body{background-image:none;color:var(--ink2)}
 .chipx{box-shadow:none}
 details.parent{border-top:1px solid #E3E8F0}
 details.parent summary{background:none}
+
+
+/* ===================== 手机：首屏就能看到三组 =====================
+   积分卡压扁成一条（金色卡的样子不变），“今天得到”放进卡里；入口变小；
+   分组改成格子上方的切换（学习/习惯/了不起），一次只看一组；颜色收一收，只有点亮的格子和 +5 有颜色。 */
+.mtoday,.gtabs{display:none}
+@media (max-width:759px){
+  .wrap{gap:12px;padding-top:12px}
+  .page-pts .pcard{aspect-ratio:auto;display:grid;grid-template-columns:1fr auto;grid-template-areas:"brand today" "total today";align-items:center;row-gap:2px;padding:14px 18px 14px 18px;border-radius:22px}
+  .page-pts .pcard .top{grid-area:brand}
+  .page-pts .pcard .kind,.page-pts .pcard .cap,.page-pts .pcard .bot,.page-pts .pcard .brand small{display:none}
+  .page-pts .pcard .brand{gap:8px}.page-pts .pcard .brand .logo{width:26px;height:26px;font-size:15px}.page-pts .pcard .brand b{font-size:16px}
+  .page-pts .pcard>div:nth-child(2){grid-area:total}
+  .page-pts .pcard .total{font-size:52px;line-height:1}.page-pts .pcard .total i{font-size:24px}
+  .page-pts .pcard::before{font-size:160px;right:-10px;bottom:-60px}
+  .mtoday{grid-area:today;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:2px;padding-left:16px;margin-left:4px;border-left:1.5px solid rgba(255,255,255,.45);color:#fff}
+  .mtoday span{font-size:13px;font-weight:700;opacity:.9}
+  .mtoday b{font-family:var(--round);font-size:30px;font-weight:800;line-height:1;text-shadow:0 2px 0 rgba(201,103,12,.6)}
+  .page-pts .today{display:none}
+  .gate{min-height:0;padding:12px 14px;flex-direction:row;align-items:center;background:#fff!important;border-radius:20px}
+  .gate .gsub{display:none}
+  .gate small{font-size:17px}
+  .gico{position:static;margin-left:auto}
+  .gate .gi{height:40px}
+  .page-pts .o-tiles>.hrow{position:sticky;top:0;z-index:5;flex-wrap:nowrap;gap:8px;margin:0 -16px 2px;padding:8px 16px;background:var(--bg2)}
+  .page-pts .o-tiles>.hrow>h2{display:none}
+  .gtabs{display:flex;flex:1;min-width:0;background:#E8ECF2;border-radius:14px;padding:3px;gap:2px}
+  .gtabs button{flex:1;min-width:0;border:0;background:none;border-radius:11px;padding:5px 0 4px;display:flex;flex-direction:column;align-items:center;line-height:1.2;color:var(--mute2)}
+  .gtabs b{font-size:15px;font-weight:800;white-space:nowrap}
+  .gtabs span{font-family:var(--round);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+  .gtabs button[aria-selected="true"]{background:#fff;color:var(--ink2)}
+  .gtabs button[aria-selected="true"] span{color:var(--gc)}
+  .page-pts .days{background:#E8ECF2;border-radius:14px;padding:3px;gap:2px;flex:none}
+  .page-pts .days button{padding:12px 9px;font-size:14px;border-radius:11px}
+  .page-pts .days .de{display:none}
+  .page-pts .days button[aria-pressed="true"]{background:#fff;color:var(--ink2)}
+  .page-pts .days button[data-day="-1"][aria-pressed="true"]{background:var(--c-diary);color:#fff}
+  .page-pts .tgrp{display:none}
+  .tiles[data-show="study"] .tile:not(.g-study),.tiles[data-show="life"] .tile:not(.g-life),.tiles[data-show="brave"] .tile:not(.g-brave){display:none}
+  .tiles{gap:10px}
+  .tile{padding:14px 4px 12px;border-radius:20px}
+  .tile .e,.page-pts .tile .e{width:52px;height:52px;border-radius:16px;background:#F3F5F9}
+  .tile .n{font-size:15px}
+  .tile .p,.page-pts .tile .p,.page-pts .tile .p.ok{background:none;color:var(--mute2);padding:0}
+  .tile.hot .p,.page-pts .tile.hot .p:not(.ok),.page-pts .tile.hot .p.ok{background:none;color:var(--sun-deep)}
+  /* 留白再多一些（2026-11-10） */
+  .wrap{gap:18px;padding-top:16px;padding-left:max(22px,env(safe-area-inset-left,0px));padding-right:max(22px,env(safe-area-inset-right,0px))}
+  .page-pts .pcard{padding:18px 22px}
+  .gates{gap:14px}
+  .gate{padding:14px 16px}
+  .page-pts .o-tiles>.hrow{margin:0 -22px 6px;padding:10px 22px}
+  .tiles{gap:16px 14px}
+  .tile{padding:18px 4px 14px;gap:8px}
+  .tile .e,.page-pts .tile .e{width:48px;height:48px;border-radius:15px}
+  .o-hist{margin-top:22px}
+  #hist{gap:12px}
+  .row{padding:14px 18px}.row .w svg{width:22px;height:22px}
+  /* 更有童趣，不像后台系统（2026-11-10）：分组切换做成彩色小胶囊、图标底用这一组的淡色、入口用淡彩 */
+  .gtabs{background:none;padding:0;gap:6px}
+  .gtabs button{background:#fff;border-radius:16px;padding:7px 0 6px;color:var(--ink2);transition:background-color .2s,color .2s}
+  .gtabs b{display:flex;align-items:center;gap:2px;font-size:14.5px}
+  .gtabs b i{font-style:normal;font-size:13px}
+  .gtabs span{color:var(--mute2)}
+  .gtabs button[aria-selected="true"]{background:var(--gc);color:#fff}
+  .gtabs button[aria-selected="true"] span{color:rgba(255,255,255,.9)}
+  .page-pts .days{background:#fff;border-radius:16px;padding:3px}
+  .page-pts .days button{padding:11px 7px;border-radius:13px}
+  .page-pts .days button[aria-pressed="true"]{background:var(--sun);color:#5A3A00}
+  .tile .e,.page-pts .tile .e{background:var(--gl)}
+  .tile .p,.page-pts .tile .p,.page-pts .tile .p.ok{color:var(--gc)}
+  #shopGo{background:#FFE9E4!important}#diaryGo{background:#EEE8FF!important}
+  .tile.done,.page-pts .tile.done{background:var(--gl)}
+  .o-hist h2{font-size:18px}.o-hist .gic{width:30px;height:30px;border-radius:10px;font-size:16px}
+  .streak{font-size:14px;padding:3px 10px}
+  .row .v{font-size:24px}
+}
 
 /* ===================== 小商店 ===================== */
 /* 房间：条纹墙纸 + 顶上的木线 + 木护墙板和地板 + 吊灯的暖光 */
@@ -697,7 +779,7 @@ details.parent summary{background:none}
     <div class="wish o-info" id="wishBox" hidden><div class="wi">🎯</div><div class="wt"><div class="wl" id="wishText"></div><div class="bar"><i id="wishBar"></i></div></div></div>
   </div>
   <div class="main">
-    <div class="list o-tiles"><div class="hrow"><h2 class="g-study"><span class="gic">💪</span>干活赚钱</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true">☀️ 今天</button><button data-day="-1" aria-pressed="false">🌙 昨天</button><span class="pick" hidden><span id="pickLbl"></span></span></div></div><div class="tiles" id="tiles"></div></div>
+    <div class="list o-tiles"><div class="hrow"><h2 class="g-study"><span class="gic">💪</span>干活赚钱</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true"><i class="de">☀️ </i>今天</button><button data-day="-1" aria-pressed="false"><i class="de">🌙 </i>昨天</button><span class="pick" hidden><span id="pickLbl"></span></span></div></div><div class="tiles" id="tiles"></div></div>
     <div class="list o-hist"><h2 class="g-bill"><span class="gic">🧾</span>账单</h2><div class="list" id="hist"></div></div>
     <details class="parent o-parent"><summary>👩 家长看这里</summary><div class="pbox">
       <div><b>能挣钱的：</b>本分之外、帮全家做的额外家务，每样每天 1 块。点错了再点一下格子就取消。收拾自己的东西、学习、刷牙不挣钱。</div>
@@ -715,7 +797,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月10日 16:12</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月10日 18:44</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -914,7 +996,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="620a4e498b";
+const BUILD="20eb338d8f";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -1015,6 +1097,12 @@ function render(){
   if(PAGE==="pts"){renderPts();renderShop();Diary.refresh()}else renderBank();
 }
 const GRP={study:["📚","学习"],"":["🌞","习惯"],brave:["🏅","了不起"]};
+/* 手机上一次只看一组（学习/习惯/了不起），用格子上方的切换；iPad 上三组都显示 */
+let phoneGrp="study";
+const off2=t=>t===today()?"今天得到":t===addDays(today(),-1)?"昨天得到":dayWord(t).replace(/星期.$/,"")+"得到";
+document.addEventListener("click",e=>{const b=e.target.closest(".gtabs [data-g]");if(!b)return;phoneGrp=b.dataset.g;$("#tiles").dataset.show=phoneGrp;
+  document.querySelectorAll(".gtabs [data-g]").forEach(x=>x.setAttribute("aria-selected",String(x===b)));
+  const hr=document.querySelector(".o-tiles>.hrow");if(hr&&hr.getBoundingClientRect().top<0)hr.scrollIntoView({block:"start"})});
 function renderPts(){
   const p=ptsCalc(),t=recDate();
   countTo("ptsTotal",p.total);
@@ -1028,9 +1116,11 @@ function renderPts(){
   const slots={},cnt={};let got=0;
   for(const h of HABITS){const k=h.grp||"life",d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
     if(!slots[k+slotOf(h)]){slots[k+slotOf(h)]=1;(cnt[k]=cnt[k]||[0,0])[1]++}if(mine){cnt[k][0]++;got+=d.pts||h.pts}}
-  for(const k in cnt){const e=document.getElementById("cnt-"+k);if(e)e.textContent=cnt[k][0]+" / "+cnt[k][1]}
+  for(const k in cnt){const e=document.getElementById("cnt-"+k);if(e)e.textContent=cnt[k][0]+" / "+cnt[k][1];const tc=document.getElementById("tc-"+k);if(tc)tc.textContent=cnt[k][0]+"/"+cnt[k][1]}
+  $("#tiles").dataset.show=phoneGrp;document.querySelectorAll(".gtabs [data-g]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.g===phoneGrp)));
   const nd=Object.values(cnt).reduce((s,c)=>s+c[0],0),na=Object.values(cnt).reduce((s,c)=>s+c[1],0);
   $("#todayLbl").textContent=dayWord(t)+"得到";$("#todayPts").textContent="+"+got+" ★";
+  $("#mtLbl").textContent=off2(t);$("#mtPts").textContent="+"+got;
   $("#todayBar").style.width=(na?nd/na*100:0)+"%";
   $("#todayTip").textContent=nd?`完成了 ${nd} 件${na>nd?`，还有 ${na-nd} 件可以做`:"，全部完成啦！"}`:"还没开始，点一个格子吧";
   const byDay={};for(const d of p.docs)(byDay[d.date]=byDay[d.date]||[]).push(d);

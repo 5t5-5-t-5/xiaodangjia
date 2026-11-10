@@ -702,6 +702,24 @@ details.parent summary{background:none}
   .o-hist h2{font-size:18px}.o-hist .gic{width:30px;height:30px;border-radius:10px;font-size:16px}
   .streak{font-size:14px;padding:3px 10px}
   .row .v{font-size:24px}
+  /* 存折手机版和积分卡对齐（2026-11-10）：银行卡压成一条，右边“今天赚到”；“干活赚钱 + 今天/昨天”吸顶；格子、账单同积分卡 */
+  .page-bank .bcard{aspect-ratio:auto;display:grid;grid-template-columns:1fr auto;grid-template-areas:"brand today" "bal today" "owe today";align-items:center;row-gap:2px;padding:18px 22px;border-radius:22px}
+  .page-bank .bcard .top{grid-area:brand}
+  .page-bank .bcard .kind,.page-bank .bcard .cap,.page-bank .bcard .chipbox,.page-bank .bcard .cno,.page-bank .bcard .brand small,.page-bank .bcard .bot>span:first-child{display:none}
+  .page-bank .bcard .brand{gap:8px}.page-bank .bcard .brand .logo{width:26px;height:26px;font-size:15px}.page-bank .bcard .brand b{font-size:16px}
+  .page-bank .bcard .mid{grid-area:bal;justify-content:flex-start}
+  .page-bank .bcard .balbox{text-align:left}
+  .page-bank .bcard .bal{font-size:52px}.page-bank .bcard .bal small{font-size:26px}
+  .page-bank .bcard .bot{grid-area:owe;font-size:12px;letter-spacing:0}
+  .page-bank .bcard .mtoday b{text-shadow:0 2px 0 rgba(10,60,90,.45)}
+  .page-bank .o-tiles>.hrow{position:sticky;top:0;z-index:5;flex-wrap:nowrap;gap:8px;justify-content:space-between;margin:0 -22px 6px;padding:10px 22px;background:var(--bg2)}
+  .page-bank .o-tiles>.hrow>h2{margin:0;font-size:18px}.page-bank .o-tiles>.hrow .gic{width:30px;height:30px;border-radius:10px;font-size:16px}
+  .page-bank .days{background:#fff;border-radius:16px;padding:3px;gap:2px;flex:none}
+  .page-bank .days button{padding:11px 9px;font-size:14px;border-radius:13px}
+  .page-bank .days .de{display:none}
+  .page-bank .days button[aria-pressed="true"]{background:var(--sun);color:#5A3A00}
+  .page-bank .days button[data-day="-1"][aria-pressed="true"]{background:var(--c-diary);color:#fff}
+  .page-bank .tile.done{background:var(--gl)}
 }
 
 /* ===================== 小商店 ===================== */
@@ -759,6 +777,18 @@ details.parent summary{background:none}
 
 /* 右上角小钱包 */
 .counter .purse{background:linear-gradient(#FFFDF2,#FFEFC8);box-shadow:0 5px 0 #A86B3C,0 10px 18px rgba(74,34,16,.3);border:3px solid #fff}
+/* 手机上的小商店（2026-11-10）：招牌移到“出门”和积分钱包下面一行，不再被挡；
+   大愿望在手机上不显示 50/100/200 里程碑和刻度，只留进度条；“家长”入口加一块底色，在地板上也看得清 */
+@media (max-width:759px){
+  .stop{flex-wrap:wrap;padding-right:0}
+  .hsign{flex-basis:100%;padding-top:30px}
+  .hsign b{font-size:21px;letter-spacing:2px;padding:10px 22px 11px}
+  .hsign b::before,.hsign b::after{top:-30px;height:30px}
+  .counter .purse{padding:4px 12px 4px 6px;gap:6px}.counter .purse .cn{width:30px;height:30px;font-size:18px}.counter .purse .pv{font-size:24px}.counter .purse .pl2{font-size:14px}
+  .wrow{margin-bottom:6px}
+  .mks,.wbar s{display:none}
+  .shopedit summary{display:table;margin:0 auto;padding:7px 16px;border-radius:999px;background:rgba(255,246,224,.92);color:#8A5530;font-weight:600}
+}
 
 /* 店门口招牌也换成木雕 */
 .facade .esign{color:#FFE7A8;background:repeating-linear-gradient(176deg,rgba(255,255,255,.05) 0 .4cqw,transparent .4cqw 1.2cqw),linear-gradient(#A8642E,#7E4520);
@@ -802,7 +832,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月10日 19:30</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月10日 21:50</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1040,7 +1070,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="87d313d837";
+const BUILD="a0d33a9596";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -1189,6 +1219,10 @@ function renderBank(){
   }else $("#wishBox").hidden=true;
   const t=recDate();
   $("#tiles").innerHTML=JOBS.map(j=>{const d=state.bank[jobId(t,j)];return`<button class="tile job ${d?"done":""} ${armed(jobId(t,j))}" data-j="${j.id}" aria-label="${j.name}"><span class="e">${ico(j.id,j.icon)}</span><span class="n">${j.name}</span><span class="p ${d?"ok":""}">${amt(j.price,"元")}</span></button>`}).join("");
+  /* 手机上卡片右边的“今天赚到 +N元” */
+  const earn=JOBS.reduce((s,j)=>s+(state.bank[jobId(t,j)]?j.price:0),0);
+  $("#mbLbl").textContent=t===today()?"今天赚到":t===addDays(today(),-1)?"昨天赚到":dayWord(t).replace(/星期.$/,"")+"赚到";
+  $("#mbAmt").textContent="+"+earn+"元";
   const bl=b.docs.slice().reverse();
   $("#hist").innerHTML=bl.length?bl.slice(0,histLimit).map(d=>{
     const k=d.type==="income"?"plus":d.type==="expense"?"minus":"adv";

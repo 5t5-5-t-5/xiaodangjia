@@ -608,6 +608,11 @@ body{background:linear-gradient(#A9DBFF 0%,#D4EEFF 38%,#EEF8FF 70%,#F6FBEF 100%)
 .page-bank .tile .p{color:#13A36B}
 .page-bank .tile.done{background:var(--mint-pale);box-shadow:0 5px 0 var(--mint)}
 .page-bank .tile.done .e{background:rgba(255,255,255,.75)}
+/* 积分卡：没点的格子纯白、投影淡橙；点亮后只是很淡的黄 + 小勾（2026-11-10 家长要求） */
+.page-pts .tile{background:#fff;box-shadow:0 6px 0 #F8E6C6,0 10px 18px rgba(214,140,40,.08)}
+.page-pts .tile:active{box-shadow:0 1px 0 #F8E6C6}
+.page-pts .tile.done{background:#FFFBEC;box-shadow:0 6px 0 #FCE3A6,0 10px 18px rgba(214,140,40,.08)}
+.page-pts .tile.done::after{background:#FFB547;width:28px;height:28px;font-size:16px;right:8px;top:8px;box-shadow:none}
 
 /* ---------- 星星记录 / 账单 ---------- */
 .row{border:3px solid #fff;background:linear-gradient(90deg,#FFFFFF,#FFFBF2);box-shadow:0 5px 0 #E7D7BC,0 10px 18px rgba(120,90,40,.1);border-radius:22px}
@@ -715,7 +720,7 @@ details.parent summary{background:rgba(255,255,255,.7);border-radius:999px;paddi
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月10日 00:22</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月10日 10:04</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -952,7 +957,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="f4f57dbc33";
+const BUILD="82eddcdec3";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};

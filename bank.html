@@ -536,90 +536,86 @@ details.parent summary::-webkit-details-marker{display:none}
   .tile .p i{font-size:14px}
 }
 
-/* ===================== 方案一：阳光小镇 =====================
-   像一本暖色绘本：蓝天、白云、绿草坡，积分卡背后有一圈慢慢转的阳光。
-   格子做成厚厚的“糖果按钮”，点亮后变成金灿灿的星星奖章。
-   小商店：木头雕花招牌 + 一圈小灯泡；店里有条纹墙纸、吊灯、木地板。 */
+/* ===================== 童趣扁平（2026-11-10 家长选定） =====================
+   像儿童 App：浅灰白底、明亮的纯色、圆角、没有立体投影。积分卡保留原来的金色卡。
+   三组各一个颜色：学习蓝、习惯绿、了不起橙；存折页的格子用绿色。
+   小商店、高光日记保持写实，不在这一段。 */
+:root{--bg2:#F4F7FB;--ink2:#22304A;--mute2:#8A97AD;
+  --c-study:#3D8BFF;--l-study:#EAF3FF;--c-life:#14B37A;--l-life:#E4F8EF;--c-brave:#FF8A1F;--l-brave:#FFF0E0;
+  --c-shop:#FF6B6B;--c-diary:#8B6CF6;
+  --round:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+html,body{background:var(--bg2)}
+body{background-image:none;color:var(--ink2)}
+.wrap{gap:20px}
+@media (min-width:760px){.wrap{gap:32px;padding-top:28px}.side{gap:18px}.main{gap:30px}}
 
-/* ---------- 天空和草地 ---------- */
-html,body{background:#CFEBFF}
-body{background:linear-gradient(#A9DBFF 0%,#D4EEFF 38%,#EEF8FF 70%,#F6FBEF 100%) fixed;background-image:none;background-color:#CFEBFF}
-.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.wrap{position:relative;z-index:1}
-.scene .cl{position:absolute;height:44px;border-radius:99px;background:#fff;opacity:.92;box-shadow:0 8px 0 rgba(160,200,235,.25);animation:drift linear infinite}
-.scene .cl::before,.scene .cl::after{content:"";position:absolute;border-radius:50%;background:#fff}
-.scene .cl::before{width:46%;height:150%;left:16%;bottom:30%}
-.scene .cl::after{width:34%;height:120%;left:52%;bottom:35%}
-.scene .c1{width:150px;top:6%;left:-160px;animation-duration:95s}
-.scene .c2{width:110px;top:32%;left:-120px;animation-duration:130s;animation-delay:-60s;opacity:.75}
-.scene .c3{width:180px;top:58%;left:-190px;animation-duration:160s;animation-delay:-110s;opacity:.6}
-@keyframes drift{to{transform:translateX(calc(100vw + 400px))}}
-.scene .hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:150px}
-.scene .fl{position:absolute;bottom:22px;font-size:22px;filter:saturate(1.1)}
-@media (prefers-reduced-motion:reduce){.scene .cl{animation:none;left:auto;right:10%}}
+/* 积分卡/存折卡：样子不变，只把四周的光收一点 */
+.pcard{box-shadow:0 12px 26px rgba(232,133,26,.28),inset 0 0 0 2px rgba(255,255,255,.35)}
+.bcard{box-shadow:0 12px 26px rgba(18,62,115,.26)}
 
-/* ---------- 积分卡背后的阳光（只在 iPad 上，手机上卡片在最上面就够亮了） ---------- */
-@media (min-width:760px){
-  .side::before{content:"";position:absolute;left:50%;top:0;width:620px;height:620px;margin:-310px 0 0 -310px;top:120px;z-index:-1;border-radius:50%;
-    background:radial-gradient(circle,rgba(255,236,150,.95) 0 18%,rgba(255,220,110,.35) 32%,transparent 62%),
-      repeating-conic-gradient(from 0deg,rgba(255,214,90,.32) 0 7deg,transparent 7deg 18deg);
-    -webkit-mask:radial-gradient(circle,#000 30%,transparent 66%);mask:radial-gradient(circle,#000 30%,transparent 66%);
-    animation:sunspin 80s linear infinite}
-}
-@keyframes sunspin{to{transform:rotate(360deg)}}
-@keyframes twk{50%{opacity:.35}}
-@media (prefers-reduced-motion:reduce){.side::before,.side::after{animation:none}}
-.pcard{box-shadow:0 18px 36px rgba(232,133,26,.42),0 0 0 4px rgba(255,255,255,.55),inset 0 0 0 2px rgba(255,255,255,.35)}
-.bcard{box-shadow:0 18px 36px rgba(18,62,115,.38),0 0 0 4px rgba(255,255,255,.55)}
+/* 今天得到（积分卡下面） */
+.today{background:#fff;border-radius:24px;padding:16px 20px 14px}
+.today .t{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-weight:700;font-size:17px;color:var(--ink2)}
+.today .t b{font-family:var(--round);font-weight:800;font-size:30px;line-height:1;color:var(--sun-deep);font-variant-numeric:tabular-nums}
+.tbar{margin-top:12px;height:12px;border-radius:99px;background:#F1F4F9;overflow:hidden}
+.tbar i{display:block;height:100%;width:0;min-width:12px;border-radius:99px;background:#FFB020;transition:width .5s}
+.today small{display:block;margin-top:8px;font-size:14px;color:var(--mute2)}
 
-/* ---------- 入口条：一块暖暖的软木牌 ---------- */
-.gates{background:linear-gradient(#FFFDF6,#FFF1D6);border:3px solid #fff;border-radius:22px;box-shadow:0 6px 0 #EFCB8E,0 12px 22px rgba(232,137,12,.18)}
-.gate{color:#5A3418}
-.gate+.gate{box-shadow:inset 2px 0 0 #F3DDB4}
-.gate small{font-size:18px}
-.gate .gi{height:52px;animation:hop 4s ease-in-out infinite}
-.gate+.gate .gi{animation-delay:2s}
-@keyframes hop{0%,86%,100%{transform:none}90%{transform:translateY(-7px) rotate(-4deg)}95%{transform:translateY(0) rotate(2deg)}}
+/* 小商店、高光日记：两块彩色大按钮 */
+.gates{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:none;border-radius:0;box-shadow:none;overflow:visible}
+.gate{flex-direction:row;justify-content:center;gap:10px;padding:16px 12px;border-radius:24px;color:#fff;white-space:nowrap}
+#shopGo{background:var(--c-shop)}#diaryGo{background:var(--c-diary)}
+.gate+.gate{box-shadow:none}
+.gate:active{transform:scale(.96)}
+#shopGo:active{background:#F25C5C}#diaryGo:active{background:#7C5CEB}
+.gate .gi{height:42px;filter:none;animation:none}
+.gate small{font-size:19px;font-weight:800;letter-spacing:.02em}
+.gate .dot{box-shadow:0 0 0 3px #fff;background:#FFD43B}
 
-/* ---------- 标题做成小彩旗 ---------- */
-.list>.hrow>h2,.o-hist>h2,.o-hist .hrow h2,.tgrp{position:relative;display:inline-flex;align-items:center;gap:6px;width:fit-content;justify-self:start;
-  margin:6px 0 2px;padding:7px 18px 7px 14px;font-size:19px;font-weight:700;color:#6B4A2B;letter-spacing:.06em;border-radius:999px;
-  background:rgba(255,255,255,.82);box-shadow:0 3px 0 #F3E3C6;text-shadow:none}
-@media (max-width:759px){.list>.hrow>h2,.o-hist>h2,.o-hist .hrow h2,.tgrp{font-size:17px;padding:6px 15px 6px 12px}.days button{padding:7px 11px;font-size:17px}}
+/* 标题：前面一个同色小方块图标，右边是完成了几项 */
+.list h2,.tgrp{display:flex;align-items:center;gap:10px;margin:0;font-family:var(--fun);font-weight:800;font-size:22px;color:var(--ink2);background:none;box-shadow:none;padding:0}
+.gic{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:22px;flex:none;background:var(--gc,var(--c-study))}
+.gcnt{margin-left:auto;font-style:normal;font-family:var(--round);font-weight:800;font-size:15px;color:var(--gc);background:var(--gl);border-radius:99px;padding:4px 12px;font-variant-numeric:tabular-nums}
+.list>.hrow>h2 .gcnt{margin-left:6px}
 .tgrp{margin-top:18px}
-.streak{background:#fff;box-shadow:0 3px 0 #F3D7A6}
+.g-study{--gc:var(--c-study);--gl:var(--l-study)}.g-life{--gc:var(--c-life);--gl:var(--l-life)}.g-brave{--gc:var(--c-brave);--gl:var(--l-brave)}
+.g-rec{--gc:var(--sun);--gl:#FFF4D2}.g-bill{--gc:#4C8DFF;--gl:#EAF3FF}
+.page-bank{--c-study:var(--mint);--l-study:var(--mint-pale)}
+.hrow{margin-bottom:2px}
 
-/* 今天/昨天 */
-.days{background:#fff;border:3px solid #fff;box-shadow:0 4px 0 #CFE3F5,0 8px 16px rgba(80,140,200,.15)}
-.days button[aria-pressed="true"]{background:linear-gradient(#FFE16A,#FFC83D);box-shadow:0 3px 0 #E8A100;color:#5A3418}
-.days button[data-day="-1"][aria-pressed="true"]{background:linear-gradient(#8C8CF5,#5B5BD6);box-shadow:0 3px 0 #3E3EA8;color:#fff}
+/* 今天 / 昨天 */
+.days{background:#fff;border:0;box-shadow:none;padding:5px;gap:4px}
+.days button{padding:8px 18px;font-weight:800;font-size:17px;color:var(--mute2);box-shadow:none}
+.days button[aria-pressed="true"]{background:var(--sun);color:#5A3A00;box-shadow:none}
+.days button[data-day="-1"][aria-pressed="true"],.days .pick.on{background:var(--c-diary);color:#fff}
 
-/* ---------- 格子：厚厚的糖果按钮 ---------- */
-.tile{background:linear-gradient(#FFFFFF,#FFF9EE);border:3px solid #fff;border-radius:28px;
-  box-shadow:0 7px 0 #F2D29B,0 12px 20px rgba(214,140,40,.16);transition:transform .12s}
-.tile .e{width:78px;height:78px;background:radial-gradient(circle at 38% 30%,#FFFDF5,#FFE9C2 70%,#FFDDA6);
-  box-shadow:inset 0 -5px 0 rgba(232,137,12,.14),0 0 0 4px #FFF6E4}
-.tile .n{font-weight:700;color:#4A3420}
-.tile .p,.page-pts .tile .p{color:#F08A00;font-weight:800}
-.tile:active{transform:translateY(6px);box-shadow:0 1px 0 #F2D29B}
-/* 存折页的格子用绿色 */
-.page-bank .tile{box-shadow:0 7px 0 #BFE8D3,0 12px 20px rgba(29,179,122,.14)}
-.page-bank .tile .e{background:radial-gradient(circle at 38% 30%,#FAFFFC,#D9F6E8 70%,#C2EED9);box-shadow:inset 0 -5px 0 rgba(29,179,122,.14),0 0 0 4px #EEFBF4}
-.page-bank .tile .p{color:#13A36B}
-.page-bank .tile.done{background:var(--mint-pale);box-shadow:0 5px 0 var(--mint)}
-.page-bank .tile.done .e{background:rgba(255,255,255,.75)}
-/* 积分卡：没点的格子纯白、投影淡橙；点亮后只是很淡的黄 + 小勾（2026-11-10 家长要求） */
-.page-pts .tile{background:#fff;box-shadow:0 6px 0 #F8E6C6,0 10px 18px rgba(214,140,40,.08)}
-.page-pts .tile:active{box-shadow:0 1px 0 #F8E6C6}
-.page-pts .tile.done{background:#FFFBEC;box-shadow:0 6px 0 #FCE3A6,0 10px 18px rgba(214,140,40,.08)}
-.page-pts .tile.done::after{background:#FFB547;width:28px;height:28px;font-size:16px;right:8px;top:8px;box-shadow:none}
+/* 格子：白色圆角卡，图标放在同组颜色的圆角方块里，点亮后变成淡淡的组色 + 小勾 */
+.tiles{gap:12px}
+@media (min-width:760px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+.tile,.page-pts .tile,.page-pts .tile.hot{background:#fff;border:0;border-radius:24px;box-shadow:none;padding:16px 6px 14px;gap:7px;transition:transform .12s,background-color .2s}
+.tiles .tile{--gc:var(--c-study);--gl:var(--l-study)}
+.tiles .tile.g-life{--gc:var(--c-life);--gl:var(--l-life)}.tiles .tile.g-brave{--gc:var(--c-brave);--gl:var(--l-brave)}
+.tile:active,.page-pts .tile:active{transform:scale(.95);box-shadow:none}
+.tile .e,.page-pts .tile .e{width:64px;height:64px;border-radius:20px;background:var(--gl);box-shadow:none;margin:0}
+.tile .e svg{width:72%;height:72%}
+.tile .n{font-size:16px;font-weight:700;color:var(--ink2);line-height:1.25}
+.tile .p,.page-pts .tile .p,.page-pts .tile .p.ok{font-family:var(--round);font-weight:800;font-size:15px;line-height:1.5;color:var(--gc);background:var(--gl);border-radius:99px;padding:0 12px;opacity:1}
+.tile .p i{font-size:12px}
+.tile.hot .p,.page-pts .tile.hot .p:not(.ok),.page-pts .tile.hot .p.ok{background:var(--sun-deep);color:#fff}
+.tile.done,.page-pts .tile.done,.page-bank .tile.done{background:var(--gl);box-shadow:none}
+.tile.done .e,.page-pts .tile.done .e,.page-bank .tile.done .e{background:#fff}
+.tile.done::after,.page-pts .tile.done::after{content:"✓";width:26px;height:26px;right:10px;top:10px;font-size:15px;background:var(--gc);box-shadow:none}
+@media (min-width:760px){.tile{padding:18px 6px 16px}.tile .e{width:68px;height:68px}.tile .n{font-size:17px}}
 
-/* ---------- 星星记录 / 账单 ---------- */
-.row{border:3px solid #fff;background:linear-gradient(90deg,#FFFFFF,#FFFBF2);box-shadow:0 5px 0 #E7D7BC,0 10px 18px rgba(120,90,40,.1);border-radius:22px}
-.row .d{color:#B07A3A}
-.empty{background:rgba(255,255,255,.7);border-radius:22px}
-details.parent{border-top-color:rgba(120,160,200,.35)}
-details.parent summary{background:rgba(255,255,255,.7);border-radius:999px;padding:6px 14px;width:fit-content;margin:0 auto}
+/* 星星记录 / 账单 */
+.row{background:#fff;border:0;box-shadow:none;border-radius:20px}
+.row .d{color:var(--mute2)}
+.streak{background:#FFF1DC;box-shadow:none;margin-left:auto}
+.empty{background:#fff;border-radius:22px}
+.wish{box-shadow:none}
+.chipx{box-shadow:none}
+details.parent{border-top:1px solid #E3E8F0}
+details.parent summary{background:none}
 
 /* ===================== 小商店 ===================== */
 /* 房间：条纹墙纸 + 顶上的木线 + 木护墙板和地板 + 吊灯的暖光 */
@@ -684,9 +680,6 @@ details.parent summary{background:rgba(255,255,255,.7);border-radius:999px;paddi
 .entry{background:linear-gradient(#8ED0FF,#CDEBFF 60%)}
 </style>
 
-<div class="scene" aria-hidden="true"><i class="cl c1"></i><i class="cl c2"></i><i class="cl c3"></i>
-<svg class="hills" viewBox="0 0 1200 150" preserveAspectRatio="none"><path d="M0 70 C180 20 360 30 560 70 S920 120 1200 50 V150 H0Z" fill="#CDEDB6"/><path d="M0 110 C240 60 430 80 640 105 S1000 140 1200 95 V150 H0Z" fill="#A6DD8F"/><path d="M0 135 C300 112 600 122 900 132 S1100 128 1200 124 V150 H0Z" fill="#8CCF78"/></svg>
-<span class="fl" style="left:6%">🌼</span><span class="fl" style="left:31%;bottom:14px">🌷</span><span class="fl" style="left:58%;bottom:26px">🌼</span><span class="fl" style="left:83%;bottom:12px">🌸</span></div>
 <div class="wrap page-bank">
   <div class="side">
     <div class="kcard bcard shine o-card" id="bankCard">
@@ -704,8 +697,8 @@ details.parent summary{background:rgba(255,255,255,.7);border-radius:999px;paddi
     <div class="wish o-info" id="wishBox" hidden><div class="wi">🎯</div><div class="wt"><div class="wl" id="wishText"></div><div class="bar"><i id="wishBar"></i></div></div></div>
   </div>
   <div class="main">
-    <div class="list o-tiles"><div class="hrow"><h2>💪 干活赚钱</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true">☀️ 今天</button><button data-day="-1" aria-pressed="false">🌙 昨天</button><span class="pick" hidden><span id="pickLbl"></span></span></div></div><div class="tiles" id="tiles"></div></div>
-    <div class="list o-hist"><h2>🧾 账单</h2><div class="list" id="hist"></div></div>
+    <div class="list o-tiles"><div class="hrow"><h2 class="g-study"><span class="gic">💪</span>干活赚钱</h2><div class="days" role="group" aria-label="记哪一天"><button data-day="0" aria-pressed="true">☀️ 今天</button><button data-day="-1" aria-pressed="false">🌙 昨天</button><span class="pick" hidden><span id="pickLbl"></span></span></div></div><div class="tiles" id="tiles"></div></div>
+    <div class="list o-hist"><h2 class="g-bill"><span class="gic">🧾</span>账单</h2><div class="list" id="hist"></div></div>
     <details class="parent o-parent"><summary>👩 家长看这里</summary><div class="pbox">
       <div><b>能挣钱的：</b>本分之外、帮全家做的额外家务，每样每天 1 块。点错了再点一下格子就取消。收拾自己的东西、学习、刷牙不挣钱。</div>
       <div><b>花钱：</b></div>
@@ -722,7 +715,7 @@ details.parent summary{background:rgba(255,255,255,.7);border-radius:999px;paddi
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月10日 10:04</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月10日 16:12</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -921,7 +914,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="153d72915a";
+const BUILD="620a4e498b";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -1021,16 +1014,25 @@ function render(){
   $("#tiles").classList.toggle("past",isPast());
   if(PAGE==="pts"){renderPts();renderShop();Diary.refresh()}else renderBank();
 }
-const GRP_NAME={brave:"🏅 了不起",study:"📚 学习","":"🌞 习惯"};
+const GRP={study:["📚","学习"],"":["🌞","习惯"],brave:["🏅","了不起"]};
 function renderPts(){
   const p=ptsCalc(),t=recDate();
   countTo("ptsTotal",p.total);
   const st=$("#ptsStreak");st.hidden=p.streak<2;st.textContent="🔥 连续学习 "+p.streak+" 天";
   $("#tiles").innerHTML=HABITS.map((h,i)=>{
-    const g=h.grp||"",sec=i>0&&g!==(HABITS[i-1].grp||"")?`<div class="tgrp g-${g||"life"}">${GRP_NAME[g]}</div>`:"";
+    const g=h.grp||"",gk=g||"life",sec=i>0&&g!==(HABITS[i-1].grp||"")?`<div class="tgrp g-${gk}"><span class="gic">${GRP[g][0]}</span>${GRP[g][1]}<em class="gcnt" id="cnt-${gk}"></em></div>`:"";
     const d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
-    return sec+`<button class="tile ${h.grp?"":"life"} ${h.hot?"hot":""} ${mine?"done":d?"off":""} ${armed(t+"_"+slotOf(h))}" data-h="${h.id}" aria-label="${h.name}"><span class="e">${ico(h.id,h.icon)}</span><span class="n">${h.name}</span><span class="p ${d?"ok":""}">${amt(h.pts,"分")}</span></button>`;
+    return sec+`<button class="tile g-${gk} ${h.grp?"":"life"} ${h.hot?"hot":""} ${mine?"done":d?"off":""} ${armed(t+"_"+slotOf(h))}" data-h="${h.id}" aria-label="${h.name}"><span class="e">${ico(h.id,h.icon)}</span><span class="n">${h.name}</span><span class="p ${d?"ok":""}">${amt(h.pts,"分")}</span></button>`;
   }).join("");
+  /* 每组完成几项 + 今天得到 */
+  const slots={},cnt={};let got=0;
+  for(const h of HABITS){const k=h.grp||"life",d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
+    if(!slots[k+slotOf(h)]){slots[k+slotOf(h)]=1;(cnt[k]=cnt[k]||[0,0])[1]++}if(mine){cnt[k][0]++;got+=d.pts||h.pts}}
+  for(const k in cnt){const e=document.getElementById("cnt-"+k);if(e)e.textContent=cnt[k][0]+" / "+cnt[k][1]}
+  const nd=Object.values(cnt).reduce((s,c)=>s+c[0],0),na=Object.values(cnt).reduce((s,c)=>s+c[1],0);
+  $("#todayLbl").textContent=dayWord(t)+"得到";$("#todayPts").textContent="+"+got+" ★";
+  $("#todayBar").style.width=(na?nd/na*100:0)+"%";
+  $("#todayTip").textContent=nd?`完成了 ${nd} 件${na>nd?`，还有 ${na-nd} 件可以做`:"，全部完成啦！"}`:"还没开始，点一个格子吧";
   const byDay={};for(const d of p.docs)(byDay[d.date]=byDay[d.date]||[]).push(d);
   let rows=[];
   for(const ds of Object.keys(byDay).sort().reverse()){

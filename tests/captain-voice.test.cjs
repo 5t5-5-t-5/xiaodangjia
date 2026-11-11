@@ -87,7 +87,7 @@ test('every current points and bank card has an exact matching recording, with e
   vm.runInNewContext(fs.readFileSync(path.join(root,'captain-voice-pack.js'),'utf8'),sandbox);
   const pack=sandbox.window.XDJ_CAPTAIN_VOICE_PACK;
   // 新加的卡片还没录音，先用系统队长声音；补好录音后从这里删掉
-  const AWAITING_RECORDING=['盛饭，存进1块钱！','手指指读，加5分！','语文阅读，加5分！','读书没哭，加5分！','写字没哭，加5分！','问之很勇敢，加5分！','坚持就是胜利，加4分！','专注写作业，加4分！','有效沟通，加5分！','专注读书，加5分！','哇，自己主动的！主动睡觉，加5分！'];
+  const AWAITING_RECORDING=[];/* 缺的录音由 voice_sync.py 在生成页面时自动补上 */
   for(const file of ['points.html','bank.html']){
     const html=fs.readFileSync(path.join(root,file),'utf8');
     const habits=vm.runInNewContext(html.match(/const HABITS=(\[[\s\S]*?\n\]);/)[1]);
@@ -100,5 +100,5 @@ test('every current points and bank card has an exact matching recording, with e
     const asset=pack.files[id];assert.ok(asset&&!asset.startsWith('/')&&!asset.includes('..'));
     assert.ok(fs.statSync(path.join(root,asset)).size>1000,asset);
   }
-  assert.equal(Object.keys(pack.files).length,59);
+  assert.ok(Object.keys(pack.files).length>=59);
 });

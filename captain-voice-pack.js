@@ -1,6 +1,6 @@
 /* Accepted firm-ending voice; exact source phrases map to recordings. */
 window.XDJ_CAPTAIN_VOICE_PACK = {
-  "version": "20261106-firm1",
+  "version": "20261106-firm1-autoead06c",
   "files": {
     "points-oral": "audio/captain/v1/points-oral.mp3",
     "points-enbook": "audio/captain/v1/points-enbook.mp3",
@@ -60,7 +60,18 @@ window.XDJ_CAPTAIN_VOICE_PACK = {
     "points-ten": "audio/captain/v1/points-ten.mp3",
     "energy": "audio/captain/v1/energy.mp3",
     "supplied": "audio/captain/v1/supplied.mp3",
-    "ready": "audio/captain/v1/ready.mp3"
+    "ready": "audio/captain/v1/ready.mp3",
+    "points-reading-fa7a7c": "audio/captain/v1/points-reading-fa7a7c.mp3",
+    "points-fingerread-d27959": "audio/captain/v1/points-fingerread-d27959.mp3",
+    "points-read_nocry-7b05a1": "audio/captain/v1/points-read_nocry-7b05a1.mp3",
+    "points-write_nocry-ed4680": "audio/captain/v1/points-write_nocry-ed4680.mp3",
+    "points-sleep_self-3ff655": "audio/captain/v1/points-sleep_self-3ff655.mp3",
+    "points-persist-24869b": "audio/captain/v1/points-persist-24869b.mp3",
+    "points-brave-e66d0b": "audio/captain/v1/points-brave-e66d0b.mp3",
+    "points-focus_hw-c7cfc8": "audio/captain/v1/points-focus_hw-c7cfc8.mp3",
+    "points-focus_read-7cee74": "audio/captain/v1/points-focus_read-7cee74.mp3",
+    "points-talk-a2bd5b": "audio/captain/v1/points-talk-a2bd5b.mp3",
+    "bank-serve-dc8525": "audio/captain/v1/bank-serve-dc8525.mp3"
   },
   "phrases": {
     "口语星球，加2分！": [
@@ -243,6 +254,39 @@ window.XDJ_CAPTAIN_VOICE_PACK = {
     "你好呀，我是小当家！": [
       "attention",
       "ready"
+    ],
+    "语文阅读，加5分！": [
+      "points-reading-fa7a7c"
+    ],
+    "手指指读，加5分！": [
+      "points-fingerread-d27959"
+    ],
+    "读书没哭，加5分！": [
+      "points-read_nocry-7b05a1"
+    ],
+    "写字没哭，加5分！": [
+      "points-write_nocry-ed4680"
+    ],
+    "哇，自己主动的！主动睡觉，加5分！": [
+      "points-sleep_self-3ff655"
+    ],
+    "坚持就是胜利，加4分！": [
+      "points-persist-24869b"
+    ],
+    "问之很勇敢，加5分！": [
+      "points-brave-e66d0b"
+    ],
+    "专注写作业，加4分！": [
+      "points-focus_hw-c7cfc8"
+    ],
+    "专注读书，加5分！": [
+      "points-focus_read-7cee74"
+    ],
+    "有效沟通，加5分！": [
+      "points-talk-a2bd5b"
+    ],
+    "盛饭，存进1块钱！": [
+      "bank-serve-dc8525"
     ]
   }
 };

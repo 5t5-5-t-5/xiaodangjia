@@ -947,7 +947,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月11日 14:52</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月11日 15:14</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1148,7 +1148,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="764d294583";
+const BUILD="bf992fb88c";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -1428,9 +1428,14 @@ function flyNode(html,from,to,{size=80,dur=650,cls=""}={}){return new Promise(re
   n.style.transform=`translate(${to.left+to.width/2-from.left-from.width/2}px,${to.top+to.height/2-from.top-from.height/2}px) scale(.75)`;
   setTimeout(()=>{n.remove();res()},dur)})}
 let shopOpen=false,picked=null,busyShop=false;
-function openShop(){shopOpen=true;picked=null;$("#shop").hidden=false;$("#counter").hidden=false;$("#shop").scrollTop=0;document.body.style.overflow="hidden";renderShop();playEntry()}
+function openShop(){shopOpen=true;picked=null;$("#shop").hidden=false;$("#counter").hidden=false;$("#shop").scrollTop=0;document.body.style.overflow="hidden";renderShop();barTint("#5A3418");playEntry()}
 /* 进门：门先打开 → 镜头走到门口 → 叮咚 → 穿过门走进店里。点一下可以直接进去 */
 let entryT=[];
+/* 手机最顶上那一条（时间、电量后面）的颜色：进店门时是天空蓝，进到店里换成木头色，出门换回首页的暖白 */
+function barTint(c){let m=document.querySelector('meta[name="theme-color"]');
+  if(!m){m=document.createElement("meta");m.name="theme-color";document.head.appendChild(m)}
+  if(c)m.content=c;else m.remove();
+  document.documentElement.style.backgroundColor=document.body.style.backgroundColor=c||""}
 function playEntry(){
   const en=$("#entry");
   if(matchMedia("(prefers-reduced-motion: reduce)").matches){doorSnd(true);setTimeout(dingdong,700);return}
@@ -1439,7 +1444,7 @@ function playEntry(){
   $("#winR").innerHTML=it.slice(2,4).map(d=>`<span>${itIco(d)}</span>`).join("");
   const wish=shopItems().find(d=>d.wish),ins=[wish,...it.slice(4)].filter(Boolean).concat(DECO.map(icon=>({icon}))).slice(0,6);
   $("#inside").innerHTML=ins.map(d=>`<span>${itIco(d)}</span>`).join("")+"<b></b>";
-  entryT.forEach(clearTimeout);entryT=[];en.className="entry";en.hidden=false;
+  entryT.forEach(clearTimeout);entryT=[];en.className="entry";en.hidden=false;barTint("#8ED0FF");
   const cam=en.querySelector(".cam"),dr=en.querySelector(".portal").getBoundingClientRect();
   cam.style.transformOrigin=`${dr.left+dr.width/2}px ${dr.top+dr.height*.55}px`;void en.offsetWidth;
   const at=(ms,f)=>entryT.push(setTimeout(f,ms));
@@ -1450,8 +1455,8 @@ function playEntry(){
   at(3150,endEntry);
   en.onclick=()=>{if(!en.classList.contains("ring"))dingdong();endEntry()};
 }
-function endEntry(){entryT.forEach(clearTimeout);entryT=[];const en=$("#entry");en.hidden=true;en.className="entry";setTimeout(()=>$("#shop").classList.remove("arrive"),800)}
-function closeShop(){if(shopOpen)doorSnd(false);endEntry();shopOpen=false;picked=null;$("#shop").hidden=true;$("#counter").hidden=true;document.body.style.overflow=""}
+function endEntry(){entryT.forEach(clearTimeout);entryT=[];const en=$("#entry");en.hidden=true;en.className="entry";if(shopOpen)barTint("#5A3418");setTimeout(()=>$("#shop").classList.remove("arrive"),800)}
+function closeShop(){if(shopOpen)doorSnd(false);endEntry();shopOpen=false;picked=null;$("#shop").hidden=true;$("#counter").hidden=true;document.body.style.overflow="";barTint("")}
 const perRow=()=>innerWidth>=760?4:3;
 let migHero=false;try{migHero=!!localStorage.getItem("xdj:migHero")}catch(e){}
 function renderShop(){
@@ -1949,6 +1954,14 @@ const Diary=(()=>{
     tweenCurl(go?{x:C.fwd?-W:W,y:C.C0.y}:{...C.C0},go?520:380,0,()=>endCurl(go));
   }
   book.addEventListener("pointerup",endDrag);book.addEventListener("pointercancel",endDrag);
+  /* 点照片看大图（带印章和日期），点一下关掉 */
+  const big=$("#dyBig");let bigT=0;
+  function showBig(id){const m=state.diary[id];if(!m||!m.photo)return;const q=DQ[m.q]||DQ.persist,[,mo,da]=md(m.date);
+    $("#dyBigImg").src=m.photo;const st=$("#dyBigSt");st.style.setProperty("--c",q.c);st.innerHTML=`<i>${q.ic}</i><span>${q.name}</span>`;
+    $("#dyBigCap").textContent=`${mo}月${da}日 星期${wdOf(m.date)}`;
+    clearTimeout(bigT);big.hidden=false;void big.offsetWidth;big.classList.add("on")}
+  function hideBig(){big.classList.remove("on");clearTimeout(bigT);bigT=setTimeout(()=>{big.hidden=true},260)}
+  big.addEventListener("click",hideBig);
   prevB.onclick=()=>step(-1);nextB.onclick=()=>step(1);
   /* 念给我听：按整句念（队长录音是一句一句生成的）。这一页从哪句开始就念哪几句；页底没写完的那句也念完 */
   const SENTS=t=>t.match(/[^。！？!?]+[。！？!?]*/g)||[];

@@ -1,6 +1,6 @@
 /* Accepted firm-ending voice; exact source phrases map to recordings. */
 window.XDJ_CAPTAIN_VOICE_PACK = {
-  "version": "20261106-firm1-autob6d660",
+  "version": "20261106-firm1-autof26616",
   "files": {
     "points-oral": "audio/captain/v1/points-oral.mp3",
     "points-enbook": "audio/captain/v1/points-enbook.mp3",
@@ -85,7 +85,8 @@ window.XDJ_CAPTAIN_VOICE_PACK = {
     "shop-80f1df7a67": "audio/captain/v1/shop-80f1df7a67.mp3",
     "shop-5b8535bd11": "audio/captain/v1/shop-5b8535bd11.mp3",
     "shop-60d24ef09d": "audio/captain/v1/shop-60d24ef09d.mp3",
-    "fix-7f2b858797": "audio/captain/v1/fix-7f2b858797.mp3"
+    "fix-7f2b858797": "audio/captain/v1/fix-7f2b858797.mp3",
+    "fix-64cdb401b3": "audio/captain/v1/fix-64cdb401b3.mp3"
   },
   "phrases": {
     "口语星球，加2分！": [
@@ -343,6 +344,9 @@ window.XDJ_CAPTAIN_VOICE_PACK = {
     ],
     "问之的高光日记，一共有5篇": [
       "fix-7f2b858797"
+    ],
+    "问之的高光日记，一共有6篇": [
+      "fix-64cdb401b3"
     ]
   }
 };

@@ -2,6 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/lxgwwenkaigbscreen.css">
 <style>
 /* 刻意只用一套明亮的童趣配色（不跟随深色模式）。
    文字和数字一律用苹果系统字体（-apple-system / 苹方），只有高光日记本里面用 ZCOOL KuaiLe 手写感。
@@ -393,10 +394,11 @@ details.parent summary::-webkit-details-marker{display:none}
 
 
 /* ---------- 高光日记：一本深红布面精装日记本，横线内页，一页一篇。翻页像手机“图书”那样从书角卷起来 ---------- */
-#diary{position:fixed;inset:0;z-index:15;overflow-y:auto;-webkit-overflow-scrolling:touch;color:#2B2A3A;
-  --desk:#EADCC4;--desk2:#E2D1B4;--ink:#2B2A3A;--soft:#7A6E5E;--line:5.4cqw;--pen:#26357A;--margin:#E8A0A0;
+#diary{--u:1cqw;position:fixed;inset:0;z-index:15;overflow-y:auto;-webkit-overflow-scrolling:touch;color:#2B2A3A;
+  --desk:#EADCC4;--desk2:#E2D1B4;--ink:#2B2A3A;--soft:#7A6E5E;--line:calc(5.4*var(--u));--pen:#26357A;--margin:#E8A0A0;
   --cloth:#A8323A;--cloth-d:#7C2129;--gold:#F2C766;--paper:#FFFBF1;--rule:#E7DCC6;--q2:#4A90E2;
   --fun:"ZCOOL KuaiLe","PingFang SC","Hiragino Sans GB",sans-serif;
+  --penf:"LXGW WenKai Screen","Kaiti SC","STKaiti","PingFang SC",serif;
   background:radial-gradient(ellipse at 50% 35%,#F3E8D4,var(--desk) 60%,var(--desk2))}
 #diary[hidden]{display:none}
 #diary *{box-sizing:border-box}
@@ -408,16 +410,59 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .dedit{border-top:2px dashed #D9C6A4;padding-top:12px}
 #diary .dedit summary{list-style:none;text-align:center;color:var(--soft);font-size:15px;cursor:pointer}
 #diary .dedit summary::-webkit-details-marker{display:none}
-#diary .drows{display:flex;flex-direction:column;gap:10px;margin-top:12px}
-#diary .drow{display:grid;grid-template-columns:auto auto auto 1fr auto auto;gap:8px;align-items:start;background:#FFF8EA;border-radius:16px;padding:10px}
-#diary .drow input,#diary .drow select,#diary .drow textarea{font:inherit;font-size:16px;border:2px solid #EADBC2;border-radius:12px;padding:7px 9px;background:#fff;color:var(--ink);min-width:0}
-#diary .drow textarea{resize:vertical;min-height:44px;line-height:1.5}
-#diary .drow .ddel{border:0;background:none;font-size:20px;padding:6px}
-#diary .drow .dcam{border:0;border-radius:12px;background:#F3EBDD;font-size:18px;width:44px;height:44px;padding:0;overflow:hidden}#diary .drow .dcam img{width:100%;height:100%;object-fit:cover}
-#diary .dfoot{display:flex;align-items:flex-end;gap:2cqw}#diary .dfoot .stamp{margin-left:auto}
-#diary .dpic{position:relative;flex:none;width:19cqw;padding:1cqw 1cqw 3cqw;background:#fff;border-radius:.4cqw;box-shadow:0 .5cqw 1.2cqw rgba(0,0,0,.18);transform:rotate(-5deg);margin:1.6cqw 0 0 .6cqw}
-#diary .dpic img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
-#diary .dpic::before{content:"";position:absolute;left:50%;top:-1.2cqw;width:8cqw;height:2.6cqw;margin-left:-4cqw;background:rgba(255,236,170,.75);transform:rotate(3deg);box-shadow:0 .2cqw .4cqw rgba(0,0,0,.08)}
+#diary .drows{display:flex;flex-direction:column;gap:10px;margin-top:12px;max-width:760px;margin-inline:auto}
+#diary .drow{display:flex;gap:12px;align-items:center;background:#FFF8EA;border:0;border-radius:16px;padding:10px 12px;text-align:left;font:inherit;color:var(--ink);width:100%;cursor:pointer}
+#diary .drow:active{background:#F6EBD6}
+#diary .drow .dth{flex:none;width:56px;height:56px;border-radius:12px;background:#F3EBDD;display:grid;place-items:center;font-size:26px;overflow:hidden}#diary .drow .dth img{width:100%;height:100%;object-fit:cover}
+#diary .drow .dtx{flex:1;min-width:0}
+#diary .drow .dtx b{display:block;font-size:15px;font-weight:700}
+#diary .drow .dtx b i{font-style:normal;color:#fff;border-radius:99px;padding:1px 8px;font-size:13px;margin-left:6px;font-weight:600;white-space:nowrap;display:inline-block}
+#diary .drow .dtx span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;color:var(--soft);line-height:1.5;margin-top:2px}
+#diary .drow .dgo{flex:none;font-size:14px;font-weight:700;color:var(--q2);background:#fff;border-radius:99px;padding:7px 12px}
+/* 家长改日记：一整页 */
+.dyed{position:fixed;inset:0;z-index:30;background:#FBF7F0;display:flex;flex-direction:column;color:#2B2A3A;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.dyed[hidden]{display:none}
+.dyed .edbar{flex:none;display:flex;align-items:center;gap:10px;padding:max(10px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));background:#fff;border-bottom:1px solid #EFE6D6}
+.dyed .edbar b{flex:1;text-align:center;font-size:19px}
+.dyed .edbar button{border:0;border-radius:999px;font:700 17px/1 inherit;font-family:inherit;padding:11px 18px;min-width:76px}
+.dyed .edx{background:#F1ECE3;color:#6B6152}.dyed .edok{background:#2BB673;color:#fff}
+.dyed .edbody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px max(16px,env(safe-area-inset-left,0px)) 40px;display:flex;flex-direction:column;gap:8px;max-width:820px;width:100%;margin:0 auto}
+.dyed .edl{font-size:15px;font-weight:700;color:#7A6E5E;margin-top:10px}
+.dyed .edcount{font-weight:500;color:#A39886;font-size:13px;margin-left:6px}
+.dyed .eddate{align-self:flex-start;font:inherit;font-size:18px;border:2px solid #EADBC2;border-radius:12px;padding:8px 12px;background:#fff;color:inherit}
+.dyed .edchips{display:flex;flex-wrap:wrap;gap:8px}
+.dyed .edchips button{border:2px solid #EADBC2;background:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-size:16px;color:inherit}
+.dyed .edchips button.on{border-color:var(--c,#F2B33D);background:var(--c,#FFF1C9);color:#fff}
+.dyed .edchips.wx button.on{background:#FFF1C9;color:inherit}.dyed .edchips.wx button{font-size:22px;padding:4px 12px;min-width:56px}.dyed .edchips.wx button:first-child{font-size:16px;padding:8px 14px}
+.dyed textarea{width:100%;min-height:max(260px,42vh);border:2px solid #EADBC2;border-radius:16px;padding:14px;font:inherit;font-size:19px;line-height:1.75;background:#fff;color:inherit;resize:vertical}
+.dyed textarea:focus,.dyed .eddate:focus{outline:none;border-color:#F2B33D}
+.dyed .edpho{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.dyed .edimg{width:200px;height:200px;border-radius:16px;background:#F3EBDD;display:grid;place-items:center;color:#A39886;font-size:15px;overflow:hidden}.dyed .edimg img{width:100%;height:100%;object-fit:cover}
+.dyed .edpbtn{display:flex;flex-direction:column;gap:10px}
+.dyed .edpbtn button{border:0;border-radius:999px;background:#4A90E2;color:#fff;font:700 16px/1 inherit;font-family:inherit;padding:12px 18px}
+.dyed .edpbtn .edgray{background:#F1ECE3;color:#6B6152}
+.dyed .eddel{align-self:center;margin-top:28px;border:0;background:none;color:#D0453A;font:600 16px/1 inherit;font-family:inherit;padding:12px}
+@media (max-width:600px){.dyed .edimg{width:140px;height:140px}.dyed textarea{font-size:18px}}
+#diary .dfoot{display:flex;align-items:flex-end;gap:calc(2*var(--u));order:5}#diary .dsign{order:4}#diary .dfoot .stamp{margin-left:auto}
+#diary .dpic{position:relative;flex:none;width:calc(19*var(--u));padding:calc(1*var(--u)) calc(1*var(--u)) calc(3*var(--u));background:#fff;border-radius:calc(.4*var(--u));box-shadow:0 calc(.5*var(--u)) calc(1.2*var(--u)) rgba(0,0,0,.18);transform:rotate(-5deg);margin:calc(1.6*var(--u)) 0 0 calc(.6*var(--u))}
+#diary .dpic img{display:block;width:100%;aspect-ratio:1;object-fit:cover;pointer-events:none}
+/* 有照片时：印章盖在照片右下角，照片放大；点照片看大图 */
+#diary .dfoot .dpic{width:calc(26*var(--u));margin:calc(1.8*var(--u)) 0 calc(1*var(--u)) calc(2*var(--u));cursor:zoom-in}
+#diary .long .dfoot .dpic,#diary .endp2 .dfoot .dpic{width:calc(23*var(--u))}#diary .long2 .dfoot .dpic,#diary .pfs .dfoot .dpic{width:calc(20*var(--u))}#diary .psolo .dbody{display:none}#diary .psolo .dfoot{flex:1;align-items:center;justify-content:center}#diary .pg.psolo .dfoot .dpic,#diary.imm .pg.psolo .dfoot .dpic{width:calc(34*var(--u));margin:0 calc(6*var(--u)) calc(4*var(--u)) 0}#diary.imm .pg.psolo .dfoot .dpic{width:calc(31*var(--u));margin:0 calc(8*var(--u)) calc(4*var(--u)) 0}#diary.imm .pfs .dfoot .dpic{width:calc(25*var(--u))}
+#diary .dfoot .dpic .stamp{position:absolute;right:calc(-9.5*var(--u));bottom:calc(-1.6*var(--u));margin:0;width:calc(14*var(--u));height:calc(14*var(--u));transform:rotate(-12deg);opacity:.92;background:rgba(255,255,255,.55);pointer-events:none}
+#diary .dfoot .dpic .stamp i{font-size:calc(4.3*var(--u))}#diary .dfoot .dpic .stamp span{font-size:calc(3*var(--u));margin-top:calc(.2*var(--u))}#diary .dfoot .dpic .stamp.s4 span{font-size:calc(2*var(--u));margin-top:0}
+#diary .long2 .dfoot .dpic .stamp{width:calc(12*var(--u));height:calc(12*var(--u));right:calc(-8*var(--u))}#diary .long2 .dfoot .dpic .stamp i{font-size:calc(3.6*var(--u))}#diary .long2 .dfoot .dpic .stamp span{font-size:calc(2.5*var(--u))}#diary .long2 .dfoot .dpic .stamp.s4 span{font-size:calc(1.7*var(--u))}
+/* 看大图 */
+.dybig{position:fixed;inset:0;z-index:40;background:rgba(28,20,12,.86);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;opacity:0;transition:opacity .25s ease;cursor:zoom-out;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.dybig.on{opacity:1}.dybig[hidden]{display:none}
+.dybig .bp{position:relative;background:#fff;padding:12px 12px 40px;border-radius:6px;box-shadow:0 20px 50px rgba(0,0,0,.45);transform:scale(.9) rotate(-2deg);transition:transform .3s cubic-bezier(.3,.7,.2,1);width:min(86vw,72vh,620px)}
+.dybig.on .bp{transform:none}
+.dybig .bp img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:2px}
+.dybig .bp .bst{position:absolute;right:-18px;bottom:-6px;width:96px;height:96px;border-radius:50%;border:5px solid var(--c);color:var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-12deg);background:rgba(255,255,255,.75);box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 6px var(--c);font-weight:700;line-height:1.05}
+.dybig .bp .bst i{font-style:normal;font-size:28px}.dybig .bp .bst span{font-size:16px;white-space:nowrap}
+.dybig .cap{color:#F6EBDD;font-size:16px;font-weight:600}
+.dybig .x{color:#CDBFA8;font-size:14px}
+#diary .dpic::before{content:"";position:absolute;left:50%;top:calc(-1.2*var(--u));width:calc(8*var(--u));height:calc(2.6*var(--u));margin-left:calc(-4*var(--u));background:rgba(255,236,170,.75);transform:rotate(3deg);box-shadow:0 calc(.2*var(--u)) calc(.4*var(--u)) rgba(0,0,0,.08)}
 .pop .dyp .pho{border:0;border-radius:14px;background:#F3EBDD;padding:8px 14px;font-size:16px;display:inline-flex;align-items:center;gap:8px;align-self:center}.pop .dyp .pho img{width:44px;height:44px;border-radius:8px;object-fit:cover}
 #diary .dhint{font-size:14px;color:var(--soft);margin-top:8px;line-height:1.6;text-align:center}
 @media (max-width:700px){#diary .drow{grid-template-columns:1fr 1fr 1fr auto}#diary .drow textarea{grid-column:1/-1;grid-row:2}}
@@ -448,14 +493,14 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .pg.l::after{background:linear-gradient(90deg,rgba(255,255,255,.4),transparent 6%,transparent 82%,rgba(90,60,20,.10) 93%,rgba(60,35,10,.28))}
 #diary .pg.r{border-radius:0 .5cqw .5cqw 0}
 #diary .pg.r::after{background:linear-gradient(270deg,rgba(255,255,255,.4),transparent 6%,transparent 82%,rgba(90,60,20,.10) 93%,rgba(60,35,10,.28))}
-#diary .pno{position:absolute;bottom:2.2cqw;font-size:1.3cqw;color:#B8A68C;font-variant-numeric:tabular-nums}
-#diary .pg.l .pno{left:5cqw}
-#diary .pg.r .pno{right:5cqw}
+#diary .pno{position:absolute;bottom:calc(.9*var(--u));font-size:calc(1.3*var(--u));color:#B8A68C;font-variant-numeric:tabular-nums}
+#diary .pg.l .pno{left:50%;transform:translateX(-50%)}
+#diary .pg.r .pno{left:50%;transform:translateX(-50%)}
 #diary .pg.cover{padding:0;background:radial-gradient(circle at 35% 25%,rgba(255,255,255,.12),transparent 55%),repeating-linear-gradient(45deg,rgba(0,0,0,.06) 0 2px,transparent 2px 4px),var(--cloth);border-radius:0 .9cqw .9cqw 0;align-items:center;justify-content:center;text-align:center;color:var(--gold)}
 #diary .pg.cover::after{background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(255,255,255,.12) 3%,transparent 7%)}
 #diary .cover .inner{position:absolute;inset:3.4cqw 3cqw 3.4cqw 4.6cqw;border:.35cqw solid var(--gold);border-radius:.8cqw;box-shadow:inset 0 0 0 .7cqw var(--cloth),inset 0 0 0 .9cqw rgba(242,199,102,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6cqw}
 #diary .cover .em{width:11cqw;height:11cqw;border-radius:50%;display:grid;place-items:center;font-size:6cqw;color:var(--cloth-d);background:radial-gradient(circle at 35% 30%,#FFF1B8,var(--gold) 60%,#C9962E);box-shadow:0 .4cqw 0 rgba(0,0,0,.25)}
-#diary .cover h2{margin:0;font-family:var(--fun);font-weight:400;font-size:5.2cqw;line-height:1.25;letter-spacing:.3cqw;text-shadow:0 .25cqw 0 rgba(0,0,0,.35),0 -.08cqw 0 rgba(255,240,190,.5)}
+#diary .cover h2{margin:0;font-family:var(--penf);font-weight:400;-webkit-text-stroke:.12cqw currentColor;font-size:5.2cqw;line-height:1.25;letter-spacing:.3cqw;text-shadow:0 .25cqw 0 rgba(0,0,0,.35),0 -.08cqw 0 rgba(255,240,190,.5)}
 #diary .cover .yr{font-size:1.7cqw;letter-spacing:.5cqw;opacity:.9}
 #diary .cover .tap{position:absolute;bottom:5.4cqw;left:0;right:0;font-size:1.5cqw;color:rgba(255,236,190,.85);animation:dynudge 1.8s ease-in-out infinite}
 @keyframes dynudge{50%{transform:translateX(-.8cqw)}}
@@ -466,45 +511,45 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .pg.endp{background:radial-gradient(circle,rgba(168,50,58,.16) 0 .35cqw,transparent .45cqw) 0 0/3.2cqw 3.2cqw,radial-gradient(circle,rgba(242,199,102,.35) 0 .25cqw,transparent .35cqw) 1.6cqw 1.6cqw/3.2cqw 3.2cqw,#F6EBDD;align-items:center;justify-content:center}
 #diary .owner{background:var(--paper);border:.25cqw solid var(--cloth);border-radius:1cqw;padding:2.4cqw 3.4cqw;text-align:center;box-shadow:0 .5cqw 0 rgba(124,33,41,.2);transform:rotate(-2deg)}
 #diary .owner small{display:block;font-size:1.5cqw;color:var(--soft)}
-#diary .owner b{display:block;font-family:var(--fun);font-weight:400;font-size:4.4cqw;color:var(--cloth);margin:.6cqw 0}
+#diary .owner b{display:block;font-family:var(--penf);font-weight:400;font-size:4.4cqw;color:var(--cloth);margin:.6cqw 0}
 #diary .owner span{font-size:1.5cqw;color:var(--soft)}
 #diary .ttl{align-items:center;justify-content:center;text-align:center;gap:1.6cqw}
-#diary .ttl h3{margin:0;font-family:var(--fun);font-weight:400;font-size:4.4cqw;color:var(--cloth)}
+#diary .ttl h3{margin:0;font-family:var(--penf);font-weight:400;font-size:4.4cqw;color:var(--cloth)}
 #diary .ttl .sub{font-size:1.8cqw;color:var(--soft)}
 #diary .ttl .tally{display:grid;grid-template-columns:1fr 1fr;gap:1cqw 2cqw;margin-top:1.4cqw}
 #diary .ttl .tally span{display:flex;align-items:center;gap:.6cqw;font-size:1.8cqw}
 #diary .ttl .tally i{font-style:normal;color:#fff;border-radius:99px;padding:.2cqw 1cqw;font-family:var(--fun);font-size:1.7cqw}
-#diary .pg.diary{padding:4.2cqw 3.6cqw 3.6cqw 6.6cqw;
-  background:linear-gradient(90deg,transparent 5.2cqw,var(--margin) 5.2cqw,var(--margin) calc(5.2cqw + 1px),transparent calc(5.2cqw + 1px)),
-    linear-gradient(transparent calc(var(--line) - 1px),#C9D6EC calc(var(--line) - 1px)) 0 calc(4.2cqw + var(--line))/100% var(--line) repeat-y,
+#diary .pg.diary{padding:calc(4.2*var(--u)) calc(3.6*var(--u)) calc(3.6*var(--u)) calc(6.6*var(--u));
+  background:linear-gradient(90deg,transparent calc(5.2*var(--u)),var(--margin) calc(5.2*var(--u)),var(--margin) calc(calc(5.2*var(--u)) + 1px),transparent calc(calc(5.2*var(--u)) + 1px)),
+    linear-gradient(transparent calc(var(--line) - 1px),#C9D6EC calc(var(--line) - 1px)) 0 calc(calc(4.2*var(--u)) + var(--line))/100% var(--line) repeat-y,
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .35 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),var(--paper)}
-#diary .dhead{display:flex;flex-wrap:nowrap;overflow:hidden;align-items:baseline;gap:.4cqw .5cqw;height:var(--line);font-size:1.8cqw;color:#9AA3B8;white-space:nowrap;margin-top:0}
-#diary .dhead b{font-family:var(--fun);font-weight:400;font-size:3cqw;color:var(--pen);margin:0 .3cqw}
-#diary .dbody{font-family:var(--fun);font-size:3.4cqw;line-height:var(--line);color:var(--pen);text-indent:6.8cqw;margin-top:0;letter-spacing:.05cqw}
-#diary .dsign{font-family:var(--fun);font-size:2.6cqw;line-height:var(--line);color:var(--pen);text-align:right;opacity:.85}
+#diary .dhead{display:flex;flex-wrap:nowrap;overflow:hidden;align-items:baseline;gap:calc(.4*var(--u)) calc(.5*var(--u));height:var(--line);font-size:calc(1.8*var(--u));color:#9AA3B8;white-space:nowrap;margin-top:0}
+#diary .dhead b{font-family:var(--penf);font-weight:400;font-size:calc(3*var(--u));color:var(--pen);margin:0 calc(.3*var(--u))}
+#diary .dbody{font-family:var(--penf);font-size:calc(3.4*var(--u));line-height:var(--line);color:var(--pen);text-indent:calc(6.8*var(--u));margin-top:0;letter-spacing:calc(.05*var(--u))}
+#diary .emo,#diary .toc li i{font-family:-apple-system,"Apple Color Emoji",sans-serif}#diary .dsign{font-family:var(--penf);font-size:calc(2.6*var(--u));line-height:var(--line);color:var(--pen);text-align:right;opacity:.85}
 /* 日期那行、署名永远不被挤掉；字多时正文变小一点，照片和印章也缩小 */
 #diary .dhead,#diary .dsign{flex:none}#diary .dfoot{min-height:0}
-#diary .long .dbody{font-size:2.9cqw}#diary .long .dpic{width:15cqw}#diary .long .stamp{width:14cqw;height:14cqw}#diary .long .stamp i{font-size:4.4cqw}#diary .long .stamp span{font-size:3cqw}
-#diary .long2 .dbody{font-size:2.5cqw}#diary .long2 .dpic{width:13cqw}#diary .long2 .stamp{width:12cqw;height:12cqw;margin-top:.4cqw}#diary .long2 .stamp i{font-size:3.6cqw}#diary .long2 .stamp span{font-size:2.6cqw}
-#diary .stamp{position:relative;flex:none;align-self:flex-end;margin:1.2cqw 2.4cqw 0 0;width:18cqw;height:18cqw;border-radius:50%;border:.75cqw solid var(--c);color:var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-14deg);opacity:.85;font-family:var(--fun);line-height:1.05;
-  box-shadow:inset 0 0 0 .5cqw #fff,inset 0 0 0 .85cqw var(--c);background:rgba(255,255,255,.35)}
-#diary .stamp i{font-style:normal;font-size:5.6cqw}
-#diary .stamp span{font-size:3.8cqw;margin-top:.4cqw}
-#diary .dmeas{position:absolute;inset:0;visibility:hidden;pointer-events:none;z-index:-1}#diary .dmeas .dfoot,#diary .dmeas .dbody{flex:none!important}
-#diary .cont .dbody{text-indent:0}
-#diary .dpg{margin-left:auto;font-size:1.8cqw;color:#9AA3B8;padding-left:1cqw}
-#diary .dmore{flex:none;margin-top:auto;font-size:2cqw;line-height:var(--line);color:#9AA3B8;text-align:right}
-#diary .stamp.s4 span{font-size:2.5cqw;white-space:nowrap;margin-top:0}#diary .long .stamp.s4 span{font-size:2cqw}#diary .long2 .stamp.s4 span{font-size:1.75cqw}#diary .stamp.s4 i{transform:scale(.8);margin:-.8cqw 0 -.6cqw}
-#diary .toc h3{margin:0 0 0;height:calc(var(--line) * 2);display:flex;align-items:center;justify-content:center;font-family:var(--fun);font-weight:400;font-size:3.6cqw;color:var(--cloth)}
-#diary .toc ol{list-style:none;margin:0;padding:0;font-family:var(--fun);color:var(--pen)}
-#diary .toc li{display:flex;align-items:center;gap:1cqw;height:var(--line);font-size:2.6cqw}
-#diary .toc li .dot{flex:1;border-bottom:.2cqw dotted #B8C2D8;margin:0 .6cqw;transform:translateY(-.4cqw)}
-#diary .toc li i{font-style:normal;color:#fff;border-radius:99px;padding:0 1cqw;font-size:2cqw;line-height:3.2cqw}
+#diary .long .dbody{font-size:calc(2.9*var(--u))}#diary .long .dpic{width:calc(15*var(--u))}#diary .long .stamp{width:calc(14*var(--u));height:calc(14*var(--u))}#diary .long .stamp i{font-size:calc(4.4*var(--u))}#diary .long .stamp span{font-size:calc(3*var(--u))}
+#diary .long2 .dbody{font-size:calc(2.5*var(--u))}#diary .long2 .dpic{width:calc(13*var(--u))}#diary .long2 .stamp{width:calc(12*var(--u));height:calc(12*var(--u));margin-top:calc(.4*var(--u))}#diary .long2 .stamp i{font-size:calc(3.6*var(--u))}#diary .long2 .stamp span{font-size:calc(2.6*var(--u))}
+#diary .stamp{position:relative;flex:none;align-self:flex-end;margin:calc(1.2*var(--u)) calc(2.4*var(--u)) 0 0;width:calc(18*var(--u));height:calc(18*var(--u));border-radius:50%;border:calc(.75*var(--u)) solid var(--c);color:var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-14deg);opacity:.85;font-family:var(--penf);line-height:1.05;
+  box-shadow:inset 0 0 0 calc(.5*var(--u)) #fff,inset 0 0 0 calc(.85*var(--u)) var(--c);background:rgba(255,255,255,.35)}
+#diary .stamp i{font-style:normal;font-size:calc(5.6*var(--u))}
+#diary .stamp span{font-size:calc(3.8*var(--u));margin-top:calc(.4*var(--u))}
+#diary .dmeas{position:fixed;left:-4000px;top:0;width:1000px;height:676px;container-type:inline-size;visibility:hidden;pointer-events:none;z-index:-1}#diary .dmeas .dfoot,#diary .dmeas .dbody{flex:none!important}
+#diary .fs1 .dbody{font-size:calc(3.25*var(--u))}#diary .fs2 .dbody{font-size:calc(3.1*var(--u))}#diary .fs3 .dbody{font-size:calc(2.95*var(--u))}#diary .fs4 .dbody{font-size:calc(2.8*var(--u))}#diary .cont .dbody{text-indent:0}#diary .dbody{text-align:justify;text-justify:inter-character}#diary .pmore .dbody{text-align-last:justify}#diary .endp2 .dpic{width:calc(14*var(--u))}#diary .endp2 .stamp{width:calc(13*var(--u));height:calc(13*var(--u));margin-top:calc(.4*var(--u))}#diary .endp2 .stamp i{font-size:calc(4*var(--u))}#diary .endp2 .stamp span{font-size:calc(2.8*var(--u))}#diary .endp2 .stamp.s4 span{font-size:calc(1.9*var(--u))}
+#diary .dpg{margin-left:auto;font-size:calc(1.8*var(--u));color:#9AA3B8;padding-left:calc(1*var(--u))}
+#diary .dmore{position:absolute;right:calc(3.6*var(--u));bottom:calc(.5*var(--u));font-size:calc(2*var(--u));line-height:1.5;color:var(--cloth);font-weight:600;text-align:right}#diary.imm .dmore{right:calc(3.4*var(--u));bottom:calc(.3*var(--u))}
+#diary .stamp.s4 span{font-size:calc(2.5*var(--u));white-space:nowrap;margin-top:0}#diary .long .stamp.s4 span{font-size:calc(2*var(--u))}#diary .long2 .stamp.s4 span{font-size:calc(1.75*var(--u))}#diary .stamp.s4 i{transform:scale(.8);margin:calc(-.8*var(--u)) 0 calc(-.6*var(--u))}
+#diary .toc h3{margin:0 0 0;height:calc(var(--line) * 2);display:flex;align-items:center;justify-content:center;font-family:var(--penf);font-weight:400;font-size:calc(3.6*var(--u));color:var(--cloth)}
+#diary .toc ol{list-style:none;margin:0;padding:0;font-family:var(--penf);color:var(--pen)}
+#diary .toc li{display:flex;align-items:center;gap:calc(1*var(--u));height:var(--line);font-size:calc(2.6*var(--u))}
+#diary .toc li .dot{flex:1;border-bottom:calc(.2*var(--u)) dotted #B8C2D8;margin:0 calc(.6*var(--u));transform:translateY(calc(-.4*var(--u)))}
+#diary .toc li i{font-style:normal;color:#fff;border-radius:99px;padding:0 calc(1*var(--u));font-size:calc(2*var(--u));line-height:calc(3.2*var(--u))}
 #diary .next .lines{display:none}
 #diary .next{align-items:center;justify-content:center;text-align:center;gap:1.4cqw;color:var(--soft)}
-#diary .next b{font-family:var(--fun);font-weight:400;font-size:3cqw;color:var(--ink)}
+#diary .next b{font-family:var(--penf);font-weight:400;font-size:3cqw;color:var(--ink)}
 #diary .next .lines{width:100%;height:16cqw;background:linear-gradient(transparent calc(4.2cqw - 1px),var(--rule) calc(4.2cqw - 1px)) 0 0/100% 4.2cqw}
-#diary .fin{align-items:center;justify-content:center;font-family:var(--fun);font-size:2.6cqw;color:var(--cloth)}
+#diary .fin{align-items:center;justify-content:center;font-family:var(--penf);font-size:2.6cqw;color:var(--cloth)}
 #diary .fx{position:absolute;inset:0;pointer-events:none;z-index:6}
 #diary .fx .pgw{position:absolute;top:0;width:50%;height:100%}
 #diary .fx .flap{position:absolute;left:0;top:0;width:50%;height:100%;transform-origin:0 0;filter:drop-shadow(0 0 .6cqw rgba(40,25,10,.25))}
@@ -528,6 +573,60 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .ctrl .read{background:var(--q2);color:#fff;box-shadow:0 4px 0 #2F6DB5}
 #diary .ctrl .pos{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;font-weight:600;font-size:16px;color:var(--soft);min-width:5em;text-align:center}
 #diary .tip{text-align:center;color:var(--soft);font-size:14px;margin-top:-6px}
+/* 手机和 iPad 一样（2026-11-11）：先看到合上的书，点封面放大进去，一次看一页 */
+@media all{
+  #diary .dwrap{gap:10px;padding-top:10px}
+  #diary .stage{padding:3% 1.5% 4%}
+  /* 书是两页宽，只露出右边那一页（合上时就是封面），并让这一页居中 */
+  #diary .book.one{--bw:min(200%,calc((100svh - 220px) * 1.48));width:var(--bw);max-width:none;margin-left:calc(50% - var(--bw) * .75)}
+  #diary .book.one .boards{box-shadow:0 .5cqw 0 var(--cloth-d)}
+  #diary .ctrl{flex-wrap:nowrap;gap:8px}
+  #diary .ctrl button{padding:11px 0;font-size:17px;white-space:nowrap;flex:none;width:54px}
+  #diary .ctrl .read{width:auto;padding:11px 14px}
+  #diary .ctrl .lg{display:none}
+  #diary .ctrl .pos{flex:1;min-width:0;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #diary .ctrl{display:none}
+  #diary .dtop .dclose .lg{display:none}#diary .dtop .dclose .sm{display:inline}
+  #diary .book.one.closed{cursor:pointer}
+}
+@media (max-width:600px){#diary .dtop h2{font-size:20px}}
+#diary .dclose .sm{display:none}
+#diary .dybar{display:none}
+/* 手机整屏阅读 */
+#diary.imm{overflow:hidden}
+#diary.imm .dtop,#diary.imm .ctrl,#diary.imm .dedit,#diary.imm .tip{display:none}
+#diary.imm{--pw:100vw;--u:calc(1cqw * var(--k,1))}
+#diary.imm .stage{position:fixed;top:0;bottom:0;left:calc(50% - var(--pw) / 2);width:var(--pw);z-index:5;padding:0;background:var(--paper);overflow:hidden;will-change:transform;box-shadow:0 0 0 1px rgba(120,90,50,.08),0 18px 60px rgba(70,40,20,.28)}
+#diary.imm .book.one{--bw:200%;width:200%;height:calc(100% - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));aspect-ratio:auto;margin-top:env(safe-area-inset-top,0px);margin-left:-100%}
+#diary.imm .boards{display:none}
+#diary.imm .pg{border-radius:0}
+#diary.imm{--line:calc(5.4*var(--u))}
+#diary.imm .pg.diary{padding:calc(4.2*var(--u)) calc(3.4*var(--u)) calc(2.4*var(--u)) calc(6*var(--u))}
+#diary.imm .dbody{font-size:calc(3.2*var(--u));letter-spacing:calc(.22*var(--u))}#diary.imm .fs1 .dbody{font-size:calc(3.1*var(--u))}#diary.imm .fs2 .dbody{font-size:calc(3*var(--u))}#diary.imm .fs3 .dbody{font-size:calc(2.9*var(--u))}#diary.imm .fs4 .dbody{font-size:calc(2.8*var(--u))}
+#diary.imm .dfoot .dpic{width:calc(30*var(--u));margin-left:calc(3*var(--u))}#diary.imm .long .dfoot .dpic,#diary.imm .endp2 .dfoot .dpic{width:calc(30*var(--u))}#diary.imm .long2 .dfoot .dpic{width:calc(26*var(--u))}#diary.imm .dfoot .dpic .stamp{width:calc(15*var(--u));height:calc(15*var(--u));right:calc(-7.5*var(--u))}#diary.imm .long .dbody{font-size:calc(2.9*var(--u))}#diary.imm .long2 .dbody{font-size:calc(2.8*var(--u))}#diary.imm .dhead{font-size:calc(1.5*var(--u))}#diary.imm .dhead b{font-size:calc(2.4*var(--u))}#diary.imm .dpg{font-size:calc(1.5*var(--u))}
+#diary.imm .dsign{font-size:calc(2.6*var(--u))}#diary.imm .dmore{font-size:calc(1.7*var(--u))}#diary.imm .pno{font-size:calc(1.2*var(--u))}
+#diary.imm .toc li{font-size:calc(2.7*var(--u))}#diary.imm .toc h3{font-size:calc(3.4*var(--u))}
+#diary .immfly{position:fixed;z-index:12;pointer-events:none;container-type:inline-size;will-change:transform;transform-style:preserve-3d}
+#diary .immfly .half{position:absolute;top:0;bottom:0;right:0;width:50%;transform-style:preserve-3d}
+#diary .immfly .pg{backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 10px 26px rgba(70,40,20,.3)}
+/* 封面背面（翻过去以后看到的那一面）：扉页的米色 */
+#diary .immfly .cbk{position:absolute;inset:0;transform:rotateY(180deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:.9cqw 0 0 .9cqw;
+  background:radial-gradient(circle,rgba(168,50,58,.14) 0 .35cqw,transparent .45cqw) 0 0/3.2cqw 3.2cqw,#F6EBDD;box-shadow:inset 0 0 0 .6cqw var(--cloth)}
+#diary.imm .dybar{display:flex;position:fixed;left:0;right:0;top:0;z-index:9;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 8px) 12px 10px;
+  background:rgba(255,251,241,.96);box-shadow:0 2px 12px rgba(80,50,20,.15);transform:translateY(-110%);transition:transform .25s ease;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+#diary.imm .dybar.on{transform:none}
+/* 宽屏（iPad 横着）整屏阅读：最后一页左边写字，右边放照片和印章 */
+/* iPad 整屏阅读：照片和印章在右上角，文字从左边绕着照片往下写，过了照片就写满整行 */
+#diary.imm.wide .pg.plast{display:block}
+#diary.imm.wide .plast .dfoot{float:right;display:block;margin:calc(1*var(--u)) 0 calc(1.5*var(--u)) calc(3*var(--u));padding-right:calc(8*var(--u))}
+#diary.imm.wide .plast .dfoot .dpic{display:block;margin:0}#diary.imm.wide .plast .dfoot>.stamp{margin:0 calc(-6*var(--u)) 0 0}
+#diary.imm.wide .plast .dsign{clear:none}
+/* 手机整屏阅读：有照片的日记，照片放在第一页日期下面（读的时候先看到照片，想起那天的事），文字接在照片下面 */
+#diary.imm:not(.wide) .pph .dfoot{order:0;align-self:stretch;justify-content:center;align-items:center;height:calc(var(--line) * 6);margin:0;flex:none}
+#diary.imm:not(.wide) .pph .dfoot .dpic{margin:0 calc(4*var(--u)) 0 0}
+#diary .dybar button{border:0;border-radius:999px;font:700 16px/1 inherit;font-family:inherit;padding:10px 14px;background:#F1E6D2;color:#5A4A36;white-space:nowrap}
+#diary .dybar #dyBarRead{background:var(--q2);color:#fff}
+#diary .dybar span{flex:1;min-width:0;text-align:center;font-size:14px;font-weight:600;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* ---------- iPad：左边卡片固定，右边格子 ---------- */
 @media (min-width:760px){
   .wrap{max-width:1180px;display:grid;grid-template-columns:minmax(300px,36%) 1fr;gap:28px;align-items:start;padding-top:24px}
@@ -565,6 +664,8 @@ body{background-image:none;color:var(--ink2)}
 .tbar{margin-top:12px;height:12px;border-radius:99px;background:#F1F4F9;overflow:hidden}
 .tbar i{display:block;height:100%;width:0;min-width:12px;border-radius:99px;background:#FFB020;transition:width .5s}
 .today small{display:block;margin-top:8px;font-size:14px;color:var(--mute2)}
+/* “今天得到 +N ★” 里的星星小一点（2026-11-11） */
+.today .t b .tst{font-style:normal;font-size:.55em;margin-left:4px;vertical-align:.18em}
 
 /* 小商店、高光日记：两块淡彩卡片，左上角彩色大字 + 一句短说明，右下角露出写实的小商店和日记本（2026-11-10 家长选的 C） */
 .gates{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:none;border-radius:0;box-shadow:none;overflow:visible}
@@ -590,6 +691,10 @@ body{background-image:none;color:var(--ink2)}
   .gate small{font-size:19px;font-weight:700}
   #shopGo small{color:#E2604F}#diaryGo small{color:#7C62E3}
   .gate .dot{box-shadow:0 0 0 3px #FFF1ED}
+  /* iPad 入口：保留原来的样子（左上大字、右下露出图标），只是矮一些，图标完整显示在右下角（2026-11-11） */
+  .gate{min-height:96px;padding:14px 16px}
+  .gico{right:14px;bottom:12px;line-height:0}
+  .gate .gi{height:52px}
 }
 
 /* 标题：前面一个同色小方块图标，右边是完成了几项 */
@@ -817,7 +922,7 @@ details.parent summary{background:none}
       <div class="bot"><span class="cno">No. 0331</span><span class="holo"></span></div>
       <div class="mtoday"><span id="mtLbl">今天</span><b id="mtPts">+0</b></div>
     </div>
-    <div class="today o-info" id="ptsToday"><div class="t"><span id="todayLbl">今天得到</span><b id="todayPts">+0 ★</b></div><div class="tbar"><i id="todayBar"></i></div></div>
+    <div class="today o-info" id="ptsToday"><div class="t"><span id="todayLbl">今天得到</span><b id="todayPts">+0<i class="tst">★</i></b></div><div class="tbar"><i id="todayBar"></i></div></div>
     <div class="gates o-info"><button class="gate" id="shopGo" type="button" aria-label="小商店"><span class="gtx"><small>小商店</small><span class="gsub">换礼物</span></span><span class="gico"><svg class="gi" viewBox="0 0 100 92" aria-hidden="true"><defs><linearGradient id="giGlow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1A8"/><stop offset="1" stop-color="#FFC83D"/></linearGradient></defs><rect x="10" y="22" width="80" height="67" rx="3" fill="#F1B77E" stroke="#8A5530" stroke-width="3"/><path d="M12 50H88M12 62H88M12 74H88" stroke="#E3A56C" stroke-width="1.6"/><rect x="4" y="16" width="92" height="8" rx="3" fill="#7A4A24"/><rect x="31" y="3" width="38" height="15" rx="4" fill="#D49A62" stroke="#7A4A24" stroke-width="2.4"/><text x="50" y="14.6" text-anchor="middle" font-size="11" fill="#7A4A24">★</text><path d="M11 25H89V36H11Z" fill="#FFF6E0"/><path d="M11 25h8v11h-8zM27 25h8v11h-8zM43 25h8v11h-8zM59 25h8v11h-8zM75 25h8v11h-8z" fill="#FF6B5E"/><g fill="#FF6B5E"><circle cx="15" cy="36" r="4"/><circle cx="31" cy="36" r="4"/><circle cx="47" cy="36" r="4"/><circle cx="63" cy="36" r="4"/><circle cx="79" cy="36" r="4"/></g><g fill="#FFF6E0"><circle cx="23" cy="36" r="4"/><circle cx="39" cy="36" r="4"/><circle cx="55" cy="36" r="4"/><circle cx="71" cy="36" r="4"/><circle cx="87" cy="36" r="2.5"/></g><rect x="15" y="47" width="19" height="22" rx="2" fill="#FFF4D6" stroke="#8A5530" stroke-width="2.6"/><rect x="66" y="47" width="19" height="22" rx="2" fill="#FFF4D6" stroke="#8A5530" stroke-width="2.6"/><circle cx="24.5" cy="60" r="4" fill="#FF9F1C"/><path d="M71 64l4-8 4 8z" fill="#4A90E2"/><path d="M38 89V58a12 12 0 0 1 24 0V89Z" fill="url(#giGlow)" stroke="#6E4020" stroke-width="3"/><path d="M38.5 89V60l5 2V89Z M61.5 89V60l-5 2V89Z" fill="#A86B3C"/><text x="50" y="80" text-anchor="middle" font-size="12" fill="#E8890C">★</text><circle cx="50" cy="45" r="3.4" fill="#FFC83D" stroke="#A86B00" stroke-width="1"/></svg></span><span class="dot" id="shopDot" hidden></span></button><button class="gate" id="diaryGo" type="button" aria-label="高光日记"><span class="gtx"><small>高光日记</small><span class="gsub">看故事</span></span><span class="gico"><svg class="gi" viewBox="0 0 80 96" aria-hidden="true"><rect x="6" y="6" width="72" height="88" rx="6" fill="#5A1A20"/><rect x="66" y="9" width="9" height="82" rx="2" fill="#FFFBF1"/><path d="M68 14H74M68 20H74M68 26H74M68 32H74M68 38H74M68 44H74M68 50H74M68 56H74M68 62H74M68 68H74M68 74H74M68 80H74M68 86H74" stroke="#E7DCC6" stroke-width="1"/><rect x="2" y="2" width="66" height="90" rx="6" fill="#A8323A"/><rect x="2" y="2" width="9" height="90" rx="5" fill="#000" opacity=".22"/><rect x="16" y="10" width="44" height="74" rx="3" fill="none" stroke="#F2C766" stroke-width="2"/><rect x="19" y="13" width="38" height="68" rx="2" fill="none" stroke="#F2C766" stroke-width=".8" opacity=".6"/><circle cx="38" cy="36" r="11" fill="#F2C766"/><circle cx="35" cy="33" r="5" fill="#FFF1B8" opacity=".6"/><text x="38" y="41.5" text-anchor="middle" font-size="15" fill="#7C2129">★</text><rect x="26" y="54" width="24" height="3.4" rx="1.7" fill="#F2C766"/><rect x="29" y="61" width="18" height="3.4" rx="1.7" fill="#F2C766"/><rect x="54" y="2" width="5" height="90" fill="#5A2228"/></svg></span></button></div>
   </div>
   <div class="main">
@@ -841,7 +946,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid">🧒 小朋友</button><button class="mini" data-vs="normal">🙂 普通</button><button class="mini" data-vs="robot">🤖 机器人</button><button class="mini" data-vs="captain">🦾 问之队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月10日 23:31</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月11日 11:15</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -870,15 +975,31 @@ details.parent summary{background:none}
     <div class="step"></div><span class="pot l">🪴</span><span class="pot r">🪴</span></div>
 </div><span class="skip">点一下直接进去</span></div>
 <div id="diary" hidden role="dialog" aria-label="问之的高光日记"><div class="dwrap">
-  <div class="dtop"><button class="dclose" id="dyClose" type="button">📕 合上</button><h2>问之的高光日记</h2></div>
+  <div class="dtop"><button class="dclose" id="dyClose" type="button"><span class="lg">📕 合上</span><span class="sm">‹ 返回</span></button><h2>问之的高光日记</h2></div>
   <div class="stage"><div class="book closed" id="dyBook" aria-label="问之的高光日记"><div class="boards"></div><div class="half l" id="dyL"></div><div class="half r" id="dyR"></div></div></div>
-  <div class="ctrl"><button id="dyPrev" type="button">◀ 上一页</button><span class="pos" id="dyPos"></span><button id="dyNext" type="button">下一页 ▶</button><button class="read" id="dyRead" type="button">🔊 念给我听</button></div>
+  <div class="dybig" id="dyBig" hidden><div class="bp"><img id="dyBigImg" alt=""><span class="bst" id="dyBigSt"></span></div><div class="cap" id="dyBigCap"></div><div class="x">点一下关掉</div></div>
+  <div class="dybar" id="dyBar"><button type="button" id="dyBack">‹ 返回</button><span id="dyBarPos"></span><button type="button" id="dyBarRead">🔊 念给我听</button></div>
+  <div class="ctrl"><button id="dyPrev" type="button" aria-label="上一页">◀<span class="lg"> 上一页</span></button><span class="pos" id="dyPos"></span><button id="dyNext" type="button" aria-label="下一页"><span class="lg">下一页 </span>▶</button><button class="read" id="dyRead" type="button">🔊<span class="lg2"> 念给我听</span></button></div>
   <details class="dedit" id="dyEdit"><summary>👩 家长：写日记、改日记</summary>
     <div class="drows" id="dyRows"></div>
     <div style="display:flex;margin-top:10px;justify-content:center"><button class="mini" id="dyAdd" type="button">✍️ 写一篇</button></div>
-    <div class="dhint">改日期、品质、天气和内容会自动保存；📷 给这一篇加照片（再点一下可以去掉）；🗑 删掉这一篇。<br>点“坚持就是胜利”“问之很勇敢”这两个格子后，也会弹出小框问要不要写进日记。</div>
+    <div class="dhint">点一篇日记，就会打开一整页来改：文字、日期、品质、天气、照片都能改，改完按“保存”。<br>点“了不起”里的格子后，也会弹出小框问要不要写进日记。</div>
   </details>
-</div></div>
+</div>
+<div class="dyed" id="dyEd" hidden role="dialog" aria-label="改日记">
+  <div class="edbar"><button type="button" class="edx" id="edCancel">取消</button><b id="edTitle">改日记</b><button type="button" class="edok" id="edSave">保存</button></div>
+  <div class="edbody">
+    <label class="edl">日期</label><input type="date" id="edDate" class="eddate">
+    <label class="edl">做到了什么</label><div class="edchips" id="edQ"></div>
+    <label class="edl">天气</label><div class="edchips wx" id="edWx"></div>
+    <label class="edl" for="edText">发生了什么 <span class="edcount" id="edCount"></span></label>
+    <textarea id="edText" placeholder="发生了什么？慢慢写，写多长都行，书里会自动分页。"></textarea>
+    <label class="edl">照片</label>
+    <div class="edpho"><div class="edimg" id="edImg"></div><div class="edpbtn"><button type="button" id="edPick">📷 加照片</button><button type="button" id="edNoPic" class="edgray">去掉照片</button></div></div>
+    <button type="button" class="eddel" id="edDel">🗑 删掉这一篇</button>
+  </div>
+</div>
+</div>
 <div class="counter" id="counter" hidden>
   <div class="purse"><span class="cn">★</span><span class="pv" id="shopPts">0</span><span class="pl2">分</span></div>
   <div class="tray" id="tray"></div>
@@ -1080,7 +1201,7 @@ async function initStore(){
    逐条套上这些改动再写回，所以两台设备各点各的不会互相覆盖。 */
 const MODE="gist",GIST_DESC="小当家记录 xiaodangjia-data";
 /* iPad 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="331a14916d";
+const BUILD="bdec98e9a3";
 if(MODE==="gist"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const lsGet=(k,d)=>{try{const v=localStorage.getItem("xdj:"+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
@@ -1203,7 +1324,7 @@ function renderPts(){
   for(const k in cnt){const e=document.getElementById("cnt-"+k);if(e)e.textContent=cnt[k][0]+" / "+cnt[k][1];const tc=document.getElementById("tc-"+k);if(tc)tc.textContent=cnt[k][0]+"/"+cnt[k][1]}
   $("#tiles").dataset.show=phoneGrp;document.querySelectorAll(".gtabs [data-g]").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.g===phoneGrp)));
   const nd=Object.values(cnt).reduce((s,c)=>s+c[0],0),na=Object.values(cnt).reduce((s,c)=>s+c[1],0);
-  $("#todayLbl").textContent=dayWord(t)+"得到";$("#todayPts").textContent="+"+got+" ★";
+  $("#todayLbl").textContent=dayWord(t)+"得到";$("#todayPts").innerHTML="+"+got+'<i class="tst">★</i>';
   $("#mtLbl").textContent=off2(t);$("#mtPts").textContent="+"+got;
   $("#todayBar").style.width=(na?nd/na*100:0)+"%";
   const byDay={};for(const d of p.docs)(byDay[d.date]=byDay[d.date]||[]).push(d);
@@ -1540,56 +1661,106 @@ const Diary=(()=>{
   if(PAGE!=="pts")return{refresh(){},ask(){}};
   const root=$("#diary"),book=$("#dyBook"),hl=$("#dyL"),hr=$("#dyR"),prevB=$("#dyPrev"),nextB=$("#dyNext"),posEl=$("#dyPos");
   let cur=-1,busy=false,open=false,S=[],LAST=0,M=[],START={};
-  /* 长日记分页：在书里放一张看不见的纸，按真实排版量一量一页能写多少字。
-     放得下就一页（字多时字号略小）；放不下就按页往后写，签名、照片、印章在最后一页。 */
-  const meas=document.createElement("div");meas.className="dmeas";meas.setAttribute("aria-hidden","true");book.appendChild(meas);
+  /* 长日记分页：在屏幕外放一张和书里一样大的隐形纸，先把整篇排一遍，记下每一行从第几个字开始，
+     再按“整行”往页里放：前面的页都写满，最后一页放剩下的字和签名、照片、印章。
+     一篇一页放得下就一页（字多时字号略小）。 */
+  const meas=document.createElement("div");meas.className="dmeas";meas.setAttribute("aria-hidden","true");root.appendChild(meas);
   const PCACHE=new Map();
   function fits(p){
     meas.innerHTML=pageHTML(p,"r",1);const pg=meas.firstElementChild;if(!pg)return true;
     const r=pg.getBoundingClientRect(),pb=parseFloat(getComputedStyle(pg).paddingBottom)||0;
-    let bottom=0;for(const c of pg.children){if(c.classList.contains("pno"))continue;bottom=Math.max(bottom,c.getBoundingClientRect().bottom)}
+    let bottom=0;for(const c of pg.children){if(c.classList.contains("pno")||c.classList.contains("dmore"))continue;bottom=Math.max(bottom,c.getBoundingClientRect().bottom)}
     return bottom<=r.bottom-pb*.5+1;
   }
-  const SNAP="，。！？；、,.!?;…）)”’";
+  /* 整篇排成一长条，返回每一行第一个字的位置 */
+  function lineStarts(m,T,size,side,first=true){
+    meas.innerHTML=pageHTML({t:"diary",m,txt:T,first,last:false,k:1,n:2,size,side},"r",1);
+    const pg=meas.firstElementChild;pg.style.bottom="auto";pg.style.height="auto";
+    const body=pg.querySelector(".dbody"),tn=body.firstChild,out=[0];if(!tn)return out;
+    const rg=document.createRange();let top=null;
+    for(let i=0;i<T.length;i++){rg.setStart(tn,i);rg.setEnd(tn,i+1);const rs=rg.getClientRects();if(!rs.length)continue;
+      const t=rs[0].top;if(top==null)top=t;else if(t>top+2){out.push(i);top=t}}
+    return out;
+  }
+  function splitBy(m,T,size){
+    const st=lineStarts(m,T,size),N=st.length,at=l=>l<N?st[l]:T.length;
+    /* 整篇一页写完时按“只有一页”的样子量（页码、印章大小都和真正显示的一样） */
+    const chunk=(a,b,last)=>({t:"diary",m,size,txt:T.slice(at(a),at(b)),first:a===0,last,k:a===0&&last?1:9,n:a===0&&last?1:9});
+    const parts=[];let a=0,gap=0,cap=0,solo=0;
+    while(a<N&&parts.length<40){
+      if(fits(chunk(a,N,true))){parts.push([a,N,true]);break}
+      let lo=a+1,hi=N;while(lo<hi){const mid=(lo+hi+1)>>1;if(fits(chunk(a,mid,false)))lo=mid;else hi=mid-1}
+      let e=lo;
+      if(e>=N){/* 剩下的字这一页放得下，但加上照片和印章就放不下：字和签名写在这一页（底下写“翻页看照片”），照片和印章单独放最后一页 */
+        const sig=fits({...chunk(a,N,false),sig:true});
+        parts.push([a,N,false,sig]);parts.push([N,N,true,false,true]);gap=Math.max(0,cap-(N-a));solo=1;break}
+      cap=Math.max(cap,e-a);
+      parts.push([a,e,false]);a=e;
+    }
+    return{gap,solo,parts:parts.map(([x,y,l,sig,so])=>({txt:T.slice(at(x),at(y)),first:x===0,last:l,size,sig:!!sig,solo:!!so}))};
+  }
+  /* 日记本用的手写字体是网上下载的，用到时才开始下载。没下载完时量出来的分页和真实的不一样，
+     所以页面一打开就先下载；下载好以后把量过的分页全部作废、重新量一遍 */
+  const PENF='20px "LXGW WenKai Screen"';let fontT=0;
+  const refont=()=>{clearTimeout(fontT);fontT=setTimeout(function again(){if(open&&busy){fontT=setTimeout(again,300);return}
+    PCACHE.clear();if(open){const keep=cur;build();cur=Math.min(keep,LAST);show()}},120)};
+  if(document.fonts){document.fonts.load(PENF,"问之的高光日记今天爸妈记").then(refont).catch(()=>{});
+    document.fonts.addEventListener&&document.fonts.addEventListener("loadingdone",refont)}
+  /* 字体按字分成很多小包，用到哪些字才下载哪些；这一篇的字还没下载完就先下载，下载完重新量 */
+  const needFont=T=>{try{if(document.fonts&&!document.fonts.check(PENF,T))document.fonts.load(PENF,T).then(refont).catch(()=>{})}catch(e){}};
+  /* 有照片的长日记：照片放在第一页（iPad 在右上角、文字绕着写；手机在日期下面）；剩下的字接着往后写满，最后一页写完加签名，照片不再单独占一页 */
+  function splitSide(m,T,size){
+    const st=lineStarts(m,T,size,true),N=st.length,at=l=>l<N?st[l]:T.length;
+    const p1=e=>({t:"diary",m,size,txt:T.slice(0,at(e)),first:true,last:false,side:true,k:1,n:9});
+    let lo=1,hi=N;while(lo<hi){const mid=(lo+hi+1)>>1;if(fits(p1(mid)))lo=mid;else hi=mid-1}
+    if(lo>=N&&N>1)lo=N-1;/* 字全挤在第一页、签名却放不下时：留最后一行和签名到下一页 */
+    const parts=[{txt:T.slice(0,at(lo)),first:true,last:false,side:true,size}];
+    const R=T.slice(at(lo));if(!R)return parts;
+    const s2=lineStarts(m,R,size,false,false),N2=s2.length,at2=l=>l<N2?s2[l]:R.length;
+    const ch=(a,b,last)=>({t:"diary",m,size,txt:R.slice(at2(a),at2(b)),first:false,last,nofoot:true,k:9,n:9});
+    let a=0;while(a<N2&&parts.length<40){
+      if(fits(ch(a,N2,true))){parts.push({txt:R.slice(at2(a)),first:false,last:true,nofoot:true,size});break}
+      let l2=a+1,h2=N2;while(l2<h2){const mid=(l2+h2+1)>>1;if(fits(ch(a,mid,false)))l2=mid;else h2=mid-1}
+      let e=l2;if(e>=N2)e=N2-1;/* 剩下的字这页放得下但签名放不下：留一行和签名到最后一页 */
+      if(e<=a)e=a+1;
+      parts.push({txt:R.slice(at2(a),at2(e)),first:false,last:false,size});a=e}
+    return parts;
+  }
   function paginate(m){
-    const T=m.text||"（还没写）",key=[m.id,T,!!m.photo,m.q,m.wx].join("|");
-    if(book.clientWidth<50)return[{t:"diary",m}];
+    const T=m.text||"（还没写）",w=Math.round(book.clientWidth),key=[m.id,T,!!m.photo,m.q,m.wx,w,Math.round(book.clientHeight),imm].join("|");
+    if(w<50)return[{t:"diary",m}];
     if(PCACHE.has(key))return PCACHE.get(key).map(o=>({t:"diary",m,...o}));
+    needFont(T);
+    meas.style.width=w+"px";meas.style.height=book.clientHeight+"px";
     let parts;
-    const L0=T.length,auto=L0>65?" long2":L0>55?" long":"";
-    const one=[auto," long"," long2"].find(z=>(z===auto||z.length>auto.length)&&fits({t:"diary",m,size:z}));
+    /* 一页放得下就一页：先用正常字号，放不下最多小一档（fs1）；再放不下就分页（家长要字大，不为了挤进一页把字缩太小） */
+    const one=[""," fs1"].find(z=>fits({t:"diary",m,size:z}));
     if(one!=null)parts=[{size:one}];
     else{
-      parts=[];let i=0;
-      while(i<T.length&&parts.length<40){
-        const rest=T.slice(i),pg={first:i===0,k:9,n:9};
-        if(fits({t:"diary",m,...pg,txt:rest,last:true})){parts.push({txt:rest,first:i===0,last:true});i=T.length;break}
-        let lo=1,hi=rest.length;
-        while(lo<hi){const mid=(lo+hi+1)>>1;if(fits({t:"diary",m,...pg,txt:rest.slice(0,mid),last:false}))lo=mid;else hi=mid-1}
-        let len=lo;
-        if(len>=rest.length){
-          /* 剩下的字这一页放得下，但再加照片和印章就放不下：这一页尽量多写，剩下的刚好放进最后一页 */
-          let a=1,b=rest.length-1;while(a<b){const mid=(a+b)>>1;if(fits({t:"diary",m,...pg,txt:rest.slice(mid),last:true}))b=mid;else a=mid+1}
-          len=Math.max(a,Math.ceil(rest.length/2));for(let c=len;c<len+10&&c<rest.length;c++)if(SNAP.includes(rest[c-1])){len=c;break}
-        }else for(let b=len;b>len-10&&b>1;b--)if(SNAP.includes(rest[b-1])){len=b;break}
-        parts.push({txt:rest.slice(0,len),first:i===0,last:false});i+=len;
-      }
-      if(!parts.length||!parts[parts.length-1].last){const lp=parts[parts.length-1];if(lp)lp.last=true}
-      parts.forEach((o,k)=>{o.k=k+1;o.n=parts.length});
+      /* 正常字号排一遍；如果剩下的字放不进最后一页（倒数第二页会空出几行），就把字一点点调小再排，挑一页都不空的 */
+      let best=null;
+      const score=r=>r.gap*10+r.solo;
+      if(m.photo&&imm)best={parts:splitSide(m,T,""),gap:0,solo:0};else
+      /* 先试字号一档档调小；再试照片小一号（pfs）；挑一页都不空、照片不单独占一页的 */
+      {out:for(const pf of m.photo?[""," pfs"]:[""])for(const z of [""," fs1"," fs2"," fs3"," fs4"]){const r=splitBy(m,T,z+pf);if(!best||score(r)<score(best))best=r;if(!score(r))break out}}
+      parts=best.parts;parts.forEach((o,k)=>{o.k=k+1;o.n=parts.length});
     }
     meas.innerHTML="";PCACHE.set(key,parts);
     return parts.map(o=>({t:"diary",m,...o}));
   }
   function build(){
+    book.classList.toggle("one",ONE());
     M=diaryList();START={};
     const pages=[];for(const m of M){START[m.id]=pages.length+1;pages.push(...paginate(m))}
     pages.push({t:"blank"});
     if(pages.length%2)pages.push({t:"fin"});
-    S=[[{t:"endp"},{t:"toc"}]];for(let i=0;i<pages.length;i+=2)S.push([pages[i],pages[i+1]]);
+    if(ONE()){/* 手机：一页一页往后排，右边露出来的就是当前页，左边藏着上一页 */
+      const seq=[{t:"toc"},...pages.filter(p=>p.t!=="fin")];S=seq.map((p,i)=>[i?seq[i-1]:{t:"endp"},p]);
+    }else{S=[[{t:"endp"},{t:"toc"}]];for(let i=0;i<pages.length;i+=2)S.push([pages[i],pages[i+1]])}
     LAST=S.length-1;if(cur>LAST)cur=LAST;
   }
   const getL=i=>i<0?null:S[i][0],getR=i=>i<0?{t:"cover"}:S[i][1];
-  const pno=(i,side)=>i<1?"":`<span class="pno">${i*2-(side==="l"?1:0)}</span>`;
+  const pno=(i,side)=>i<1?"":`<span class="pno">${ONE()?(side==="l"?i-1:i)||"":i*2-(side==="l"?1:0)}</span>`;
   const md=ds=>ds.split("-").map(Number);
   function pageHTML(p,side,i){
     if(!p)return"";const cls="pg "+side;
@@ -1598,10 +1769,11 @@ const Diary=(()=>{
       case"endp":return`<div class="${cls} endp"><div class="owner"><small>这本日记属于</small><b>问之</b><span>一（3）班</span></div></div>`;
       case"toc":{const show=M.slice(0,10);return`<div class="${cls} diary toc"><h3>目 录</h3><ol>${show.map((m,k)=>{const[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist;return`<li>${mo}月${da}日<i style="background:${q.c}">${q.ic} ${q.name}</i><span class="dot"></span>${START[m.id]||k+1}</li>`}).join("")}${M.length>10?`<li style="justify-content:center">…… 还有 ${M.length-10} 篇</li>`:""}${M.length?"":`<li style="justify-content:center;opacity:.6">还没有日记，第一篇会写在这里</li>`}</ol></div>`}
       case"diary":{const m=p.m,[,mo,da]=md(m.date),q=DQ[m.q]||DQ.persist,multi=p.txt!=null,txt=multi?p.txt:(m.text||"（还没写）"),L=txt.length,last=!multi||p.last;
-        const size=multi?(p.first?"":" cont"):p.size!=null?p.size:L>65?" long2":L>55?" long":"";
-        return`<div class="${cls} diary${size}"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b>${multi&&p.n>1?`<span class="dpg">${p.k||1}/${p.n||1}</span>`:""}</div>
-        <div class="dbody">${esc(txt)}</div>${last?`<div class="dsign">—— 爸爸妈妈记 ✍️</div>
-        <div class="dfoot">${m.photo?`<span class="dpic"><img src="${m.photo}" alt=""></span>`:""}<span class="stamp${q.name.length>3?" s4":""}" style="--c:${q.c}"><i>${q.ic}</i><span>${q.name}</span></span></div>`:`<div class="dmore">翻页接着看 ▸</div>`}${pno(i,side)}</div>`}
+        const size=multi?(p.size||"")+(p.first?"":" cont")+(last&&p.n>1?" endp2":""):p.size!=null?p.size:L>65?" long2":L>55?" long":"";
+        const foot=p.side||(last&&!p.nofoot);
+        return`<div class="${cls} diary${size}${last||p.sig?"":" pmore"}${p.solo?" psolo":""}${foot&&!p.solo?" plast":""}${foot&&m.photo&&!p.solo?" pph":""}"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b>${multi&&p.n>1?`<span class="dpg">${p.k||1}/${p.n||1}</span>`:""}</div>${foot?`
+        <div class="dfoot">${(st=>m.photo?`<span class="dpic" data-id="${m.id}" role="button" aria-label="看大图"><img src="${m.photo}" alt="">${st}</span>`:st)(`<span class="stamp${q.name.length>3?" s4":""}" style="--c:${q.c}"><i>${q.ic}</i><span>${q.name}</span></span>`)}</div>`:""}
+        <div class="dbody">${esc(txt)}</div>${(last?!p.solo:p.sig)?`<div class="dsign">—— 爸爸妈妈记 <span class="emo">✍️</span></div>`:""}${last?"":`<div class="dmore">${p.sig?"翻页看照片 ▸":"还没完，翻页接着看 ▸"}</div>`}${pno(i,side)}</div>`}
       case"blank":return`<div class="${cls} diary"><div class="dhead"><b>　</b>月<b>　</b>日　星期<b>　</b>　天气<b>　</b></div><div class="dbody" style="opacity:.55">下一个高光时刻，会写在这里……</div>${pno(i,side)}</div>`;
       case"fin":return`<div class="${cls} endp"><div class="owner" style="transform:rotate(2deg)"><small>未完待续</small><b style="font-size:3.4cqw">继续加油！</b><span>问之队员</span></div></div>`;
     }
@@ -1613,13 +1785,75 @@ const Diary=(()=>{
     if(lp)lp.style.boxShadow=stack(Math.min(6,li+1),-1);
     if(rp&&ri>=0)rp.style.boxShadow=stack(Math.min(6,LAST-ri+1),1);
   }
+  /* 手机竖屏：一次只看一页（书放大一倍，只露出右页）；翻页和 iPad 一样是真的翻过去 */
+  const oneMQ=matchMedia("all");
+  const ONE=()=>oneMQ.matches;
+  /* 手机：点封面 → 从封面放大成整屏的书页（像微信读书）；左右滑或点两边翻页；点中间出现“返回” */
+  let imm=false,immFrom=null,barT=0;const ibar=$("#dyBar");
+  function showBar(on,auto){ibar.classList.toggle("on",on);clearTimeout(barT);if(on&&auto)barT=setTimeout(()=>ibar.classList.remove("on"),2600)}
+  /* 打开动画：像镜头慢慢推近这本书——书页从封面的位置、跟着封面一起放大到铺满屏幕，
+     封面同时沿书脊慢慢翻开、变淡；返回时倒着放一遍。用一条时间线让封面和书页始终对齐 */
+  function coverFly(r){/* 在封面原来的位置放一本一样的封面 */
+    const w=document.createElement("div");w.className="immfly";
+    w.style.cssText=`left:${r.left-r.width}px;top:${r.top}px;width:${r.width*2}px;height:${r.height}px;transform-origin:${r.width}px ${r.height/2}px`;
+    w.innerHTML=`<div class="half r">${pageHTML({t:"cover"},"r",-1)}<div class="cbk"></div></div>`;root.appendChild(w);return w}
+  function zoomPlan(r){
+    const vw=innerWidth,vh=innerHeight,k=Math.max(r.width/vw,r.height/vh);
+    const cx=Math.max(0,(vw-r.width/k)/2),cy=Math.max(0,(vh-r.height/k)/2);/* 书页先只露出封面那么大的一块 */
+    /* 书页的左上角对齐封面的左上角（书脊在左边），先露出书页左上那一块 */
+    const L=(a,b,t)=>a+(b-a)*t,tx=r.left,ty=r.top;
+    const st=t=>`translate(${L(tx,0,t)}px,${L(ty,0,t)}px) scale(${L(k,1,t)})`;
+    const dx=-r.left,dy=-r.top+r.height/2*(1/k-1),cv=(t,deg)=>`perspective(1800px) translate(${dx*t}px,${dy*t}px) scale(${1+(1/k-1)*t}) rotateY(${deg}deg)`;
+    /* 分三段，一段做完再做下一段：
+       ① 0–30%  书带着封面推近一半（书页藏在封面底下）
+       ② 30–68% 书停住，封面沿书脊翻开、翻过去消失；书页只在书本大小的那一块里露出来
+       ③ 68–100% 书完全打开以后，书页才从书本那么大放大到铺满屏幕 */
+    const E="cubic-bezier(.45,0,.25,1)";
+    /* 裁切（只露出书本那么大）不交给动画去插值（有的浏览器播放时不生效），而是每一帧按书页当前放大到多少来算 */
+    const kmid=L(k,1,.5),clip=sc=>{const f=sc<=kmid+1e-4?0:Math.min(1,(sc-kmid)/(1-kmid)),g=1-f;return`inset(0px ${2*cx*g}px ${2*cy*g}px 0px round ${8/k*g}px)`};
+    return{clip,stage:[{transform:st(0),offset:0,easing:E},{transform:st(.5),offset:.3},{transform:st(.5),offset:.68,easing:E},{transform:st(1),offset:1}],
+      cover:[{transform:cv(0,0),offset:0,easing:E},{transform:cv(.5,0),offset:.3,easing:E},{transform:cv(.5,-95),offset:.55},
+             {transform:cv(.5,-172),offset:.68},{transform:cv(.5,-172),offset:1}],
+      /* 封面翻过去以后，背面（米色扉页）在书页放大前慢慢淡掉 */
+      fade:[{opacity:1,offset:0},{opacity:1,offset:.62},{opacity:0,offset:.74},{opacity:0,offset:1}]}}
+  function clipLoop(stg,anim,pl){const sc=()=>+((/matrix\(([-\d.e]+)/.exec(getComputedStyle(stg).transform)||[0,1])[1]);
+    const tick=()=>{stg.style.clipPath=pl.clip(sc());if(anim.playState==="running"||anim.playState==="paused")requestAnimationFrame(tick)};
+    stg.style.clipPath=pl.clip(sc());requestAnimationFrame(tick)}
+  /* 整屏阅读时书页铺满屏幕宽；字号按“手机那么大的页”来定，宽屏上只是一行多写几个字（--k 越小，字相对页宽越小） */
+  function setK(){root.style.setProperty("--k",Math.min(1,470/innerWidth).toFixed(3));root.classList.toggle("wide",innerWidth>=600)}
+  const ZOOM={duration:1500,easing:"linear",fill:"both"};
+  function enterImm(at){
+    if(imm||busy||!ONE())return;busy=true;rustle();
+    const b=book.getBoundingClientRect();immFrom={left:b.left+b.width/2,top:b.top,width:b.width/2,height:b.height};
+    const w=coverFly(immFrom);
+    setK();imm=true;root.classList.add("imm");root.scrollTop=0;build();cur=Math.max(0,Math.min(at||0,LAST));show();
+    const stg=book.parentNode,pl=zoomPlan(immFrom);stg.style.transformOrigin="0 0";
+    if(!stg.animate||matchMedia("(prefers-reduced-motion: reduce)").matches){w.remove();busy=false;showBar(true,true);return}
+    const a1=stg.animate(pl.stage,ZOOM),a2=w.animate(pl.cover,ZOOM);w.querySelectorAll(".pg,.cbk").forEach(f=>f.animate(pl.fade,ZOOM));clipLoop(stg,a1,pl);
+    a2.onfinish=()=>{w.remove();a1.cancel();stg.style.transformOrigin="";stg.style.clipPath="";busy=false;showBar(true,true)};
+  }
+  function exitImm(quick){
+    if(!imm||(busy&&!quick))return;showBar(false);const stg=book.parentNode;
+    const done=()=>{imm=false;root.classList.remove("imm");stg.style.transformOrigin="";cur=-1;build();show();busy=false};
+    if(quick||!immFrom||!stg.animate||matchMedia("(prefers-reduced-motion: reduce)").matches){done();return}
+    busy=true;const w=coverFly(immFrom),pl=zoomPlan(immFrom),R={...ZOOM,duration:1100,direction:"reverse"};stg.style.transformOrigin="0 0";
+    const a1=stg.animate(pl.stage,R),a2=w.animate(pl.cover,R);w.querySelectorAll(".pg,.cbk").forEach(f=>f.animate(pl.fade,R));clipLoop(stg,a1,pl);
+    a2.onfinish=()=>{done();a1.cancel();stg.style.clipPath="";w.remove()};
+  }
+  $("#dyBack").addEventListener("click",()=>exitImm());
+  $("#dyBarRead").addEventListener("click",()=>$("#dyRead").click());
+  addEventListener("resize",()=>{if(!open||busy)return;if(imm&&!ONE()){exitImm(true);return}if(imm){setK();build();show()}});
   function show(){
-    setStatic(cur,cur);
-    book.classList.toggle("closed",cur<0);book.style.transform=cur<0?"translateX(-25%)":"";
+    setStatic(cur,cur);const one=ONE();
+    book.classList.toggle("closed",cur<0);book.style.transform=cur<0&&!one?"translateX(-25%)":"";
+    book.classList.toggle("one",one);
     prevB.disabled=cur<0;nextB.disabled=cur>=LAST;
     const lab=p=>!p?"":p.t==="diary"?`${(DQ[p.m.q]||DQ.persist).ic} ${md(p.m.date)[1]}月${md(p.m.date)[2]}日`:p.t==="blank"?"✏️ 下一篇":"";
-    posEl.textContent=cur<0?"📕 封面":cur===0?"📑 目录":[...new Set([lab(S[cur][0]),lab(S[cur][1])].filter(Boolean))].join("　")||"⭐ 未完待续";
+    const pv=cur<0?"📕 封面":cur===0?"📑 目录":(one?lab(S[cur][1]):[...new Set([lab(S[cur][0]),lab(S[cur][1])].filter(Boolean))].join("　"))||"⭐ 未完待续";
+    posEl.textContent=pv;const bp=$("#dyBarPos");if(bp)bp.textContent=pv+(one&&cur>0?`　${cur} / ${LAST}`:"");
   }
+  oneMQ.addEventListener&&oneMQ.addEventListener("change",()=>{if(open&&!busy){PCACHE.clear();const keep=cur;build();cur=Math.min(keep<0?-1:0,LAST);show()}});
+  const step=dir=>turn(dir);
   let ac;function rustle(){try{ac=window.__ac||(window.__ac=new (window.AudioContext||window.webkitAudioContext)());if(ac.state==="suspended")ac.resume();
     const sr=ac.sampleRate,now=ac.currentTime,noise=(sec,fn)=>{const n=Math.floor(sr*sec),b=ac.createBuffer(1,n,sr),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=fn(i/n)*(Math.random()*2-1);return b};
     const play=(buf,at,type,f0,f1,q,vol)=>{const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=buf;f.type=type;f.Q.value=q;
@@ -1638,7 +1872,7 @@ const Diary=(()=>{
     const el=document.createElement("div");el.className="leaf "+(fwd?"fwd":"back");
     const st=document.createElement("div");st.className="st";st.style.width="50cqw";
     if(fwd){st.style.left="0";st.style.transformOrigin="0 50%"}else{st.style.right="0";st.style.transformOrigin="100% 50%"}
-    const lb='<div class="lboard"></div>';
+    const lb=(fwd?cur===-1:to===-1)?'<div class="lboard"></div>':"";
     st.innerHTML=`<div class="fc f">${fwd?"":lb}${pageHTML(frontP,fwd?"r":"l",cur)}<div class="sh"></div></div><div class="fc b">${fwd?lb:""}${pageHTML(backP,fwd?"l":"r",to)}<div class="sh"></div></div>`;
     el.appendChild(st);book.appendChild(el);
     if(fwd)setStatic(cur,to);else setStatic(to,cur);
@@ -1650,6 +1884,7 @@ const Diary=(()=>{
     L.st.style.transform=`rotateY(${L.dir>0?-theta:theta}deg) translateZ(.5px)`;
     L.st.children[0].lastElementChild.style.opacity=(.4*(1-Math.max(0,c))).toFixed(3);
     L.st.children[1].lastElementChild.style.opacity=(.4*(1+Math.min(0,c))).toFixed(3);
+    if(ONE())return;
     if(L.dir>0&&cur===-1)book.style.transform=`translateX(${-25*(1-theta/180)}%)`;
     if(L.dir<0&&L.to===-1)book.style.transform=`translateX(${-25*(theta/180)}%)`;
   }
@@ -1704,29 +1939,43 @@ const Diary=(()=>{
       if(t<1)requestAnimationFrame(step);else done()};requestAnimationFrame(step)}
   function endCurl(ok){const to=C.to;fx.innerHTML="";C=null;if(ok)cur=to;show();busy=false}
   const coverFlip=dir=>(dir>0&&cur===-1)||(dir<0&&cur===0);
+  const useLeaf=()=>false;
   function turn(dir){
-    if(busy)return;const to=cur+dir;if(to<-1||to>LAST)return;
+    if(busy)return;const to=cur+dir;if(to<-1||to>LAST||(imm&&to<0))return;
+    if(ONE()&&!imm){if(dir>0&&cur<0)enterImm(0);return}
     busy=true;rustle();const rm=matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if(coverFlip(dir)){makeLeaf(dir);if(rm){finish(true);return}tween(180,1000,()=>finish(true));return}
+    if(coverFlip(dir)||useLeaf()){const cv=coverFlip(dir);makeLeaf(dir);if(rm){finish(true);return}tween(180,cv?1000:750,()=>finish(true));return}
     const H=book.clientHeight,W=book.clientWidth/2;
     startCurl(dir,H);if(rm){endCurl(true);return}
     tweenCurl({x:dir>0?-W:W,y:H},950,H*.16,()=>endCurl(true));
   }
   let drag=null;
   book.addEventListener("pointerdown",e=>{
-    if(busy)return;const r=book.getBoundingClientRect(),x=e.clientX-r.left;
+    if(busy)return;
+    const pic=e.target.closest(".dpic");
+    if(pic){drag={pic:pic.dataset.id,id:e.pointerId,x0:e.clientX,y0:e.clientY};return}
+    const r=book.getBoundingClientRect(),x=e.clientX-r.left;
+    if(ONE()){/* 手机：封面点一下就放大打开；整屏阅读时，方向等手指动了再定 */
+      if(!imm){drag={tapCover:true,id:e.pointerId,x0:e.clientX,y0:e.clientY};return}
+      drag={dir:0,x0:e.clientX,y0:e.clientY,t0:performance.now(),r,moved:false,id:e.pointerId,cover:false};return}
     const dir=(cur<0||x>r.width/2)?1:-1,to=cur+dir;if(to<-1||to>LAST)return;
-    drag={dir,x0:e.clientX,y0:e.clientY,t0:performance.now(),r,moved:false,id:e.pointerId,cover:coverFlip(dir)};
+    drag={dir,x0:e.clientX,y0:e.clientY,t0:performance.now(),r,moved:false,id:e.pointerId,cover:coverFlip(dir)||useLeaf()};
   });
   book.addEventListener("pointermove",e=>{
-    if(!drag||e.pointerId!==drag.id)return;const dx=e.clientX-drag.x0,dy=e.clientY-drag.y0,r=drag.r,W=r.width/2;
-    if(!drag.moved){if(Math.hypot(dx,dy)<8)return;drag.moved=true;busy=true;rustle();try{book.setPointerCapture(e.pointerId)}catch(_){}
+    if(!drag||e.pointerId!==drag.id||drag.tapCover||drag.pic)return;const dx=e.clientX-drag.x0,dy=e.clientY-drag.y0,r=drag.r,W=r.width/2;
+    if(!drag.moved){if(Math.hypot(dx,dy)<8)return;
+      if(!drag.dir){if(Math.abs(dy)>Math.abs(dx)){drag=null;return}const d=dx<0?1:-1,to=cur+d;if(to<0||to>LAST){drag=null;return}drag.dir=d;showBar(false)}drag.moved=true;busy=true;rustle();try{book.setPointerCapture(e.pointerId)}catch(_){}
       if(drag.cover)makeLeaf(drag.dir);else startCurl(drag.dir,(drag.y0-r.top)>r.height/2?r.height:0)}
     if(drag.cover){draw(Math.max(0,Math.min(180,(drag.dir>0?-dx:dx)/(W*1.6)*180)));return}
     renderCurl({x:e.clientX-r.left-W,y:e.clientY-r.top});
   });
   function endDrag(e){
     if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;
+    if(d.pic){if(Math.hypot(e.clientX-d.x0,e.clientY-d.y0)<12)showBig(d.pic);return}
+    if(d.tapCover){if(Math.hypot(e.clientX-d.x0,e.clientY-d.y0)<12&&cur<0)enterImm(0);return}
+    if(!d.moved&&imm){const sr=book.parentNode.getBoundingClientRect(),vw=sr.width,x=e.clientX-sr.left;
+      if(ibar.classList.contains("on")){showBar(false);return}
+      if(x<vw*.3)turn(-1);else if(x>vw*.7)turn(1);else showBar(true);return}
     if(!d.moved){turn(d.dir);return}
     const v=Math.abs(e.clientX-d.x0)/(performance.now()-d.t0);
     if(d.cover){const go=L.theta>70||v>.6;tween(go?180:0,go?Math.max(250,(180-L.theta)*4):Math.max(200,L.theta*4),()=>finish(go));return}
@@ -1734,38 +1983,63 @@ const Diary=(()=>{
     tweenCurl(go?{x:C.fwd?-W:W,y:C.C0.y}:{...C.C0},go?520:380,0,()=>endCurl(go));
   }
   book.addEventListener("pointerup",endDrag);book.addEventListener("pointercancel",endDrag);
-  prevB.onclick=()=>turn(-1);nextB.onclick=()=>turn(1);
+  prevB.onclick=()=>step(-1);nextB.onclick=()=>step(1);
   const sayEntry=p=>{if(!p||p.t!=="diary")return"";if(p.txt!=null&&!p.first)return p.txt;const[,mo,da]=md(p.m.date),q=DQ[p.m.q]||DQ.persist;return`${mo}月${da}日，星期${wdOf(p.m.date)}。问之做到了${q.name}！${p.txt!=null?p.txt:(p.m.text||"")}`};
   $("#dyRead").onclick=()=>{let t;if(cur<0)t="问之的高光日记";else if(cur===0)t=M.length?`问之的高光日记，一共有${M.length}篇`:"问之的高光日记，第一篇还没写呢";
-    else t=[sayEntry(S[cur][0]),sayEntry(S[cur][1])].filter(Boolean).join("。")||"下一个高光时刻，会写在这里。继续加油，问之队员！";say(t)};
-  /* 家长区：写、改、删 */
-  const qOpts=v=>Object.entries(DQ).map(([k,q])=>`<option value="${k}" ${k===v?"selected":""}>${q.ic} ${q.name}</option>`).join("");
-  const wOpts=v=>[""].concat(DWX).map(w=>`<option value="${w}" ${w===(v||"")?"selected":""}>${w||"天气"}</option>`).join("");
+    else t=(ONE()?[sayEntry(S[cur][1])]:[sayEntry(S[cur][0]),sayEntry(S[cur][1])]).filter(Boolean).join("。")||"下一个高光时刻，会写在这里。继续加油，问之队员！";say(t)};
+  /* 家长区：列出每一篇，点一篇打开一整页来改（文字、日期、品质、天气、照片），按“保存”才存 */
   function renderEditor(){
-    const box=$("#dyRows");if(!$("#dyEdit").open||box.contains(document.activeElement))return;
-    box.innerHTML=diaryList().slice().reverse().map(d=>`<div class="drow" data-id="${d.id}"><input type="date" class="dd" value="${d.date}" max="${today()}" aria-label="日期"><select class="dq" aria-label="品质">${qOpts(d.q)}</select><select class="dw" aria-label="天气">${wOpts(d.wx)}</select><textarea class="dt" rows="2" aria-label="发生了什么" placeholder="发生了什么？">${esc(d.text||"")}</textarea><button class="dcam" type="button" aria-label="${d.photo?"去掉照片":"加照片"}">${d.photo?`<img src="${d.photo}" alt="">`:"📷"}</button><button class="ddel" type="button" aria-label="删掉这一篇">🗑</button></div>`).join("")
+    const box=$("#dyRows");if(!$("#dyEdit").open)return;
+    box.innerHTML=diaryList().slice().reverse().map(d=>{const[,mo,da]=md(d.date),q=DQ[d.q]||DQ.persist;
+      return`<button type="button" class="drow" data-id="${d.id}"><span class="dth">${d.photo?`<img src="${d.photo}" alt="">`:q.ic}</span><span class="dtx"><b>${mo}月${da}日 星期${wdOf(d.date)}<i style="background:${q.c}">${q.ic} ${q.name}</i></b><span>${esc(d.text||"（还没写）")}</span></span><span class="dgo">修改 ›</span></button>`}).join("")
       ||`<div class="dhint">还没有日记。点下面的“✍️ 写一篇”。</div>`;
   }
   $("#dyEdit").addEventListener("toggle",renderEditor);
-  $("#dyRows").addEventListener("change",async e=>{const row=e.target.closest(".drow");if(!row)return;const id=row.dataset.id,d=state.diary[id];if(!d)return;
-    const patch={date:row.querySelector(".dd").value||d.date,q:row.querySelector(".dq").value,wx:row.querySelector(".dw").value,text:row.querySelector(".dt").value.trim()};
-    e.target.blur();await put("diary",id,{...d,...patch})});
+  const ed=$("#dyEd"),edText=$("#edText");let E=null;
+  function edDraw(){
+    $("#edQ").innerHTML=Object.entries(DQ).map(([k,q])=>`<button type="button" data-q="${k}" class="${k===E.q?"on":""}" style="--c:${q.c}">${q.ic} ${q.name}</button>`).join("");
+    $("#edWx").innerHTML=[""].concat(DWX).map(w=>`<button type="button" data-w="${w}" class="${w===(E.wx||"")?"on":""}">${w||"不写"}</button>`).join("");
+    $("#edImg").innerHTML=E.photo?`<img src="${E.photo}" alt="这一篇的照片">`:"还没有照片";
+    $("#edPick").textContent=E.photo?"📷 换一张":"📷 加照片";$("#edNoPic").hidden=!E.photo;
+    $("#edCount").textContent=`${edText.value.trim().length} 字`;
+  }
+  function edOpen(id){
+    const d=id?state.diary[id]:null;
+    E=d?{id,...d}:{id:null,date:today(),q:"persist",wx:"",text:"",photo:null};
+    E.orig=JSON.stringify([E.date,E.q,E.wx||"",E.text||"",E.photo||null]);
+    $("#edTitle").textContent=d?"改日记":"写一篇日记";$("#edDel").hidden=!d;
+    $("#edDate").value=E.date;$("#edDate").max=today();edText.value=E.text||"";
+    edDraw();ed.hidden=false;ed.querySelector(".edbody").scrollTop=0;
+  }
+  const edDirty=()=>E&&JSON.stringify([$("#edDate").value||E.date,E.q,E.wx||"",edText.value.trim(),E.photo||null])!==E.orig;
+  function edClose(){ed.hidden=true;E=null;edText.blur()}
+  /* 保存后翻到这一篇 */
+  function goTo(id){if(!open||ONE())return;build();const n=START[id];if(!n)return;cur=ONE()?n:Math.ceil(n/2);show()}
+  $("#dyRows").addEventListener("click",e=>{const r=e.target.closest(".drow");if(r)edOpen(r.dataset.id)});
+  $("#dyAdd").addEventListener("click",()=>edOpen(null));
+  $("#edQ").addEventListener("click",e=>{const b=e.target.closest("button");if(b){E.q=b.dataset.q;edDraw()}});
+  $("#edWx").addEventListener("click",e=>{const b=e.target.closest("button");if(b){E.wx=b.dataset.w;edDraw()}});
+  edText.addEventListener("input",()=>{$("#edCount").textContent=`${edText.value.trim().length} 字`});
   /* 日记照片：缩成 480px 见方存进这一篇里一起同步 */
   let photoCb=null;
   function pickPhoto(cb){photoCb=cb;const i=$("#dyPhoto");i.value="";i.click()}
   $("#dyPhoto").addEventListener("change",async e=>{const f=e.target.files[0],cb=photoCb;photoCb=null;if(!f||!cb)return;
     try{cb(await shrinkPhoto(f,480))}catch(err){alert("这张照片读不出来，换一张试试")}});
-  $("#dyRows").addEventListener("click",async e=>{const c=e.target.closest(".dcam");if(c){const id=c.closest(".drow").dataset.id,d=state.diary[id];if(!d)return;
-      if(d.photo){if(confirm("去掉这张照片吗？"))await put("diary",id,{...d,photo:null});return}
-      pickPhoto(async ph=>{const cur=state.diary[id];if(cur)await put("diary",id,{...cur,photo:ph})});return}
-    const b=e.target.closest(".ddel");if(!b)return;const id=b.closest(".drow").dataset.id;
-    if(confirm("删掉这一篇日记吗？"))await del("diary",id)});
-  $("#dyAdd").addEventListener("click",async()=>{const id="d"+rid();await put("diary",id,{date:today(),q:"persist",wx:"",text:"",ts:Date.now()});
-    renderEditor();const t=$(`#dyRows [data-id="${id}"] .dt`);if(t)t.focus()});
+  $("#edPick").addEventListener("click",()=>pickPhoto(ph=>{if(E){E.photo=ph;edDraw()}}));
+  $("#edNoPic").addEventListener("click",()=>{if(E){E.photo=null;edDraw()}});
+  $("#edCancel").addEventListener("click",()=>{if(edDirty()&&!confirm("改的内容还没保存，确定不要了吗？"))return;edClose()});
+  $("#edSave").addEventListener("click",async()=>{if(!E)return;const text=edText.value.trim();
+    if(!text&&!confirm("还什么都没写，就这样保存吗？"))return;
+    const id=E.id||"d"+rid(),old=E.id?state.diary[E.id]||{}:{};
+    const data={...old,date:$("#edDate").value||E.date,q:E.q,wx:E.wx||"",text,photo:E.photo||null,ts:old.ts||Date.now()};
+    if(!data.photo)delete data.photo;
+    await put("diary",id,data);edClose();renderEditor();goTo(id)});
+  $("#edDel").addEventListener("click",async()=>{if(!E||!E.id)return;if(!confirm("删掉这一篇日记吗？删掉就找不回来了。"))return;
+    const id=E.id;edClose();await del("diary",id);renderEditor()});
   function openDiary(){cur=-1;open=true;root.hidden=false;build();root.scrollTop=0;document.body.style.overflow="hidden";show();renderEditor()}
-  function closeDiary(){if(busy)return;open=false;root.hidden=true;document.body.style.overflow=""}
+  function closeDiary(){if(imm)exitImm(true);if(busy)return;if(!ed.hidden)edClose();open=false;root.hidden=true;document.body.style.overflow=""}
   $("#diaryGo").addEventListener("click",openDiary);$("#dyClose").addEventListener("click",closeDiary);
-  addEventListener("keydown",e=>{if(!open||/TEXTAREA|INPUT|SELECT/.test(e.target.tagName))return;if(e.key==="Escape")closeDiary();if(e.key==="ArrowRight")turn(1);if(e.key==="ArrowLeft")turn(-1)});
+  addEventListener("keydown",e=>{if(!open||!ed.hidden||/TEXTAREA|INPUT|SELECT/.test(e.target.tagName))return;if(e.key==="Escape"){if(!big.hidden)hideBig();else if(imm)exitImm();else closeDiary()}if(e.key==="ArrowRight")step(1);if(e.key==="ArrowLeft")step(-1)});
   /* 点完“了不起”里的格子（坚持就是胜利、问之很勇敢、专注写作业）后：问要不要写进日记 */
   function ask(h,date){
     if(!$("#pop").hidden||open)return;

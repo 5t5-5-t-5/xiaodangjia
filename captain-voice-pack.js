@@ -1,6 +1,6 @@
 /* Accepted firm-ending voice; exact source phrases map to recordings. */
 window.XDJ_CAPTAIN_VOICE_PACK = {
-  "version": "20261106-firm1-autoead06c",
+  "version": "20261106-firm1-autob6d660",
   "files": {
     "points-oral": "audio/captain/v1/points-oral.mp3",
     "points-enbook": "audio/captain/v1/points-enbook.mp3",
@@ -71,7 +71,21 @@ window.XDJ_CAPTAIN_VOICE_PACK = {
     "points-focus_hw-c7cfc8": "audio/captain/v1/points-focus_hw-c7cfc8.mp3",
     "points-focus_read-7cee74": "audio/captain/v1/points-focus_read-7cee74.mp3",
     "points-talk-a2bd5b": "audio/captain/v1/points-talk-a2bd5b.mp3",
-    "bank-serve-dc8525": "audio/captain/v1/bank-serve-dc8525.mp3"
+    "bank-serve-dc8525": "audio/captain/v1/bank-serve-dc8525.mp3",
+    "fix-cb3450ffc3": "audio/captain/v1/fix-cb3450ffc3.mp3",
+    "fix-b9f5718afc": "audio/captain/v1/fix-b9f5718afc.mp3",
+    "fix-6b5a990222": "audio/captain/v1/fix-6b5a990222.mp3",
+    "fix-a1fbebf395": "audio/captain/v1/fix-a1fbebf395.mp3",
+    "fix-55a8b81c86": "audio/captain/v1/fix-55a8b81c86.mp3",
+    "fix-125538f571": "audio/captain/v1/fix-125538f571.mp3",
+    "fix-bc2b85ebe7": "audio/captain/v1/fix-bc2b85ebe7.mp3",
+    "shop-ac01ae1289": "audio/captain/v1/shop-ac01ae1289.mp3",
+    "shop-068ba00c93": "audio/captain/v1/shop-068ba00c93.mp3",
+    "shop-8a08d5aab3": "audio/captain/v1/shop-8a08d5aab3.mp3",
+    "shop-80f1df7a67": "audio/captain/v1/shop-80f1df7a67.mp3",
+    "shop-5b8535bd11": "audio/captain/v1/shop-5b8535bd11.mp3",
+    "shop-60d24ef09d": "audio/captain/v1/shop-60d24ef09d.mp3",
+    "fix-7f2b858797": "audio/captain/v1/fix-7f2b858797.mp3"
   },
   "phrases": {
     "口语星球，加2分！": [
@@ -287,6 +301,48 @@ window.XDJ_CAPTAIN_VOICE_PACK = {
     ],
     "盛饭，存进1块钱！": [
       "bank-serve-dc8525"
+    ],
+    "好，再想想": [
+      "fix-cb3450ffc3"
+    ],
+    "放回去啦": [
+      "fix-b9f5718afc"
+    ],
+    "要爸爸妈妈按住不放哦": [
+      "fix-6b5a990222"
+    ],
+    "写进高光日记啦！": [
+      "fix-a1fbebf395"
+    ],
+    "问之的高光日记": [
+      "fix-55a8b81c86"
+    ],
+    "问之的高光日记，第一篇还没写呢": [
+      "fix-125538f571"
+    ],
+    "下一个高光时刻，会写在这里。继续加油，问之队员！": [
+      "fix-bc2b85ebe7"
+    ],
+    "超级赛亚人，300分。要换它吗？": [
+      "shop-ac01ae1289"
+    ],
+    "超级赛亚人，要300分。还差几分，再加油！": [
+      "shop-068ba00c93"
+    ],
+    "换到啦！超级赛亚人！": [
+      "shop-8a08d5aab3"
+    ],
+    "贝吉塔，300分。要换它吗？": [
+      "shop-80f1df7a67"
+    ],
+    "贝吉塔，要300分。还差几分，再加油！": [
+      "shop-5b8535bd11"
+    ],
+    "换到啦！贝吉塔！": [
+      "shop-60d24ef09d"
+    ],
+    "问之的高光日记，一共有5篇": [
+      "fix-7f2b858797"
     ]
   }
 };

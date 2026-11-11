@@ -16,6 +16,20 @@
     }
     if (text.endsWith('，取消啦')) return ['cancelled'];
     if (text.endsWith('，已经记过啦')) return ['already-recorded'];
+    // 小商店“还差几分”：差多少每次不同，统一用“能量还不够”那句录音
+    const short = text.match(/^(.+，要\d+分。)还差\d+分，再加油！$/);
+    if (short && pack.phrases[short[1] + '还差几分，再加油！']) return pack.phrases[short[1] + '还差几分，再加油！'];
+    // 一段话（比如日记）：拆成一句一句，每句都有录音就连着播
+    const parts = (text.match(/[^。！？!?]+[。！？!?]*/g) || []).map(x => x.trim()).filter(Boolean);
+    if (parts.length > 1) {
+      const ids = [];
+      for (const part of parts) {
+        const clip = pack.phrases[part];
+        if (!clip) return null;
+        ids.push(...clip);
+      }
+      return ids;
+    }
     return null;
   }
 

@@ -6,9 +6,12 @@
   const base = new URL('.', document.currentScript.src);
   const fetched = new Map(), decoded = new Map(), playing = new Set();
   let context = null, revision = 0, enabled = () => true;
+  // 日记录音是隐私，不放在公开网站：存在家里的私密记录里，页面用同步钥匙取（见 src.html 的 diaryVoice）
+  let priv = {}, privLoad = null;
+  const clipOf = t => pack.phrases[t] || (priv[t] && privLoad ? ['p:' + priv[t]] : null);
 
   function plan(text) {
-    if (Object.prototype.hasOwnProperty.call(pack.phrases, text)) return pack.phrases[text];
+    if (clipOf(text)) return clipOf(text);
     const debt = '先还了预支1块。';
     if (text.endsWith(debt)) {
       const first = pack.phrases[text.slice(0, -debt.length)];
@@ -24,7 +27,7 @@
     if (parts.length > 1) {
       const ids = [];
       for (const part of parts) {
-        const clip = pack.phrases[part];
+        const clip = clipOf(part);
         if (!clip) return null;
         ids.push(...clip);
       }
@@ -68,6 +71,11 @@
 
   function fetchClip(id) {
     if (fetched.has(id)) return fetched.get(id);
+    if (id.startsWith('p:')) {
+      const pending = privLoad(id.slice(2)).catch(error => { fetched.delete(id); throw error; });
+      fetched.set(id, pending);
+      return pending;
+    }
     const file = pack.files[id];
     if (!file) return Promise.reject(new Error('Missing voice clip: ' + id));
     const controller = new AbortController();
@@ -132,5 +140,7 @@
   }, true);
   document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
   window.addEventListener('pagehide', stop);
-  window.XDJCaptainVoice = { play, stop, prepare, preload, setEnabled: callback => { enabled = callback; } };
+  window.XDJCaptainVoice = { play, stop, prepare, preload, setEnabled: callback => { enabled = callback; },
+    // index：{句子: 录音编号}；load(编号) 返回这段录音的 ArrayBuffer
+    setPrivate: (index, load) => { priv = index || {}; privLoad = load; } };
 })();
